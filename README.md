@@ -7,9 +7,13 @@ issue to a reviewed draft pull request while they are away, without edited tests
 
 **You leave with** a factory in a repo: a typed issue goes in; a spec, a plan, a build in its own worktree, a
 gate the agent cannot skip, a reviewer that must show evidence, and a draft pull request with its cost
-come out. Every step is checked by a script you run. No API key is needed until you choose to run live.
+come out. Every step is checked by a script you run. You do the work in the real Claude Code, signed in
+with your own Claude account; no step asks for an API key.
 
 ## Run the finished system first
+
+You need Bun 1.4 or newer and Claude Code (the `claude` CLI, signed in with a Pro, Max or Console account;
+see [00-orientation](00-orientation/README.md) to install it).
 
 ```bash
 bun install
@@ -24,15 +28,26 @@ bun run world
 Expect: `world: Northside Tool Library is ready: 12 tools, 8 members, 4 loans out (1 overdue), 7 open issues.`
 
 ```bash
-bun run factory:replay 2
+bun run finished 2
 ```
 
-Expect: `replay: issue 2 ended in draft_pr. Gate pass after 1 build round, 1 edit blocked by a hook, 0 test files edited in build, review pass, recorded cost $0.84.`
+Expect: `finished: issue 2 ended in draft_pr. Gate pass after 1 build round, 0 edits blocked by a hook, 0 test files edited in build, review pass,` then the cost.
 
-![The finished factory on issue 2: the hook blocks the edit to the test, the builder fixes the code, the gate passes](images/finished-system.png)
+![The finished factory on issue 2: triage, a spec with failing tests, a build that makes them pass, a review](images/finished-system.png)
 
-The model replies in the replay are recorded. Everything else runs for real: the test-lock hook, the Stop
-hook and the gate (the app's tests) all run on a fresh copy of the app.
+Each stage of the finished factory is one real Claude Code run, `claude -p`, in a fresh copy of the app that
+holds the factory's own `CLAUDE.md`, `.claude/settings.json` and hooks (`world/finished/factory/`). With
+`claude` installed and signed in, the command runs live on your account, and the cost line is what Claude
+Code reported. Without it, or in CI, it says so in one line and replays a recorded real run from
+`world/recordings/`: it shows that run's transcript, applies the changes it made to a fresh copy, runs the
+gate (the app's tests) for real, and runs the factory's hooks again on the exact events Claude Code sent them.
+`bun run finished 2 --replay` replays even when `claude` is ready.
+
+```bash
+bun run finished 6
+```
+
+Expect: `finished: issue 6 ended in refused.` Issue 6 needs a change under `src/auth/`, which the factory refuses.
 
 ```bash
 bun run scorecard
@@ -98,18 +113,21 @@ whose tests pass the gate; no test file edited in the build; the reviewer blocke
 issue 3 and passed a clean diff; issue 6 refused; issue 7 stopped at the plan; every cost recorded and under
 your cap; no key in any tracked file; a retro with one gate that fired and one change you will make.
 
-## Models and keys
+## Claude Code, not the API
 
-Every model call goes through one file, `config/models.ts`, which maps three roles (fast, smart, judge) to
-a model per provider. `LLM_PROVIDER` is `replay` by default, so the course, its checks and CI run with no key.
-To run live, copy `.env.example` to `.env`, set `LLM_PROVIDER` to `anthropic`, `openrouter` or `openai`, add
-that one key, and check it:
+You work in the real Claude Code: the `claude` CLI in a terminal, Claude Code in your editor, or the Code tab
+of Claude Desktop, signed in with your own Claude account. The course never calls the model API and never
+asks for an API key. What you build is Claude Code configuration (`CLAUDE.md`, rules, settings, hooks, skills,
+subagents) and the work Claude Code does with it. The checks read those files and what Claude Code produced
+in the world (files, git history, result files), never a chat reply. Hooks are tested by feeding them the
+JSON Claude Code sends on stdin. `config/claude-code.ts` holds the model alias per role, the headless flags,
+and the oldest Claude Code version the course is tested on, 2.1.311.
 
 ```bash
-bun run models
+bun run doctor
 ```
 
-Expect: `models: every role answers on replay.` (or on the provider you set).
+Expect: `doctor: ready, 4 of 4 required checks pass.` and a `Claude Code` line with your version and whether you are signed in.
 
 ## Read before you start
 

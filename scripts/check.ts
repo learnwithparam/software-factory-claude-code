@@ -125,7 +125,7 @@ for (const f of files.filter((f) => f.endsWith(".md"))) {
   }
 }
 // 5. One model config, exact pins, a troubleshooting table.
-for (const f of files.filter((f) => /\.(ts|py|md|json|toml|ya?ml)$/.test(f) && !f.includes("/config/models.") && !f.includes("/scripts/check.ts"))) {
+for (const f of files.filter((f) => /\.(ts|py|md|json|toml|ya?ml)$/.test(f) && !f.includes("/config/models.") && !f.includes("/config/claude-code.") && !f.includes("/scripts/check.ts"))) {
   const m = read(f).match(MODEL_ID);
   if (m) fail(f, `model id "${m[0]}" outside config/models; name models in one place`);
 }

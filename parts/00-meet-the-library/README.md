@@ -26,7 +26,7 @@ flowchart LR
 
 | Step | Minutes | What you produce |
 |---|---|---|
-| `meet-the-library` | 15 | a passing doctor, a replayed run, `notes/goal.md` |
+| `meet-the-library` | 15 | a passing doctor, a run of the finished factory, `notes/goal.md` |
 
 ## Walkthrough
 
@@ -34,13 +34,13 @@ flowchart LR
 bun run doctor
 ```
 
-Expect: `doctor: ready for replay, 4 of 4 required checks pass.`
+Expect: `doctor: ready, 4 of 4 required checks pass.` and a line saying whether Claude Code is ready.
 
 ```bash
-bun run factory:replay 2
+bun run finished 2
 ```
 
-Expect: `replay: issue 2 ended in draft_pr.`
+Expect: `finished: issue 2 ended in draft_pr.`
 
 ```bash
 bun run verify meet-the-library

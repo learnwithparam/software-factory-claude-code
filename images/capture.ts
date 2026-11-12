@@ -17,7 +17,7 @@ export const SHOTS: Shot[] = [
       "images/finished-system.png",
       "parts/00-meet-the-library/01-meet-the-library/images/expected.png",
     ],
-    cmd: ["bun", "run", "factory:replay", "2"],
+    cmd: ["bun", "run", "finished", "2", "--replay"],
   },
   {
     out: ["parts/01-write-the-work-order/01-write-the-issue-form/images/expected.png"],

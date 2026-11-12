@@ -55,7 +55,8 @@ Expect: `desk: charge £33.33, shares add up to £33.32`. That missing penny is 
 | `app/seed/` | the data the database is rebuilt from |
 | `backlog/` | the open issues, one file each, numbered 1 to 7 |
 | `backlog/answers/` | what the coordinator said when asked the work-order questions about an issue |
-| `finished/` | the finished factory and a recorded run of it, used by `bun run factory:replay` |
+| `finished/` | the finished factory: its `CLAUDE.md`, settings and hooks, one prompt per stage, and `run.ts` (`bun run finished`) |
+| `recordings/` | real `claude -p` runs of the finished factory: transcripts, hook events, changes. See `recordings/RECORD.md` |
 | `data/` | the database and the event log; git-ignored, rebuilt by `bun run world reset` |
 
 ## The data

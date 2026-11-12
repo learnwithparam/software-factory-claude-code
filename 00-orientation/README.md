@@ -1,11 +1,38 @@
 # Start here
 
-You will set up the repo, meet the library, run the finished factory, and see the goal. Then you pass the
-first step, `meet-the-library`. No API key is needed for any of it.
+You will install Claude Code and sign in, set up the repo, meet the library, run the finished factory, and
+see the goal. Then you pass the first step, `meet-the-library`.
 
-You work in two places: a terminal for the commands below, and the Claude Code CLI (`claude`) from Part 1 on.
+You do the work of this course in the real Claude Code: the `claude` CLI in a terminal (what the commands
+below use), Claude Code in VS Code or a JetBrains editor, or the Code tab of Claude Desktop. You sign in with
+your own Claude account: a Pro or Max plan, or a Console account. The free plan does not include Claude
+Code. No step asks for an API key, and nothing in this repo calls the model API.
 
 ## 1. Set up
+
+Install Claude Code with the official installer (macOS, Linux and WSL; on Windows, use WSL2 for this course):
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+Expect: the installer ends with no error. Open a new terminal so `claude` is on your PATH.
+
+```bash
+claude --version
+```
+
+Expect: a version number such as `2.1.322 (Claude Code)`. This course is tested on 2.1.311 and newer; run
+`claude update` if yours is older.
+
+Sign in once. Start `claude`, type `/login`, and follow the browser prompts with your Claude account. Then
+type `/exit`.
+
+```bash
+claude auth status
+```
+
+Expect: JSON with `"loggedIn": true`.
 
 ```bash
 bun install
@@ -23,15 +50,10 @@ Expect: `world: Northside Tool Library is ready: 12 tools, 8 members, 4 loans ou
 bun run doctor
 ```
 
-Expect: `doctor: ready for replay, 4 of 4 required checks pass.` The `Live runs:` part says `ready` once
-Claude Code is installed. You need it from Part 1 on.
-
-```bash
-bun run models
-```
-
-Expect: `models: every role answers on replay.` To run live later, copy `.env.example` to `.env`, set
-`LLM_PROVIDER` and one key, and run it again.
+Expect: `doctor: ready, 4 of 4 required checks pass. Claude Code: ready for live runs.` The doctor asks
+`claude` itself for its version and sign-in. If Claude Code is missing or signed out, the line ends `not
+ready yet, so the finished factory replays its recorded runs`: the course still works, and the `--` lines
+say what to do.
 
 ## 2. Meet the library
 
@@ -54,16 +76,24 @@ Read the seven issues in `world/backlog/`, and [world/README.md](../world/README
 ## 3. Run the finished factory
 
 ```bash
-bun run factory:replay 2
+bun run finished 2
 ```
 
-Expect: `replay: issue 2 ended in draft_pr.` with one `BLOCKED` line in red.
+Expect: `finished: issue 2 ended in draft_pr.` The first line says whether it runs live or replays.
 
-![The finished factory replaying issue 2](images/replay-issue-2.png)
+![The finished factory on issue 2](images/replay-issue-2.png)
 
-Read it stage by stage. The model replies are recorded, but the rest is real: the spec stage adds a failing
-test, the builder tries to change that test, the hook blocks it, the builder fixes the code, and the gate
-runs the app's tests on the result.
+Read it stage by stage. Each stage is one `claude -p` run in a fresh copy of the app, with the factory's own
+`CLAUDE.md`, settings and hooks. Triage reads the issue and decides. The spec stage writes
+`specs/2/SPEC.md` and tests that fail on purpose. The build stage changes `src/` until `bun run gate` passes;
+the tests are locked by a hook, and a Stop hook will not let it finish until the gate passed on the code as
+it is. The review stage reads the change in a fresh context and returns pass or block. Lines that start
+with `denied:` are Claude Code's permission rules at work: each stage may only run the commands it needs.
+
+Live, it uses your Claude plan, and the last line shows the cost Claude Code estimated for the run. With
+`--replay` it uses nothing: it replays a real run recorded in `world/recordings/issue-2/`, and the gate and the hooks still run
+here for real. Look at what the run left behind in `runs/finished-2/`: the app copy in `repo/` with one
+commit per stage, the transcripts, and `result.json`.
 
 ## 4. See the goal
 

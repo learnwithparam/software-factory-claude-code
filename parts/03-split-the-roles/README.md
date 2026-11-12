@@ -27,9 +27,9 @@ flowchart LR
 
 | Step | Minutes | What you produce | What its check reads |
 |---|---|---|---|
-| `split-planner-and-builder` | 20 | `.claude/agents/planner.md` and `builder.md` | planner `tools` has no Edit, Write or Bash and sets `model`; builder has Edit and Bash; a recorded planner reply for issue 3 names `src/loans/reserve.ts` |
+| `split-planner-and-builder` | 20 | `.claude/agents/planner.md` and `builder.md` | planner `tools` has no Edit, Write or Bash and sets `model`; builder has Edit and Bash; a recorded `claude -p` run of the planner on issue 3 (its `plan.md`) names `src/loans/reserve.ts` |
 | `isolate-the-builder` | 10 | `isolation: worktree` on the builder, `.worktreeinclude` | the frontmatter; `.worktreeinclude` lists `.env.example` and never `.env`; a dry run creates and removes a worktree |
-| `build-the-reviewer` | 20 | `.claude/agents/reviewer.md` | read-only tools; the JSON reply contract (`verdict`, `findings[]` with `file`, `line`, `evidence`); recorded replies pass the clean diff |
+| `build-the-reviewer` | 20 | `.claude/agents/reviewer.md` | read-only tools; the JSON reply contract (`verdict`, `findings[]` with `file`, `line`, `evidence`); three recorded `claude -p` runs of the reviewer pass the clean diff |
 | `catch-the-planted-bug` | 15 | a review of the planted off-by-one diff for issue 3 | in 2 of 3 runs `block` with a finding in `src/loans/reserve.ts` whose evidence names a date pair, and `pass` on the clean diff in the same runs |
 
 ## Walkthrough

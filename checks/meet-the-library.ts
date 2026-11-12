@@ -8,8 +8,9 @@ import { parseResult } from "./lib/result";
 import { sh } from "./lib/run";
 import { ROOT } from "./lib/world";
 
-// The replay writes runs/replay-2/ at the repo root. A folder can also carry its own copy (the sample solution does).
-const resultPath = (d: string) => [join(d, "runs", "replay-2", "result.json"), join(ROOT, "runs", "replay-2", "result.json")].find(existsSync);
+// bun run finished 2 writes runs/finished-2/ at the repo root, live or replayed. A folder can also carry its
+// own copy (the sample solution does).
+const resultPath = (d: string) => [join(d, "runs", "finished-2", "result.json"), join(ROOT, "runs", "finished-2", "result.json")].find(existsSync);
 const goalLines = (d: string) =>
   nonEmptyLines(read(join(d, "notes", "goal.md")) ?? "").filter((l) => !l.startsWith("<!--") && !l.startsWith("#"));
 const ISSUE = /\b(?:issue\s*#?|#)([1-7])\b/i;
@@ -17,17 +18,17 @@ const ISSUE = /\b(?:issue\s*#?|#)([1-7])\b/i;
 export default [
   {
     says: "bun run doctor passes its required checks",
-    test: () => sh(["bun", join(ROOT, "world", "doctor.ts")]).code === 0,
+    test: () => sh(["bun", join(ROOT, "scripts", "doctor.ts")]).code === 0,
     tryNext: "run bun run doctor and fix each FAIL line it prints, then run this check again",
   },
   {
-    says: "the replay of issue 2 wrote runs/replay-2/result.json in the factory contract shape",
+    says: "the finished factory ran issue 2 and wrote runs/finished-2/result.json in the contract shape",
     test: (d) => {
       const p = resultPath(d);
       const r = p ? parseResult(json(p)) : null;
-      return Boolean(r?.ok && r.result.replayed && r.result.issue === 2);
+      return Boolean(r?.ok && r.result.issue === 2 && (r.result.claude_runs?.length ?? 0) > 0);
     },
-    tryNext: "run bun run factory:replay 2 from the repo root and read what each stage printed",
+    tryNext: "run bun run finished 2 from the repo root and read what each stage printed",
   },
   {
     says: "notes/goal.md has a line of your own",

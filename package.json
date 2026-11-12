@@ -6,21 +6,16 @@
   "scripts": {
     "check": "bun scripts/check.ts && bun scripts/verify.ts --all",
     "verify": "bun scripts/verify.ts",
-    "doctor": "bun world/doctor.ts",
+    "doctor": "bun scripts/doctor.ts",
     "world": "bun world/world.ts",
     "app": "bun world/app/src/server.ts",
     "desk": "bun world/app/src/desk.ts",
     "gate": "bun world/gate.ts",
-    "factory:replay": "bun world/finished/replay.ts",
     "scorecard": "bun world/finished/scorecard.ts",
-    "models": "bun config/try-models.ts",
-    "shots": "bun images/capture.ts"
+    "shots": "bun images/capture.ts",
+    "finished": "bun world/finished/run.ts"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "4.0.103",
-    "@ai-sdk/openai": "4.0.116",
-    "@openrouter/ai-sdk-provider": "3.1.0",
-    "ai": "7.0.171",
     "hono": "4.13.18",
     "zod": "4.6.7"
   },

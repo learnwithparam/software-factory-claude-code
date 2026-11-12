@@ -23,6 +23,10 @@ export const Result = z.object({
   roles_by_stage: z.record(z.string(), z.enum(["fast", "smart", "judge", "none"])),
   cost_usd: z.number().min(0),
   replayed: z.boolean(),
+  // One entry per claude -p run: its stream-json transcript (relative to the run folder), turns and cost.
+  claude_runs: z
+    .array(z.object({ stage: z.string(), transcript: z.string(), turns: z.number().int().min(0), cost_usd: z.number().min(0) }))
+    .optional(),
 });
 export type Result = z.infer<typeof Result>;
 
