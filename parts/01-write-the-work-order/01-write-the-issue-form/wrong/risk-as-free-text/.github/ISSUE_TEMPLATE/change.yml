@@ -1,0 +1,46 @@
+# A work order the factory can finish: one outcome, checkable acceptance lines, fences, and a risk level.
+name: Change request
+description: Ask for one change to the lending app. The factory works from these answers alone.
+title: "[change]: "
+labels: ["factory:triage"]
+body:
+  - type: markdown
+    attributes:
+      value: One change per issue. If you need two outcomes, open two issues.
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: What a member or volunteer can see or do when this is done. One sentence.
+      placeholder: A member without the class C induction is refused a chainsaw and told why.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance
+      description: Lines a test can check. Name real members, items or amounts from the seed data.
+      placeholder: "- Ben Halloran (not inducted) is refused saw-01."
+    validations:
+      required: true
+  - type: textarea
+    id: must-not-change
+    attributes:
+      label: Must not change
+      description: Behaviour, files or messages that must stay exactly as they are.
+    validations:
+      required: true
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+      description: Nearby work this issue does not cover.
+    validations:
+      required: true
+  - type: input
+    id: risk
+    attributes:
+      label: Risk
+      description: High means money, privacy or safety. A person signs off on every high risk change.
+    validations:
+      required: true

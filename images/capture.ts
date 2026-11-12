@@ -61,7 +61,7 @@ const server = Bun.spawn(["bun", join(ROOT, "world/app/src/server.ts")], { env: 
 await Bun.sleep(800);
 try {
   for (const s of SHOTS) {
-    const page = await browser.newPage({ viewport: { width: s.page ? 1100 : 800, height: 400 }, deviceScaleFactor: 2 });
+    const page = await browser.newPage({ viewport: { width: s.page ? 1100 : 800, height: s.page ? 400 : 120 }, deviceScaleFactor: 2 });
     if (s.page) await page.goto(`http://localhost:${port}${s.page}`);
     else if (s.cmd) {
       const r = Bun.spawnSync(s.cmd, { cwd: s.cwd ?? ROOT, env: { ...process.env, FORCE_COLOR: "1" }, stdout: "pipe", stderr: "pipe" });
