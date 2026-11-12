@@ -167,7 +167,7 @@ About 65 minutes of reading in all:
 1. [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices), Anthropic. Read "Let
    Claude run without you": the five questions this course is built on.
 2. [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents),
-   Anthropic. The pass list you write in Part 1.
+   Anthropic. The pass list Claude Code writes for you in Part 1.
 3. [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps),
    Anthropic. Why the reviewer is a separate agent that must show evidence.
 
