@@ -7,6 +7,15 @@ import { MIN_CLAUDE_CODE, providerStatus } from "../config/models";
 
 const ROOT = join(import.meta.dir, "..");
 type Line = { ok: boolean; says: string; fix: string };
+// Packages count as installed when they load. Bun can also install them on first import, as CI does.
+const canLoad = async (names: string[]) => {
+  try {
+    for (const n of names) await import(n);
+    return true;
+  } catch {
+    return false;
+  }
+};
 const newer = (have: string, want: string) => {
   const a = have.split(".").map(Number);
   const b = want.split(".").map(Number);
@@ -24,7 +33,7 @@ const run = (cmd: string[]) => {
 
 const required: Line[] = [
   { ok: newer(Bun.version, "1.4.0"), says: `Bun ${Bun.version}`, fix: "install Bun 1.4 or newer from bun.sh" },
-  { ok: existsSync(join(ROOT, "node_modules", "hono")), says: "packages installed", fix: "run bun install" },
+  { ok: await canLoad(["hono", "zod", "ai"]), says: "packages installed", fix: "run bun install" },
   (() => {
     const had = existsSync(DB_PATH);
     if (!had) seed();
