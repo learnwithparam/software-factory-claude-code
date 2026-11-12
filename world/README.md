@@ -7,8 +7,8 @@ You are the library's volunteer engineer. You have very little time, and the bac
 the open issues are about money and privacy. That is why you are building a factory: a line that takes one
 issue and hands back a draft pull request you can trust, with its cost on record.
 
-Northside is fictional. Real tool libraries lend at this size and keep the same rules: a late fee for each
-day late, damaged tools marked as not lendable, and safety classes that need an induction.
+Northside is fictional. Its rules are the ones the desk keeps: a late fee for every late return, damaged
+tools marked as not lendable, and safety classes that need an induction.
 
 ```mermaid
 flowchart LR
