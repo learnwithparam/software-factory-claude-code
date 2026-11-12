@@ -1,5 +1,6 @@
-// write-the-issue-form: a GitHub issue form that makes every order carry an outcome, acceptance lines,
-// what must not change, what is out of scope, and a risk level. Read offline; no GitHub needed.
+// write-the-issue-form: a GitHub issue form that makes every order carry an outcome,
+// acceptance lines, what must not change, what is out of scope, and a risk level.
+// Read offline; no GitHub needed.
 import { join } from "node:path";
 import type { Rule } from "../scripts/verify";
 import { yaml } from "./lib/files";
@@ -13,70 +14,101 @@ type Field = {
 };
 type Form = { name?: string; description?: string; body?: Field[] };
 
-const FORM = (d: string) => join(d, ".github", "ISSUE_TEMPLATE", "change.yml");
 const TEXTAREAS = ["outcome", "acceptance", "must-not-change", "out-of-scope"];
-const form = (d: string) => yaml<Form>(FORM(d));
-const field = (d: string, id: string) => form(d)?.body?.find((f) => f.id === id);
-const optionText = (o: unknown) =>
-  (typeof o === "string" ? o : String((o as { label?: string })?.label ?? "")).toLowerCase();
+
+function formPath(folder: string): string {
+  return join(folder, ".github", "ISSUE_TEMPLATE", "change.yml");
+}
+
+function form(folder: string): Form | null {
+  return yaml<Form>(formPath(folder));
+}
+
+function field(folder: string, id: string): Field | undefined {
+  return form(folder)?.body?.find((candidate) => candidate.id === id);
+}
+
+// A dropdown option is either plain text or an object with a label.
+function optionText(option: unknown): string {
+  if (typeof option === "string") return option.toLowerCase();
+  const label = (option as { label?: string })?.label ?? "";
+  return String(label).toLowerCase();
+}
+
+function hasNameDescriptionAndBody(folder: string): boolean {
+  const issueForm = form(folder);
+  const hasBody = Array.isArray(issueForm?.body) && issueForm.body.length > 0;
+  return Boolean(issueForm?.name && issueForm?.description && hasBody);
+}
+
+function hasRequiredRiskDropdown(folder: string): boolean {
+  const risk = field(folder, "risk");
+  const options = (risk?.attributes?.options ?? []).map(optionText);
+  return (
+    risk?.type === "dropdown" &&
+    risk.validations?.required === true &&
+    ["low", "medium", "high"].every((level) => options.includes(level))
+  );
+}
+
+function issueFiveFillsRequiredFields(folder: string): boolean {
+  const issueFiveAnswers = answers(5);
+  const fields = form(folder)?.body ?? [];
+  const required = fields.filter((candidate) => candidate.validations?.required && candidate.id);
+  const isAnswered = (requiredField: Field) =>
+    Boolean(issueFiveAnswers[requiredField.id as string]?.trim());
+  return required.length >= 5 && required.every(isAnswered);
+}
 
 export default [
   {
     says: ".github/ISSUE_TEMPLATE/change.yml exists and is valid YAML",
-    test: (d) => form(d) !== null,
+    test: (folder) => form(folder) !== null,
     tryNext:
-      "create the file in this step's problem folder and check the indentation: two spaces, no tabs",
+      "start Claude Code in this step's problem folder and ask it to fix the YAML, " +
+      "then read its indentation: two spaces, no tabs",
   },
   {
     says: "the form has a name, a description and a body list",
-    test: (d) => {
-      const f = form(d);
-      return Boolean(f?.name && f?.description && Array.isArray(f?.body) && f.body.length > 0);
-    },
-    tryNext: "add top-level keys name: and description:, then body: with one entry per field",
+    test: hasNameDescriptionAndBody,
+    tryNext:
+      "ask Claude Code for top-level keys name: and description:, " +
+      "then body: with one entry per field",
   },
   {
     says: "every field in the body has a label",
-    test: (d) =>
-      (form(d)?.body ?? [])
-        .filter((f) => f.type !== "markdown")
-        .every((f) => Boolean(f.attributes?.label)),
-    tryNext: "give every field attributes: label:, the question a person sees on the form",
+    test: (folder) => {
+      const questions = (form(folder)?.body ?? []).filter((each) => each.type !== "markdown");
+      return questions.every((question) => Boolean(question.attributes?.label));
+    },
+    tryNext: "ask Claude Code to give every field a label: the question a person sees on the form",
   },
   {
     says: "it has textareas with ids outcome, acceptance, must-not-change and out-of-scope",
-    test: (d) => TEXTAREAS.every((id) => field(d, id)?.type === "textarea"),
+    test: (folder) => TEXTAREAS.every((id) => field(folder, id)?.type === "textarea"),
     tryNext:
-      "add one type: textarea per field, and set id: to exactly outcome, acceptance, must-not-change, out-of-scope",
+      "ask Claude Code for one textarea per field, with the ids exactly " +
+      "outcome, acceptance, must-not-change, out-of-scope",
   },
   {
     says: "those four textareas are required",
-    test: (d) => TEXTAREAS.every((id) => field(d, id)?.validations?.required === true),
+    test: (folder) => TEXTAREAS.every((id) => field(folder, id)?.validations?.required === true),
     tryNext:
-      "add validations: required: true under each of the four; GitHub's own samples use false",
+      "ask Claude Code to add validations: required: true under each of the four; " +
+      "GitHub's own samples use false",
   },
   {
     says: "a required dropdown with id risk offers low, medium and high",
-    test: (d) => {
-      const f = field(d, "risk");
-      const opts = (f?.attributes?.options ?? []).map(optionText);
-      return (
-        f?.type === "dropdown" &&
-        f.validations?.required === true &&
-        ["low", "medium", "high"].every((o) => opts.includes(o))
-      );
-    },
+    test: hasRequiredRiskDropdown,
     tryNext:
-      "add type: dropdown with id: risk, options: [low, medium, high], and validations: required: true",
+      "ask Claude Code for a dropdown with id risk, options low, medium and high, " +
+      "and validations: required: true",
   },
   {
     says: "issue 5's answers fill every required field of your form",
-    test: (d) => {
-      const a = answers(5);
-      const required = (form(d)?.body ?? []).filter((f) => f.validations?.required && f.id);
-      return required.length >= 5 && required.every((f) => Boolean(a[f.id as string]?.trim()));
-    },
+    test: issueFiveFillsRequiredFields,
     tryNext:
-      "compare your field ids with the keys in world/backlog/answers/5.json; every required id needs an answer there",
+      "ask Claude Code to compare the field ids with the keys in world/backlog/answers/5.json; " +
+      "every required id needs an answer there",
   },
 ] satisfies Rule[];

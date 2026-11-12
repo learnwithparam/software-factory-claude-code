@@ -8,73 +8,145 @@ import { searchMembers } from "./members/search";
 const db = open();
 export const app = new Hono();
 
-const esc = (s: string) =>
-  s.replace(
-    /[&<>"]/g,
-    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] as string,
-  );
-const money = (cents: number) => `£${(cents / 100).toFixed(2)}`;
+// A loan that is still out, with the names of its tool and its member.
+type LoanOut = Loan & { item: string; member: string };
 
-app.get("/api/items", (c) => c.json(db.query("SELECT * FROM items ORDER BY id").all()));
-app.get("/api/loans", (c) => c.json(db.query("SELECT * FROM loans ORDER BY due_date").all()));
-app.get("/api/members", (c) => {
-  const q = c.req.query("q") ?? "";
-  const found = searchMembers(db, q);
-  logEvent("member_search", { q, results: found.length });
-  return c.json(found);
+const HTML_ESCAPES: Record<string, string> = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+};
+
+// Names typed by people go into the page, so they must not be able to add their own HTML.
+function escapeHtml(text: string): string {
+  return text.replace(/[&<>"]/g, (character) => HTML_ESCAPES[character]);
+}
+
+function money(cents: number): string {
+  const pounds = cents / 100;
+  return `£${pounds.toFixed(2)}`;
+}
+
+app.get("/api/items", (context) => {
+  const items = db.query("SELECT * FROM items ORDER BY id").all();
+  return context.json(items);
 });
-app.post("/api/loans", async (c) => {
-  const { item_id, member_id } = await c.req.json();
+
+app.get("/api/loans", (context) => {
+  const loans = db.query("SELECT * FROM loans ORDER BY due_date").all();
+  return context.json(loans);
+});
+
+app.get("/api/members", (context) => {
+  const name = context.req.query("q") ?? "";
+  const found = searchMembers(db, name);
+  logEvent("member_search", { q: name, results: found.length });
+  return context.json(found);
+});
+
+app.post("/api/loans", async (context) => {
+  const { item_id, member_id } = await context.req.json();
   const item = db.query("SELECT * FROM items WHERE id = ?").get(item_id) as Item | null;
-  const row = db.query("SELECT * FROM members WHERE id = ?").get(member_id) as Record<
-    string,
-    unknown
-  > | null;
-  if (!item || !row) return c.json({ ok: false, reason: "no such item or member" }, 404);
-  const decision = canBorrow(toMember(row), item);
+  const memberRow = db.query("SELECT * FROM members WHERE id = ?").get(member_id);
+  if (!item || !memberRow) {
+    return context.json({ ok: false, reason: "no such item or member" }, 404);
+  }
+  const decision = canBorrow(toMember(memberRow as Record<string, unknown>), item);
+  // biome-ignore lint/style/useNamingConvention: the event log uses the database's column names
   logEvent("lend", { item_id, member_id, ...decision });
-  return c.json(decision, decision.ok ? 200 : 409);
+  let status: 200 | 409 = 409;
+  if (decision.ok) {
+    status = 200;
+  }
+  return context.json(decision, status);
 });
 
-app.get("/", (c) => {
+const STYLE = [
+  "body{font-family:system-ui,sans-serif;margin:0;background:#f6f4ef;color:#1f2a24}",
+  "header{background:#24493a;color:#fff;padding:16px 24px}" +
+    "header h1{margin:0;font-size:22px}header p{margin:4px 0 0;opacity:.85}",
+  "main{padding:16px 24px;display:grid;gap:24px;grid-template-columns:3fr 2fr}",
+  "section{background:#fff;border-radius:8px;padding:12px 16px;box-shadow:0 1px 2px #0002}",
+  "h2{font-size:16px;margin:4px 0 8px}table{border-collapse:collapse;width:100%;font-size:14px}",
+  "td,th{text-align:left;padding:6px 8px;border-bottom:1px solid #eee}",
+  ".class{padding:2px 6px;border-radius:4px;font-size:12px;font-weight:600}",
+  ".class-A{background:#e3f1e7}.class-B{background:#fdf1d6}" +
+    ".class-C{background:#f9d9d6;color:#8a1c12}",
+  ".status-repair{color:#8a6d00}.status-out{color:#555}",
+  "tr.overdue td{color:#b3261e;font-weight:600}",
+  "@media (max-width:700px){main{grid-template-columns:1fr}}",
+].join("\n");
+
+function headerRow(titles: string[]): string {
+  const cells = titles.map((title) => `<th>${title}</th>`);
+  return `<tr>${cells.join("")}</tr>`;
+}
+
+function safetyBadge(item: Item): string {
+  const letter = item.safety_class;
+  const label = ["class", letter].join(" ");
+  return `<span class="class class-${letter}">${label}</span>`;
+}
+
+function itemRow(item: Item): string {
+  const cells = [
+    `<td>${escapeHtml(item.name)}</td>`,
+    `<td>${escapeHtml(item.category)}</td>`,
+    `<td>${safetyBadge(item)}</td>`,
+    `<td>${money(item.deposit_cents)}</td>`,
+    `<td class="status-${item.status}">${item.status}</td>`,
+  ];
+  return `<tr>${cells.join("")}</tr>`;
+}
+
+function loanRow(loan: LoanOut, today: string): string {
+  let rowClass = "";
+  let state = "on loan";
+  if (isOverdue(loan.due_date, today)) {
+    rowClass = "overdue";
+    state = "overdue";
+  }
+  const cells = [
+    `<td>${escapeHtml(loan.item)}</td>`,
+    `<td>${escapeHtml(loan.member)}</td>`,
+    `<td>${loan.due_date}</td>`,
+    `<td>${state}</td>`,
+  ];
+  return `<tr class="${rowClass}">${cells.join("")}</tr>`;
+}
+
+function deskPage(today: string, items: Item[], loans: LoanOut[]): string {
+  const summary = `Desk view. Today is ${today}. ${items.length} tools, ${loans.length} on loan.`;
+  const catalogueHeader = headerRow(["Tool", "Category", "Safety", "Deposit", "Status"]);
+  const itemRows = items.map(itemRow).join("");
+  const loanHeader = headerRow(["Tool", "Member", "Due", ""]);
+  const loanRows = loans.map((loan) => loanRow(loan, today)).join("");
+  const lines = [
+    '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
+      "<title>Northside Tool Library</title>",
+    '<meta name="viewport" content="width=device-width, initial-scale=1">',
+    "<style>",
+    STYLE,
+    "</style></head><body>",
+    `<header><h1>Northside Tool Library</h1><p>${summary}</p></header>`,
+    `<main><section><h2>Catalogue</h2><table>${catalogueHeader}${itemRows}</table></section>`,
+    `<section><h2>On loan</h2><table>${loanHeader}${loanRows}</table></section></main>`,
+    "</body></html>",
+  ];
+  return lines.join("\n");
+}
+
+app.get("/", (context) => {
   const today = setting(db, "today");
   const items = db.query("SELECT * FROM items ORDER BY category, name").all() as Item[];
-  const loans = db
-    .query(
-      "SELECT loans.*, items.name AS item, members.name AS member FROM loans JOIN items ON items.id = item_id JOIN members ON members.id = member_id WHERE returned_date IS NULL ORDER BY due_date",
-    )
-    .all() as (Loan & { item: string; member: string })[];
-  const itemRows = items
-    .map(
-      (i) =>
-        `<tr><td>${esc(i.name)}</td><td>${esc(i.category)}</td><td><span class="class class-${i.safety_class}">class ${i.safety_class}</span></td><td>${money(i.deposit_cents)}</td><td class="status-${i.status}">${i.status}</td></tr>`,
-    )
-    .join("");
-  const loanRows = loans
-    .map((l) => {
-      const late = isOverdue(l.due_date, today);
-      return `<tr class="${late ? "overdue" : ""}"><td>${esc(l.item)}</td><td>${esc(l.member)}</td><td>${l.due_date}</td><td>${late ? "overdue" : "on loan"}</td></tr>`;
-    })
-    .join("");
-  return c.html(`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Northside Tool Library</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body{font-family:system-ui,sans-serif;margin:0;background:#f6f4ef;color:#1f2a24}
-header{background:#24493a;color:#fff;padding:16px 24px}header h1{margin:0;font-size:22px}header p{margin:4px 0 0;opacity:.85}
-main{padding:16px 24px;display:grid;gap:24px;grid-template-columns:3fr 2fr}
-section{background:#fff;border-radius:8px;padding:12px 16px;box-shadow:0 1px 2px #0002}
-h2{font-size:16px;margin:4px 0 8px}table{border-collapse:collapse;width:100%;font-size:14px}
-td,th{text-align:left;padding:6px 8px;border-bottom:1px solid #eee}
-.class{padding:2px 6px;border-radius:4px;font-size:12px;font-weight:600}
-.class-A{background:#e3f1e7}.class-B{background:#fdf1d6}.class-C{background:#f9d9d6;color:#8a1c12}
-.status-repair{color:#8a6d00}.status-out{color:#555}
-tr.overdue td{color:#b3261e;font-weight:600}
-@media (max-width:700px){main{grid-template-columns:1fr}}
-</style></head><body>
-<header><h1>Northside Tool Library</h1><p>Desk view. Today is ${today}. ${items.length} tools, ${loans.length} on loan.</p></header>
-<main><section><h2>Catalogue</h2><table><tr><th>Tool</th><th>Category</th><th>Safety</th><th>Deposit</th><th>Status</th></tr>${itemRows}</table></section>
-<section><h2>On loan</h2><table><tr><th>Tool</th><th>Member</th><th>Due</th><th></th></tr>${loanRows}</table></section></main>
-</body></html>`);
+  const loansQuery = db.query(
+    "SELECT loans.*, items.name AS item, members.name AS member FROM loans " +
+      "JOIN items ON items.id = item_id JOIN members ON members.id = member_id " +
+      "WHERE returned_date IS NULL ORDER BY due_date",
+  );
+  const loans = loansQuery.all() as LoanOut[];
+  return context.html(deskPage(today, items, loans));
 });
 
 if (import.meta.main) {

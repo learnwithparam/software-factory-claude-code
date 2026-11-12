@@ -22,7 +22,7 @@ You can also ask it to interview you, one question at a time. Then you answer fr
 
 This is the real plan from a run with Claude Code 2.1.323 in plan mode.
 
-````text
+```text
 I've read everything and written the plan, but I haven't changed either spec file yet.
 
 **What I found**
@@ -58,7 +58,7 @@ I've read everything and written the plan, but I haven't changed either spec fil
 **Decision for you:** R5 comes from "at the desk or through the API" in the outcome. Because both paths already share `canBorrow`, the test for it would be thin. I'd keep it so that nobody adds a second borrow path later that skips the check. If you'd rather stop at R1–R4, the spec still covers class C tools, the induction and the reason the member is told.
 
 Should I go ahead and write both files?
-````
+```
 
 ## What you check in the plan
 

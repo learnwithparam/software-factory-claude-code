@@ -2,11 +2,14 @@
 
 ## The problem
 
-A factory that starts every issue wastes money on the ones it should never touch. Issue 6 would change who
-may waive fees, in `src/auth/`, which only a coordinator may change. Issue 7 is an upgrade whose breakage
-nobody knows yet. Anthropic found that more than half of its own engineers can "fully delegate" only 0 to 20%
-of their work (https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic). Choosing which
-work to hand over is the skill.
+A factory that starts every issue wastes money on the ones it should never touch.
+
+For example, issue 6 would change who may waive fees. That code lives in `src/auth/`, and only a
+coordinator may change it. Issue 7 is an upgrade, and nobody knows yet what it breaks.
+
+Anthropic asked its own engineers how much work they can hand over fully. More than half said 0 to 20%
+(https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic). Choosing which work to hand
+over is the skill.
 
 ```mermaid
 flowchart LR
@@ -18,15 +21,31 @@ flowchart LR
 
 ## Your challenge
 
-Read every issue in `world/backlog/` and the app in `world/app/`. In `factory/backlog.json` (in this folder),
-give each issue one decision: `ready`, `split` or `refuse`, with a `reason`. A `ready` issue also gets an
-`outcome` (one sentence a person can check) and `files` (the 1 to 5 app paths it will change).
+Get Claude Code to give each of the seven issues one decision in `factory/backlog.json` (in this folder):
+`ready`, `split` or `refuse`, with a `reason`. A `ready` issue also gets an `outcome` and its `files`.
 
-Issue 1 is done for you as an example. Paths are written as they appear inside `world/app/`.
+For example, issue 1 is already in the file:
 
-In the Claude Code CLI you can ask: "Read world/backlog and world/app, then propose a decision for each
-issue in the shape of factory/backlog.json. Do not write the file." Then write it yourself and argue with
-any decision you disagree with.
+```text
+{ "issue": 1, "decision": "ready", "reason": "One docs change ...", "outcome": "...", "files": ["README.md"] }
+```
+
+Start Claude Code in this folder:
+
+```bash
+claude --add-dir ../../../../world
+```
+
+Expect: Claude Code opens and waits for your prompt.
+
+Type this prompt:
+
+```text
+Read every issue in ../../../../world/backlog and the app in ../../../../world/app. Then propose one decision for each issue in factory/backlog.json: ready, split or refuse, with a reason. A ready issue also gets an outcome (one sentence a person can check) and files (the 1 to 5 app paths it will change, written as they appear inside world/app). src/auth/ is protected: only a coordinator may change it. Issue 1 is already in the file; follow its shape. Show me your plan before you write the file.
+```
+
+Argue with any call you do not agree with, before it writes the file. Then read the file it wrote. Does it
+match the plan? The check accepts some answers you should still reject.
 
 ## Done when
 
@@ -47,12 +66,15 @@ Expect: `Done. All 8 rules pass.`
 
 ## If you get stuck
 
-| What you see                                        | Fix                                                            |
+| What you see                                        | What to tell Claude Code                                       |
 | --------------------------------------------------- | -------------------------------------------------------------- |
-| `FAIL factory/backlog.json is a JSON list`          | The file must start with `[`. A trailing comma breaks JSON.    |
-| `FAIL every issue ... has exactly one entry`        | Count your entries: 1 to 7, each once.                         |
-| `FAIL every file a ready issue names is in the app` | Write `src/fees/split.ts`, not `world/app/src/fees/split.ts`.  |
-| `FAIL issue 6 is refused ...`                       | Which folder does issue 6 name? Put that folder in the reason. |
+| `FAIL factory/backlog.json is a JSON list`          | "The file must be a JSON list. Fix it and run the check."      |
+| `FAIL every issue ... has exactly one entry`        | "Give each issue from 1 to 7 exactly one entry."               |
+| `FAIL every file a ready issue names is in the app` | "Write paths as src/fees/split.ts, not world/app/src/..."      |
+| `FAIL issue 6 is refused ...`                       | "Refuse issue 6, and name the protected folder in the reason." |
+
+The full prompts, the plan Claude Code showed in a real run, and where to steer it are in
+`../solution/prompts.md`.
 
 ## Words you will use
 

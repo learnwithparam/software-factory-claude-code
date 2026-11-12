@@ -1,3 +1,4 @@
+// biome-ignore-all lint/style/useNamingConvention: an Item uses the database's column names
 import { expect, test } from "bun:test";
 import type { Item, Member } from "../../src/db";
 import { canBorrow } from "../../src/items/borrow";
@@ -19,7 +20,7 @@ const ladder: Item = {
   status: "in",
 };
 
-test("a free class A tool can go out", () => {
+test("a free class-A tool can go out", () => {
   expect(canBorrow(member, ladder)).toEqual({ ok: true });
 });
 

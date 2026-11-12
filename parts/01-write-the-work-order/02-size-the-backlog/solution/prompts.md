@@ -20,7 +20,7 @@ Read every issue in ../../../../world/backlog and the app in ../../../../world/a
 
 This is the real plan from a run with Claude Code 2.1.323 in plan mode.
 
-````text
+```text
 I've read all seven issues, the coordinator's answers for issue 5, and the app source. Here is the plan; I haven't written `factory/backlog.json` yet.
 
 | # | Decision | Reason | Outcome (ready only) | Files |
@@ -38,7 +38,7 @@ I've read all seven issues, the coordinator's answers for issue 5, and the app s
 - **The one call you might want to argue with is issue 5.** If you'd rather judge the issue by its one-line text alone, it would be split, not ready.
 
 If you're happy with this, I'll write the seven entries (issue 1 unchanged) and run `bun run verify size-the-backlog`, which should say `Done. All 8 rules pass.`
-````
+```
 
 ## What you check in the plan
 

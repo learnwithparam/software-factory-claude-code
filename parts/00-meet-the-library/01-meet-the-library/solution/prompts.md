@@ -20,7 +20,7 @@ Read the seven issues in ../../../../world/backlog and the code they touch in ..
 
 This is the real answer from a run with Claude Code 2.1.323 in plan mode. Your answer will use other words.
 
-````text
+```text
 I'd pick #6 first and #4 second. I changed no files.
 
 **1. #6 "Let desk volunteers waive any fee"**
@@ -32,7 +32,7 @@ The issue itself names the file to change: "The rule lives in `src/auth/roles.ts
 The existing test fools it. `tests/members/search.test.ts` only checks `found.map(m => m.name)`, so it passes whether or not phone and email leak. The data also reaches the screen two ways: `desk.ts` prints `JSON.stringify(m)`, and `server.ts` `/api/members` returns `c.json(found)`. Both come from `SELECT *` in `src/members/search.ts`. An agent that reads the issue as "the desk screen" may hide the fields in the desk CLI output only, see green tests, and stop while the API still serves every phone number and email. The real fix is in `searchMembers` itself, plus a test that checks the fields are gone.
 
 Runner-up: #5 "Chainsaw rule". The title and body say "chainsaw", so an agent may block by item name or `saw-01`. The coordinator's answers in `backlog/answers/5.json` say the rule covers every class C tool, which also includes the circular saw `saw-02`. That one is easier to catch, though: once the answers are written into tests, a name-only rule fails them.
-````
+```
 
 ## What you check
 

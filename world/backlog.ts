@@ -7,32 +7,43 @@ export const BACKLOG = join(import.meta.dir, "backlog");
 export type Issue = {
   number: number;
   title: string;
+  // biome-ignore lint/style/useNamingConvention: this is the key the issue files use
   opened_by: string;
   labels: string[];
   body: string;
   file: string;
 };
 
+// The frontmatter sits between two --- lines; the body is everything after them.
+const FRONTMATTER_AND_BODY = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+
 export function parseIssue(text: string, file = ""): Issue {
-  const m = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-  if (!m) throw new Error(`${file}: an issue file starts with a --- frontmatter block`);
-  const meta = Bun.YAML.parse(m[1]) as Omit<Issue, "body" | "file">;
-  return { ...meta, body: m[2].trim(), file };
+  const parts = text.match(FRONTMATTER_AND_BODY);
+  if (!parts) throw new Error(`${file}: an issue file starts with a --- frontmatter block`);
+  const [, frontmatter, body] = parts;
+  const fields = Bun.YAML.parse(frontmatter) as Omit<Issue, "body" | "file">;
+  return { ...fields, body: body.trim(), file };
 }
 
+function readIssueFile(file: string): Issue {
+  const text = readFileSync(join(BACKLOG, file), "utf8");
+  return parseIssue(text, file);
+}
+
+// Issue files are named like 2-split-loses-a-cent.md; other files in the folder are not issues.
 export function issues(): Issue[] {
-  return readdirSync(BACKLOG)
-    .filter((f) => /^\d+-.*\.md$/.test(f))
-    .map((f) => parseIssue(readFileSync(join(BACKLOG, f), "utf8"), f))
-    .sort((a, b) => a.number - b.number);
+  const issueFiles = readdirSync(BACKLOG).filter((file) => /^\d+-.*\.md$/.test(file));
+  const parsed = issueFiles.map(readIssueFile);
+  return parsed.sort((first, second) => first.number - second.number);
 }
 
-export function issue(n: number): Issue {
-  const found = issues().find((i) => i.number === n);
-  if (!found) throw new Error(`there is no issue ${n} in world/backlog`);
+export function issue(issueNumber: number): Issue {
+  const found = issues().find((candidate) => candidate.number === issueNumber);
+  if (!found) throw new Error(`there is no issue ${issueNumber} in world/backlog`);
   return found;
 }
 
-export function answers(n: number): Record<string, string> {
-  return JSON.parse(readFileSync(join(BACKLOG, "answers", `${n}.json`), "utf8")).answers;
+export function answers(issueNumber: number): Record<string, string> {
+  const path = join(BACKLOG, "answers", `${issueNumber}.json`);
+  return JSON.parse(readFileSync(path, "utf8")).answers;
 }

@@ -6,6 +6,9 @@ export function lateFeeCents(
   returnedOrToday: string,
   perDayCents: number,
 ): number {
-  const late = daysBetween(dueDate, returnedOrToday);
-  return late > 0 ? late * perDayCents : 0;
+  const daysLate = daysBetween(dueDate, returnedOrToday);
+  if (daysLate > 0) {
+    return daysLate * perDayCents;
+  }
+  return 0;
 }

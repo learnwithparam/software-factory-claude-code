@@ -1,4 +1,8 @@
 // The library's system of record: one SQLite file, built from world/app/seed by `bun run world`.
+//
+// The types below use the database's own column names, such as deposit_cents,
+// so a row read from SQLite fits them without any renaming.
+// biome-ignore-all lint/style/useNamingConvention: these names are the database's column names
 import { Database } from "bun:sqlite";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, unlinkSync } from "node:fs";
 import { join } from "node:path";
@@ -9,11 +13,44 @@ export const DB_PATH = process.env.LIBRARY_DB ?? join(DATA, "library.sqlite");
 export const EVENTS = join(DATA, "events.jsonl");
 
 const SCHEMA = `
-CREATE TABLE members (id TEXT PRIMARY KEY, name TEXT NOT NULL, phone TEXT NOT NULL, email TEXT NOT NULL, joined TEXT NOT NULL, inductions TEXT NOT NULL);
-CREATE TABLE items (id TEXT PRIMARY KEY, name TEXT NOT NULL, category TEXT NOT NULL, safety_class TEXT NOT NULL CHECK (safety_class IN ('A','B','C')), deposit_cents INTEGER NOT NULL, status TEXT NOT NULL CHECK (status IN ('in','out','repair')));
-CREATE TABLE loans (id TEXT PRIMARY KEY, item_id TEXT NOT NULL REFERENCES items(id), member_id TEXT NOT NULL REFERENCES members(id), out_date TEXT NOT NULL, due_date TEXT NOT NULL, returned_date TEXT);
-CREATE TABLE reservations (id TEXT PRIMARY KEY, item_id TEXT NOT NULL REFERENCES items(id), member_id TEXT NOT NULL REFERENCES members(id), from_date TEXT NOT NULL, to_date TEXT NOT NULL);
-CREATE TABLE damage_charges (id TEXT PRIMARY KEY, loan_id TEXT NOT NULL REFERENCES loans(id), amount_cents INTEGER NOT NULL, note TEXT NOT NULL, split_between TEXT NOT NULL);
+CREATE TABLE members (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  email TEXT NOT NULL,
+  joined TEXT NOT NULL,
+  inductions TEXT NOT NULL
+);
+CREATE TABLE items (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  category TEXT NOT NULL,
+  safety_class TEXT NOT NULL CHECK (safety_class IN ('A','B','C')),
+  deposit_cents INTEGER NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('in','out','repair'))
+);
+CREATE TABLE loans (
+  id TEXT PRIMARY KEY,
+  item_id TEXT NOT NULL REFERENCES items(id),
+  member_id TEXT NOT NULL REFERENCES members(id),
+  out_date TEXT NOT NULL,
+  due_date TEXT NOT NULL,
+  returned_date TEXT
+);
+CREATE TABLE reservations (
+  id TEXT PRIMARY KEY,
+  item_id TEXT NOT NULL REFERENCES items(id),
+  member_id TEXT NOT NULL REFERENCES members(id),
+  from_date TEXT NOT NULL,
+  to_date TEXT NOT NULL
+);
+CREATE TABLE damage_charges (
+  id TEXT PRIMARY KEY,
+  loan_id TEXT NOT NULL REFERENCES loans(id),
+  amount_cents INTEGER NOT NULL,
+  note TEXT NOT NULL,
+  split_between TEXT NOT NULL
+);
 CREATE TABLE settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
 `;
 
@@ -41,68 +78,113 @@ export type Loan = {
   due_date: string;
   returned_date: string | null;
 };
+// In the database, split_between is one text of member ids joined by commas.
+export type DamageCharge = {
+  id: string;
+  loan_id: string;
+  amount_cents: number;
+  note: string;
+  split_between: string;
+};
 
-const seedFile = (name: string) =>
-  JSON.parse(readFileSync(join(import.meta.dir, "..", "seed", name), "utf8"));
+type Row = Record<string, unknown>;
+
+function readSeedFile(name: string) {
+  const path = join(import.meta.dir, "..", "seed", name);
+  return JSON.parse(readFileSync(path, "utf8"));
+}
 
 // bun:sqlite wants $-prefixed keys for named parameters.
-const named = (o: Record<string, unknown>) =>
-  Object.fromEntries(Object.entries(o).map(([k, v]) => [`$${k}`, v]));
+function withNamedParameters(row: Row): Row {
+  const entries = Object.entries(row);
+  const namedEntries = entries.map(([key, value]) => [`$${key}`, value]);
+  return Object.fromEntries(namedEntries);
+}
 
-export function seed(path = DB_PATH): Database {
-  mkdirSync(DATA, { recursive: true });
-  if (existsSync(path)) unlinkSync(path);
-  const db = new Database(path, { create: true });
-  db.exec(SCHEMA);
-  const book = seedFile("loans.json");
-  const insert = (sql: string, rows: Record<string, unknown>[]) => {
-    const q = db.prepare(sql);
-    for (const r of rows) q.run(named(r) as never);
-  };
-  insert(
+function insertRows(db: Database, sql: string, rows: Row[]) {
+  const statement = db.prepare(sql);
+  for (const row of rows) {
+    statement.run(withNamedParameters(row) as never);
+  }
+}
+
+// SQLite has no list type, so a list is stored as one text with commas between the parts.
+function membersForDatabase(members: Member[]): Row[] {
+  return members.map((member) => ({ ...member, inductions: member.inductions.join(",") }));
+}
+
+function chargesForDatabase(charges: { split_between: string[] }[]): Row[] {
+  return charges.map((charge) => ({ ...charge, split_between: charge.split_between.join(",") }));
+}
+
+function insertSeed(db: Database) {
+  const book = readSeedFile("loans.json");
+  insertRows(
+    db,
     "INSERT INTO items VALUES ($id,$name,$category,$safety_class,$deposit_cents,$status)",
-    seedFile("items.json"),
+    readSeedFile("items.json"),
   );
-  insert(
+  insertRows(
+    db,
     "INSERT INTO members VALUES ($id,$name,$phone,$email,$joined,$inductions)",
-    seedFile("members.json").map((m: Member) => ({ ...m, inductions: m.inductions.join(",") })),
+    membersForDatabase(readSeedFile("members.json")),
   );
-  insert(
+  insertRows(
+    db,
     "INSERT INTO loans VALUES ($id,$item_id,$member_id,$out_date,$due_date,$returned_date)",
     book.loans,
   );
-  insert(
+  insertRows(
+    db,
     "INSERT INTO reservations VALUES ($id,$item_id,$member_id,$from_date,$to_date)",
     book.reservations,
   );
-  insert(
+  insertRows(
+    db,
     "INSERT INTO damage_charges VALUES ($id,$loan_id,$amount_cents,$note,$split_between)",
-    book.damage_charges.map((d: { split_between: string[] }) => ({
-      ...d,
-      split_between: d.split_between.join(","),
-    })),
+    chargesForDatabase(book.damage_charges),
   );
-  insert("INSERT INTO settings VALUES ($key,$value)", [
+  insertRows(db, "INSERT INTO settings VALUES ($key,$value)", [
     { key: "today", value: book.today },
     { key: "late_fee_per_day_cents", value: String(book.late_fee_per_day_cents) },
   ]);
+}
+
+export function seed(path = DB_PATH): Database {
+  mkdirSync(DATA, { recursive: true });
+  if (existsSync(path)) {
+    unlinkSync(path);
+  }
+  const db = new Database(path, { create: true });
+  db.exec(SCHEMA);
+  insertSeed(db);
   return db;
 }
 
 export function open(path = DB_PATH): Database {
-  if (!existsSync(path)) return seed(path);
+  if (!existsSync(path)) {
+    return seed(path);
+  }
   return new Database(path);
 }
 
 export function setting(db: Database, key: string): string {
-  return (db.query("SELECT value FROM settings WHERE key = ?").get(key) as { value: string }).value;
+  const query = db.query("SELECT value FROM settings WHERE key = ?");
+  const row = query.get(key) as { value: string };
+  return row.value;
 }
 
-export const toMember = (r: Record<string, unknown>): Member =>
-  ({ ...r, inductions: r.inductions ? String(r.inductions).split(",") : [] }) as Member;
+// The inductions column holds text like "B,C"; a member in the app holds a list like ["B", "C"].
+export const toMember = (row: Row): Member => {
+  let inductions: string[] = [];
+  if (row.inductions) {
+    inductions = String(row.inductions).split(",");
+  }
+  return { ...row, inductions } as Member;
+};
 
 // Every desk action is logged, so a check can read what happened without asking anyone.
-export function logEvent(kind: string, detail: Record<string, unknown>) {
+export function logEvent(kind: string, detail: Row) {
   mkdirSync(DATA, { recursive: true });
   appendFileSync(EVENTS, `${JSON.stringify({ kind, ...detail })}\n`);
 }

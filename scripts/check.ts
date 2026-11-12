@@ -5,7 +5,8 @@ import { allSteps, type Part, parts, ROOT, type Step } from "./structure";
 
 const problems: string[] = [];
 
-// A part skeleton waits for its own build session: a README marked TODO(part session), no steps yet.
+// A part skeleton waits for its own build session.
+// Its README is marked TODO(part session), and it has no steps yet.
 const SKELETON_MARKER = "TODO(part session)";
 const skeletonParts: string[] = [];
 
@@ -161,8 +162,9 @@ function checkScreenStep(step: Step, readme: string, readmeText: string) {
   }
 }
 
-// The learner writes no code: Claude Code does. So a solution is a worked prompt, not a worked program.
-// prompts.md holds the prompts that got there, the plan Claude showed, and what the learner checked.
+// The learner writes no code: Claude Code does.
+// So a solution is a worked prompt, not a worked program.
+// prompts.md holds the prompts, the plan Claude showed, and what the learner checked.
 function checkSolutionHasPrompts(step: Step) {
   const solutionFolder = join(step.dir, "solution");
   if (!existsSync(solutionFolder)) return;
@@ -368,7 +370,9 @@ if (problems.length > 0) {
   for (const problem of problems) console.log(`  - ${problem}`);
   process.exit(1);
 }
-const summary = `The repo meets the standard: ${checkedParts.length} part(s), ${allSteps().length} step(s).`;
+const partCount = checkedParts.length;
+const stepCount = allSteps().length;
+const summary = `The repo meets the standard: ${partCount} part(s), ${stepCount} step(s).`;
 if (skeletonParts.length === 0) {
   console.log(summary);
 } else {
