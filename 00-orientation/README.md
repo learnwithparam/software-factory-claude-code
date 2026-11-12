@@ -3,10 +3,18 @@
 You will install Claude Code and sign in, set up the repo, meet the library, run the finished factory, and
 see the goal. Then you pass the first step, `meet-the-library`.
 
-You do the work of this course in the real Claude Code: the `claude` CLI in a terminal (what the commands
-below use), Claude Code in VS Code or a JetBrains editor, or the Code tab of Claude Desktop. You sign in with
-your own Claude account: a Pro or Max plan, or a Console account. The free plan does not include Claude
-Code. No step asks for an API key, and nothing in this repo calls the model API.
+You do the work of this course in the real Claude Code. You can use it in three places:
+
+- the `claude` CLI in a terminal (the commands below use this);
+- Claude Code in VS Code or a JetBrains editor;
+- the Code tab of Claude Desktop.
+
+You never write code by hand in this course. You type a prompt, read the plan Claude Code shows, say yes
+or no, and check the result. For example, in the first step you ask Claude Code which issue a factory
+would get wrong. Then you ask it to save your own answer in a file.
+
+You sign in with your own Claude account: a Pro or Max plan, or a Console account. The free plan does not
+include Claude Code. No step asks for an API key, and nothing in this repo calls the model API.
 
 ## 1. Set up
 
@@ -107,8 +115,9 @@ These are the targets your own factory must meet at the end of the course.
 
 ## 5. Pass the first step
 
-Open [the first step](../parts/00-meet-the-library/01-meet-the-library/problem/README.md), write your one
-line in its `notes/goal.md`, then:
+Open [the first step](../parts/00-meet-the-library/01-meet-the-library/problem/README.md). Follow its
+prompts: Claude Code reads the issues, you choose one, and Claude Code saves your line in its
+`notes/goal.md`. Then run:
 
 ```bash
 bun run verify meet-the-library

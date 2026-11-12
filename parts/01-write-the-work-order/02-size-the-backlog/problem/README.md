@@ -7,9 +7,9 @@ A factory that starts every issue wastes money on the ones it should never touch
 For example, issue 6 would change who may waive fees. That code lives in `src/auth/`, and only a
 coordinator may change it. Issue 7 is an upgrade, and nobody knows yet what it breaks.
 
-Anthropic asked its own engineers how much work they can hand over fully. More than half said 0 to 20%
-(https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic). Choosing which work to hand
-over is the skill.
+More than half of Anthropic's own engineers can hand over fully only 0 to 20% of their work
+(https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic). Choosing that work is the
+skill.
 
 ```mermaid
 flowchart LR
@@ -44,8 +44,7 @@ Type this prompt:
 Read every issue in ../../../../world/backlog and the app in ../../../../world/app. Then propose one decision for each issue in factory/backlog.json: ready, split or refuse, with a reason. A ready issue also gets an outcome (one sentence a person can check) and files (the 1 to 5 app paths it will change, written as they appear inside world/app). src/auth/ is protected: only a coordinator may change it. Issue 1 is already in the file; follow its shape. Show me your plan before you write the file.
 ```
 
-Argue with any call you do not agree with, before it writes the file. Then read the file it wrote. Does it
-match the plan? The check accepts some answers you should still reject.
+Argue with any call you do not agree with. Then read the file: does it match the plan?
 
 ## Done when
 
@@ -73,8 +72,7 @@ Expect: `Done. All 8 rules pass.`
 | `FAIL every file a ready issue names is in the app` | "Write paths as src/fees/split.ts, not world/app/src/..."      |
 | `FAIL issue 6 is refused ...`                       | "Refuse issue 6, and name the protected folder in the reason." |
 
-The full prompts, the plan Claude Code showed in a real run, and where to steer it are in
-`../solution/prompts.md`.
+The prompts and plan from a real run are in `../solution/prompts.md`.
 
 ## Words you will use
 

@@ -1,5 +1,7 @@
 # Part 0: Meet the library
 
+Moves the **Goal**: you see the finished factory you will build, and the scorecard it must meet.
+
 ## The problem
 
 The library's only engineer has little time and seven open issues, two of them about money and privacy.
@@ -11,10 +13,17 @@ https://claude.com/customers/rakuten). Anthropic's own engineers say the limit i
 than half said they can 'fully delegate' only between 0-20% of their work to Claude"
 (https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic).
 
-This course answers the five questions Anthropic's best-practice page asks before a run goes unattended
-(https://code.claude.com/docs/en/best-practices): does it know what done looks like, can it check its own
-work, what is it allowed to touch, what stops it, and where does the result go and who signs off. Each part
-answers one of them with a file a script can check.
+Anthropic's best-practice page asks five questions before a run goes unattended
+(https://code.claude.com/docs/en/best-practices):
+
+1. Does it know what done looks like?
+2. Can it check its own work?
+3. What is it allowed to touch?
+4. What stops it?
+5. Where does the result go, and who signs off?
+
+Each part answers one of them with a file a script can check. For example, Part 1 answers the first
+question with `specs/5/SPEC.md`, a page that says what done means for issue 5.
 
 ```mermaid
 flowchart LR

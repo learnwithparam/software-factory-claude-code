@@ -1,12 +1,16 @@
 # Part 1: Write the work order
 
+Moves the **Outcome**: the typed issue and the spec that go into your factory.
+
 Answers the question: **does it know what done looks like?**
 
 ## The problem
 
-A vague issue makes a vague pull request. Issue 5 at Northside is one line: "Only people who did the
-induction should get the chainsaw." An agent working alone will guess which tools, which members, and what
-the refused member is told, and the reviewer will fix the spec in review comments, one round at a time.
+A vague issue makes a vague pull request. For example, issue 5 at Northside is one line: "Only people who
+did the induction should get the chainsaw."
+
+An agent working alone will guess. Which tools? Which members? What is the refused member told? Then the
+reviewer fixes the spec in review comments, one round at a time.
 
 ## Why it matters
 
@@ -33,7 +37,8 @@ flowchart LR
 | `size-the-backlog`     | 10      | `factory/backlog.json`: ready, split or refuse for all seven issues |
 | `write-the-spec`       | 25      | `specs/5/SPEC.md` with EARS requirements and `specs/5/passes.json`  |
 
-Each step's files go in that step's `problem/` folder. Open the Claude Code CLI there with `claude`.
+Each step's files go in that step's `problem/` folder. You start Claude Code there, give it the job, read its
+plan, and check what it wrote. Each step's `solution/prompts.md` shows the prompts from a real run.
 
 ## Walkthrough
 

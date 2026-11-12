@@ -2,13 +2,26 @@
 
 Let Claude Code turn an issue into a pull request you can trust, and know what it cost.
 
-**For** tech leads, staff and senior engineers who already use Claude Code at work and want it to take an
-issue to a reviewed draft pull request while they are away, without edited tests or a surprise bill.
+This course is for tech leads, staff and senior engineers who already use Claude Code at work. You want
+it to take an issue to a reviewed draft pull request while you are away. You want no edited tests and no
+surprise bill.
 
-**You leave with** a factory in a repo: a typed issue goes in; a spec, a plan, a build in its own worktree, a
-gate the agent cannot skip, a reviewer that must show evidence, and a draft pull request with its cost
-come out. Every step is checked by a script you run. You do the work in the real Claude Code, signed in
-with your own Claude account; no step asks for an API key.
+- **Objective:** you can set up Claude Code so it turns one issue into one draft pull request with no
+  person at the keyboard. It stays inside the walls you set.
+- **Outcome:** you leave with a factory in a repo. A typed issue goes in. Out comes a spec, a plan, a build
+  in its own worktree, and a gate the agent cannot skip. A reviewer must show evidence. You get a draft
+  pull request with its cost.
+- **Transformation:** before the course, you watch Claude Code all the time, or you cannot trust what it
+  did. After it, you give it an issue and walk away. You come back to a draft pull request you can check
+  in minutes.
+- **Goal:** your factory runs all seven Northside issues and meets the scorecard targets in
+  `bun run scorecard`.
+
+For example, issue 2 says a damage charge of £33.33 split two ways loses a penny. The finished factory
+reads it, writes a failing test, fixes `src/fees/split.ts`, passes the gate, and opens a draft pull request.
+
+You do every step in the real Claude Code, signed in with your own Claude account. You type prompts; Claude
+Code writes the files. A script you run checks each step. No step asks for an API key.
 
 ## Run the finished system first
 
@@ -87,9 +100,11 @@ flowchart LR
 ## How the course works
 
 Start in [00-orientation](00-orientation/README.md). Each part opens with a problem at the library, a
-public number from a real company, and a diagram. Each step has a challenge, a Done when list, and one
-command, `bun run verify <step-name>`, that reads the files you produced and prints PASS or FAIL with what to
-try next. You work in the Claude Code CLI; the checks read your files, never your chat.
+public number from a real company, and a diagram.
+
+Each step has a challenge, a Done when list, and one command: `bun run verify <step-name>`. The challenge is
+a job you give Claude Code, with the prompt to type. The command reads the files Claude Code made and
+prints PASS or FAIL, with what to try next. The checks read your files, never your chat.
 
 | Part                                                               | Answers                              | Steps                                                                                             | Minutes |
 | ------------------------------------------------------------------ | ------------------------------------ | ------------------------------------------------------------------------------------------------- | ------- |
@@ -107,11 +122,15 @@ The build map for every part is in [PARTS.md](PARTS.md).
 ## The project
 
 You ship the Northside factory in your own repo: your `.claude/`, `factory/` and `specs/`, the result
-files of a run over all seven issues, and the scorecard. It is graded with yes or no questions a script
-answers from git and the result files: at least 3 of issues 1 to 5 reach a draft pull request on a branch
-whose tests pass the gate; no test file edited in the build; the reviewer blocked the planted off-by-one in
-issue 3 and passed a clean diff; issue 6 refused; issue 7 stopped at the plan; every cost recorded and under
-your cap; no key in any tracked file; a retro with one gate that fired and one change you will make.
+files of a run over all seven issues, and the scorecard. A script grades it with yes or no questions. It reads the answers from git and the result files:
+
+- At least 3 of issues 1 to 5 reach a draft pull request on a branch whose tests pass the gate.
+- No test file is edited in the build.
+- The reviewer blocks the planted off-by-one in issue 3, and passes a clean diff.
+- Issue 6 is refused, and issue 7 stops at the plan.
+- Every cost is recorded and under your cap.
+- No key is in any tracked file.
+- A retro names one gate that fired and one change you will make.
 
 ## Claude Code, not the API
 
