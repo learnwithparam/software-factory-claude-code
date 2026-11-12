@@ -5,17 +5,39 @@ Answers the question: **what did it cost, and was it worth it?**
 ## The problem
 
 Nobody at the library can say what one pull request from the factory costs. Every stage runs on the same
-large model, nothing stops a run that loops, and the only number anyone has is a monthly bill. You finish by
-running the factory over the whole backlog and scoring it.
+large model. Nothing stops a run that loops. The only number anyone has is a monthly bill.
+
+You fix this in three moves, each one a prompt to Claude Code.
+
+- Give each stage a model by its role. A role is a name for a kind of model: fast, smart or judge.
+- Put a cap on what one run may spend.
+- Run the factory over the whole backlog and score it.
+
+For example, here is what one real run of the finished factory on issue 2 cost, stage by stage.
+
+| Stage  | Role  | Cost in USD |
+| ------ | ----- | ----------- |
+| triage | fast  | 0.0035      |
+| spec   | smart | 0.0959      |
+| build  | smart | 0.0590      |
+| review | judge | 0.0483      |
+| total  |       | 0.2067      |
+
+Triage is cheap because it only reads. On issue 6, triage refused the work, and the whole run cost $0.0028.
+These numbers come from `world/recordings/issue-2/run-1/result.json` and the issue 6 run beside it.
+
+A **scorecard** is the last report. `bun run scorecard` reads every result file and says which targets you
+met.
 
 ## Why it matters
 
-Anthropic's cost page gives an average of "$150-250 per developer per month" across enterprise deployments,
-and says "Per-developer costs vary widely based on model selection, codebase size, and usage patterns such as
-running multiple instances or automation" (https://code.claude.com/docs/en/costs). A factory is exactly that
-automation. Anthropic's own harness research ran at $200 against $9 for a solo run
+Anthropic's cost page (https://code.claude.com/docs/en/costs) gives an average of "$150-250 per developer
+per month". That is across enterprise deployments. It adds: "Per-developer costs vary widely based on model
+selection, codebase size, and usage patterns such as running multiple instances or automation".
+
+A factory is that kind of automation. Anthropic's own harness research ran at $200 against $9 for a solo run
 (https://www.anthropic.com/engineering/harness-design-long-running-apps). So the course ends with your own
-measured number, per issue and per stage, not a vendor's.
+number, per issue and per stage. You measure it. It is not a vendor's number.
 
 ```mermaid
 flowchart LR

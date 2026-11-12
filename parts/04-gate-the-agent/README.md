@@ -4,19 +4,39 @@ Answers the question: **who has the last word?**
 
 ## The problem
 
-A rule in an instructions file is a request. The agent follows it nearly every time, and the one time it does
-not, it edits the split-fee test until it passes, or pushes with `--no-verify`. The library needs walls the
-agent cannot talk its way past: deny rules before the tool runs, a hook on the tool, a Stop hook at the end,
-and a required check on the main branch that no local file can change.
+A rule in an instructions file is a request. Claude Code follows it nearly every time. But one time in many,
+it does not.
+
+For example, issue 2 needs a fix in `src/fees/split.ts`. Its test is `tests/fees/split.test.ts`. When that
+test fails, Claude Code could edit the test until it passes, instead of fixing the code. Or it could push with
+`--no-verify`, which tells git to skip its checks.
+
+So the library needs walls that Claude Code cannot get around. A **hook** is a small script that Claude Code
+runs at a set moment, for example before a tool runs. There are four walls.
+
+1. **Deny rules** refuse a tool call before the tool runs.
+2. A **PreToolUse hook** runs before each tool call, and can block it.
+3. A **Stop hook** runs when Claude Code wants to stop. It can send Claude Code back to run the gate.
+4. A **required check** on the main branch runs on GitHub. No file on your computer can change it.
+
+The finished factory has the second wall in `world/finished/factory/.claude/hooks/lock-tests.ts`. When Claude
+Code tries to edit a test in the build stage, the hook stops it. Claude Code gets a reason back, like this one:
+
+"Blocked: tests/fees/split.test.ts is a test file and tests are locked in the build stage."
+
+You ask Claude Code to build each wall. You read its plan, approve it, and run the check.
 
 ## Why it matters
 
-Google Cloud's DORA 2025 report surveyed "nearly 5,000 technology professionals": "90% of survey respondents
-report using AI at work", yet "AI adoption does continue to have a negative relationship with software
-delivery stability". It names the cure: "Without robust control systems, like strong automated testing, mature
-version control practices, and fast feedback loops, an increase in change volume leads to instability"
-(https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report). Anthropic's
-best-practice page puts the rule plainly: "If something has to happen every time, make it a hook, a deny
+Google Cloud's DORA 2025 report surveyed "nearly 5,000 technology professionals". It found that "90% of survey
+respondents report using AI at work". Yet "AI adoption does continue to have a negative relationship with
+software delivery stability". In plain words, more AI use went with less stable software.
+
+The report names the cure: "strong automated testing, mature version control practices, and fast feedback
+loops". Without these, "an increase in change volume leads to instability"
+(https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report).
+
+Anthropic's best-practice page says it plainly. "If something has to happen every time, make it a hook, a deny
 rule, or a managed setting." (https://code.claude.com/docs/en/best-practices).
 
 ```mermaid

@@ -1,6 +1,7 @@
 # When something goes wrong
 
-Every message a script in this repo prints on failure is in this table.
+When a script in this repo fails, it prints a message. Every one of those messages is in this table. Find
+the line you see, then do what the Fix column says.
 
 | What you see                                                    | What it means                                                                                | Fix                                                                                                  |
 | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
@@ -9,7 +10,7 @@ Every message a script in this repo prints on failure is in this table.
 | `FAIL  packages installed`                                      | `bun install` has not run in this folder.                                                    | Run `bun install` at the repo root.                                                                  |
 | `FAIL  library database built`                                  | The database could not be created in `world/data/`.                                          | Run `bun run world reset` and check the folder is writable.                                          |
 | `FAIL  platform win32`                                          | You are on Windows outside WSL2.                                                             | Open the repo inside WSL2 and run the commands there.                                                |
-| `doctor: not ready`                                             | One or more required checks failed.                                                          | Fix each `FAIL` line, then run `bun run doctor` again.                                               |
+| `doctor: not ready`                                             | One or more required checks failed.                                                          | Find each `FAIL` line in this table and do what it says. Then run `bun run doctor` again.            |
 | `--    Claude Code not found`                                   | The `claude` CLI is not installed or not on your PATH. The finished factory replays instead. | Run `curl -fsSL https://claude.ai/install.sh \| bash`, open a new terminal, then `claude --version`. |
 | `--    Claude Code 2.x.x`                                       | Your Claude Code is older than 2.1.311, the oldest version this course is tested on.         | Run `claude update`.                                                                                 |
 | `--    Claude Code not signed in`                               | `claude auth status` says you are not logged in.                                             | Run `claude`, type `/login`, sign in with your Claude account, then `/exit`.                         |
@@ -22,7 +23,7 @@ Every message a script in this repo prints on failure is in this table.
 | `claude exited 1: ...`                                          | A live stage failed before it finished, for example signed out or out of plan usage.         | Read the message, run `claude auth status`, or replay with `bun run finished 2 --replay`.            |
 | `denied: Bash is not on this stage's allow list`                | Claude Code's permission rules refused a command the stage did not need.                     | Expected. Each stage may only run its own commands.                                                  |
 | `finished: the run spent $..., over the cap`                    | The run passed `FACTORY_CAP_USD` (10 by default) and stopped.                                | Raise the cap for one run: `FACTORY_CAP_USD=20 bun run finished 2`.                                  |
-| `gate: fail, N of M tests failed`                               | A test in the app fails on the code as it is now.                                            | Read the failing test name above the line and fix the code, not the test.                            |
+| `gate: fail, N of M tests failed`                               | A test in the app fails on the code as it is now.                                            | Read the failing test name above the line. Ask Claude Code to fix the code, not the test.            |
 | `gate: error, there is no tests/ folder`                        | The gate was pointed at a folder that is not the app.                                        | Run `bun run gate` with no folder, or point it at a copy of `world/app`.                             |
 | `desk: no such item or member`                                  | The id is not in the seed data.                                                              | Run `bun run desk overdue` or open the app to see real ids.                                          |
 | `desk: no such damage charge`                                   | The charge id is wrong.                                                                      | The seeded charge is `D-301`.                                                                        |
