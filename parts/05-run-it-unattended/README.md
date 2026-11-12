@@ -25,7 +25,7 @@ For example, the finished factory runs triage on issue 2 with these flags, among
 - `--max-budget-usd 0.5` stops it if it spends more than $0.50.
 
 The run works in a copy of the app in `runs/finished-2/repo`. Its result file says
-`"state": "draft_pr"`. The gate passed in round 1, and the whole run cost about $0.21. On issue 6 the result says `"state": "refused"` instead.
+`"state": "draft_pr"`. The gate passed in round 1, and the whole run cost about $0.52. On issue 6 the result says `"state": "refused"` instead.
 
 You ask Claude Code to write `factory/run.ts`. You read its plan, approve it, and run the check.
 

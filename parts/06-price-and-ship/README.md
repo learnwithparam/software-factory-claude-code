@@ -17,13 +17,13 @@ For example, here is what one real run of the finished factory on issue 2 cost, 
 
 | Stage  | Role  | Cost in USD |
 | ------ | ----- | ----------- |
-| triage | fast  | 0.0035      |
-| spec   | smart | 0.0959      |
-| build  | smart | 0.0590      |
-| review | judge | 0.0483      |
-| total  |       | 0.2067      |
+| triage | fast  | 0.0093      |
+| spec   | smart | 0.2109      |
+| build  | smart | 0.1225      |
+| review | judge | 0.1766      |
+| total  |       | 0.5193      |
 
-Triage is cheap because it only reads. On issue 6, triage refused the work, and the whole run cost $0.0028.
+Triage is cheap because it only reads. On issue 6, triage refused the work, and the whole run cost $0.0025.
 These numbers come from `world/recordings/issue-2/run-1/result.json` and the issue 6 run beside it.
 
 A **scorecard** is the last report. `bun run scorecard` reads every result file and says which targets you

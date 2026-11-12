@@ -59,8 +59,8 @@ bun run doctor
 ```
 
 Expect: `doctor: ready, 4 of 4 required checks pass. Claude Code: ready for live runs.` The doctor asks
-`claude` itself for its version and sign-in. If Claude Code is missing or signed out, the line ends `not
-ready yet, so the finished factory replays its recorded runs`: the course still works, and the `--` lines
+`claude` itself for its version and sign-in. Is Claude Code missing or signed out? Then the line ends `not
+ready yet, so the finished factory replays its recorded runs`. The course still works, and the `--` lines
 say what to do.
 
 ## 2. Meet the library
@@ -93,9 +93,8 @@ Expect: `finished: issue 2 ended in draft_pr.` The first line says whether it ru
 
 Read it stage by stage. Each stage is one `claude -p` run in a fresh copy of the app, with the factory's own
 `CLAUDE.md`, settings and hooks. Triage reads the issue and decides. The spec stage writes
-`specs/2/SPEC.md` and tests that fail on purpose. The build stage changes `src/` until `bun run gate` passes;
-the tests are locked by a hook, and a Stop hook will not let it finish until the gate passed on the code as
-it is. The review stage reads the change in a fresh context and returns pass or block. Lines that start
+`specs/2/SPEC.md` and tests that fail on purpose. The build stage changes `src/` until `bun run gate` passes.
+A hook locks the tests. A Stop hook will not let it finish until the gate passes on the code as it is. The review stage reads the change in a fresh context and returns pass or block. Lines that start
 with `denied:` are Claude Code's permission rules at work: each stage may only run the commands it needs.
 
 Live, it uses your Claude plan, and the last line shows the cost Claude Code estimated for the run. With

@@ -65,13 +65,21 @@ function markdownFiles(folder: string, found: string[] = []): string[] {
 // Keep only the lines a person reads as sentences.
 export function proseOf(markdown: string): string {
   const proseLines: string[] = [];
-  let insideCodeBlock = false;
+  // The fence that opened the current code block, or "" outside one.
+  let openFence = "";
   for (const line of markdown.split("\n")) {
-    if (line.trim().startsWith("```")) insideCodeBlock = !insideCodeBlock;
+    const fence = line.trim().match(/^`{3,}/)?.[0] ?? "";
+    // A block closes only on a fence at least as long as the one that opened it,
+    // so a ```yaml block quoted inside a ````text block stays inside.
+    const closes = openFence !== "" && fence.length >= openFence.length;
+    if (openFence === "" && fence !== "") openFence = fence;
+    else if (closes) openFence = "";
+    const isFenceOrCode = fence !== "" || openFence !== "";
     const isStructure = /^\s*(#|\||<|!\[|Expect:)/.test(line);
-    if (!insideCodeBlock && !isStructure) proseLines.push(line);
+    if (!isFenceOrCode && !isStructure) proseLines.push(line);
   }
-  const withoutInlineCode = proseLines.join("\n").replace(/`[^`]*`/g, "it");
+  // Inline code stays on one line, so a stray backtick cannot hide the paragraphs after it.
+  const withoutInlineCode = proseLines.join("\n").replace(/`[^`\n]*`/g, "it");
   return withoutInlineCode.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1");
 }
 

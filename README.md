@@ -48,13 +48,19 @@ Expect: `finished: issue 2 ended in draft_pr. Gate pass after 1 build round, 0 e
 
 ![The finished factory on issue 2: triage, a spec with failing tests, a build that makes them pass, a review](images/finished-system.png)
 
-Each stage of the finished factory is one real Claude Code run, `claude -p`, in a fresh copy of the app that
-holds the factory's own `CLAUDE.md`, `.claude/settings.json` and hooks (`world/finished/factory/`). With
-`claude` installed and signed in, the command runs live on your account, and the cost line is what Claude
-Code reported. Without it, or in CI, it says so in one line and replays a recorded real run from
-`world/recordings/`: it shows that run's transcript, applies the changes it made to a fresh copy, runs the
-gate (the app's tests) for real, and runs the factory's hooks again on the exact events Claude Code sent them.
-`bun run finished 2 --replay` replays even when `claude` is ready.
+Each stage of the finished factory is one real Claude Code run, `claude -p`. It runs in a fresh copy of the
+app. That copy holds the factory's own `CLAUDE.md`, `.claude/settings.json` and hooks
+(`world/finished/factory/`).
+
+With `claude` installed and signed in, the command runs live on your account. The cost line is what Claude
+Code reported. Without `claude`, or in CI, it says so in one line and replays a recorded real run from
+`world/recordings/`. A replay does four things:
+
+- it shows that run's transcript;
+- it applies the changes that run made to a fresh copy;
+- it runs the gate (the app's tests) for real;
+- it runs the factory's hooks again on the exact events Claude Code sent them.
+  `bun run finished 2 --replay` replays even when `claude` is ready.
 
 ```bash
 bun run finished 6
@@ -72,9 +78,15 @@ targets your own factory meets by the end.
 ## The world and what you build
 
 Northside Tool Library is a member-run library that lends drills, ladders and a chainsaw. Its lending app
-(TypeScript, Bun, Hono, SQLite) has seven open issues in `world/backlog/`, with planted trouble: a damage
-charge that loses a cent, a double booking on a due date, a member search that leaks phone numbers, a
-safety rule nobody wrote, and a request to change a protected folder. See [world/README.md](world/README.md).
+(TypeScript, Bun, Hono, SQLite) has seven open issues in `world/backlog/`. Each one hides a trap:
+
+- a damage charge that loses a cent;
+- a double booking on a due date;
+- a member search that leaks phone numbers;
+- a safety rule nobody wrote;
+- a request to change a protected folder.
+
+See [world/README.md](world/README.md).
 
 ![The library's desk view](images/catalogue.png)
 
