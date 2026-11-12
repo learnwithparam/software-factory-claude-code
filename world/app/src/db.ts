@@ -1,4 +1,4 @@
-// The library's system of record: one SQLite file, built from world/seed by `bun run world`.
+// The library's system of record: one SQLite file, built from world/app/seed by `bun run world`.
 import { Database } from "bun:sqlite";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, unlinkSync } from "node:fs";
 import { join } from "node:path";
@@ -28,7 +28,7 @@ export type Item = {
 };
 export type Loan = { id: string; item_id: string; member_id: string; out_date: string; due_date: string; returned_date: string | null };
 
-const seedFile = (name: string) => JSON.parse(readFileSync(join(WORLD, "seed", name), "utf8"));
+const seedFile = (name: string) => JSON.parse(readFileSync(join(import.meta.dir, "..", "seed", name), "utf8"));
 
 // bun:sqlite wants $-prefixed keys for named parameters.
 const named = (o: Record<string, unknown>) => Object.fromEntries(Object.entries(o).map(([k, v]) => [`$${k}`, v]));

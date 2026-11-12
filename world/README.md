@@ -52,7 +52,7 @@ Expect: `desk: charge £33.33, shares add up to £33.32`. That missing penny is 
 |---|---|
 | `app/` | the lending app: TypeScript on Bun, Hono for the web page and API, `bun:sqlite` for data |
 | `app/src/auth/` | desk roles. A protected path: the factory must refuse work here |
-| `seed/` | the data the database is rebuilt from |
+| `app/seed/` | the data the database is rebuilt from |
 | `backlog/` | the open issues, one file each, numbered 1 to 7 |
 | `backlog/answers/` | what the coordinator said when asked the work-order questions about an issue |
 | `finished/` | the finished factory and a recorded run of it, used by `bun run factory:replay` |

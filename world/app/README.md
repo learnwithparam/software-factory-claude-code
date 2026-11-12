@@ -1,7 +1,7 @@
 # Northside lending app
 
 The app the Northside Tool Library desk runs on: a catalogue page, a JSON API and a desk CLI.
-It stores everything in one SQLite file built from `world/seed/`.
+It stores everything in one SQLite file built from `seed/`.
 
 ## Folders
 
