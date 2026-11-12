@@ -36,7 +36,12 @@ export const HEADLESS = [
   "--no-session-persistence",
 ];
 
-export type ClaudeStatus = { installed: boolean; version: string | null; signedIn: boolean | null; how: string };
+export type ClaudeStatus = {
+  installed: boolean;
+  version: string | null;
+  signedIn: boolean | null;
+  how: string;
+};
 
 const newer = (have: string, want: string) => {
   const a = have.split(".").map(Number);
@@ -51,7 +56,11 @@ export const recentEnough = (v: string | null) => Boolean(v && newer(v, MIN_CLAU
 export function claudeStatus(): ClaudeStatus {
   const run = (args: string[]) => {
     try {
-      const r = Bun.spawnSync(["claude", ...args], { stdout: "pipe", stderr: "pipe", stdin: "ignore" });
+      const r = Bun.spawnSync(["claude", ...args], {
+        stdout: "pipe",
+        stderr: "pipe",
+        stdin: "ignore",
+      });
       return { code: r.exitCode, out: r.stdout.toString().trim() };
     } catch {
       return null;
@@ -63,7 +72,12 @@ export function claudeStatus(): ClaudeStatus {
   const a = run(["auth", "status"]);
   try {
     const j = JSON.parse(a?.out ?? "");
-    return { installed: true, version, signedIn: Boolean(j.loggedIn), how: String(j.authMethod ?? "") };
+    return {
+      installed: true,
+      version,
+      signedIn: Boolean(j.loggedIn),
+      how: String(j.authMethod ?? ""),
+    };
   } catch {
     return { installed: true, version, signedIn: null, how: "" };
   }
@@ -75,7 +89,9 @@ export function canRunLive(): { live: boolean; why: string } {
   if (process.env.FACTORY_REPLAY === "1") return { live: false, why: "FACTORY_REPLAY=1 is set" };
   const s = claudeStatus();
   if (!s.installed) return { live: false, why: "claude is not installed here" };
-  if (s.signedIn === false) return { live: false, why: "claude is not signed in (run claude, then /login)" };
-  if (!recentEnough(s.version)) return { live: false, why: `claude ${s.version} is older than ${MIN_CLAUDE_CODE}` };
+  if (s.signedIn === false)
+    return { live: false, why: "claude is not signed in (run claude, then /login)" };
+  if (!recentEnough(s.version))
+    return { live: false, why: `claude ${s.version} is older than ${MIN_CLAUDE_CODE}` };
   return { live: true, why: "" };
 }

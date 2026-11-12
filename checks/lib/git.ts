@@ -9,7 +9,8 @@ import { runGate } from "./world";
 const git = (repo: string, ...args: string[]) => sh(["git", "-C", repo, ...args]);
 
 export const isRepo = (dir: string) => git(dir, "rev-parse", "--git-dir").code === 0;
-export const branchExists = (repo: string, branch: string) => git(repo, "rev-parse", "--verify", "--quiet", `refs/heads/${branch}`).code === 0;
+export const branchExists = (repo: string, branch: string) =>
+  git(repo, "rev-parse", "--verify", "--quiet", `refs/heads/${branch}`).code === 0;
 
 export function changedFiles(repo: string, base: string, branch: string): string[] {
   const r = git(repo, "diff", "--name-only", `${base}...${branch}`);

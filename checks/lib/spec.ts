@@ -2,11 +2,23 @@
 import { join } from "node:path";
 import { json, read, sections } from "./files";
 
-export const SPEC_SECTIONS = ["outcome", "requirements", "must not change", "out of scope", "done when"];
+export const SPEC_SECTIONS = [
+  "outcome",
+  "requirements",
+  "must not change",
+  "out of scope",
+  "done when",
+];
 // EARS (Easy Approach to Requirements Syntax) keywords. Each requirement opens with one.
 export const EARS = /^(when|while|if|where|the system shall)\b/i;
 
-export type PassEntry = { id: string; requirement: string; test_file: string; test_name: string; passes: boolean };
+export type PassEntry = {
+  id: string;
+  requirement: string;
+  test_file: string;
+  test_name: string;
+  passes: boolean;
+};
 
 export function requirementLines(spec: string): { id: string; text: string }[] {
   const body = sections(spec).get("requirements") ?? "";

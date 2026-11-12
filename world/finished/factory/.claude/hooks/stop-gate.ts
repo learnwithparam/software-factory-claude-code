@@ -36,8 +36,13 @@ const block = (reason: string) => {
   console.log(JSON.stringify({ decision: "block", reason }));
   process.exit(0);
 };
-if (!existsSync(recordPath)) block("Run bun run gate before you stop. There is no gate record for this change yet.");
+if (!existsSync(recordPath))
+  block("Run bun run gate before you stop. There is no gate record for this change yet.");
 const rec = JSON.parse(readFileSync(recordPath, "utf8"));
-if (rec.exit_code !== 0) block("The gate failed on your last change. Read the failing test and fix the code under src/.");
-if (rec.tree !== treeHash(project)) block("The code changed after the last gate run. Run bun run gate again on the code as it is now.");
+if (rec.exit_code !== 0)
+  block("The gate failed on your last change. Read the failing test and fix the code under src/.");
+if (rec.tree !== treeHash(project))
+  block(
+    "The code changed after the last gate run. Run bun run gate again on the code as it is now.",
+  );
 process.exit(0);

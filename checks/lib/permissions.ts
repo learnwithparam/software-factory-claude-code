@@ -7,7 +7,12 @@ export type Decision = "deny" | "ask" | "allow" | "none";
 
 const toRegex = (spec: string) => {
   const s = spec.endsWith(":*") ? `${spec.slice(0, -2)}*` : spec;
-  return new RegExp(`^${s.split("*").map((p) => p.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join(".*")}$`);
+  return new RegExp(
+    `^${s
+      .split("*")
+      .map((p) => p.replace(/[.+?^${}()|[\]\\]/g, "\\$&"))
+      .join(".*")}$`,
+  );
 };
 
 export function ruleMatches(rule: string, call: Call, projectDir = "."): boolean {
@@ -17,7 +22,8 @@ export function ruleMatches(rule: string, call: Call, projectDir = "."): boolean
   if (call.tool === "Bash") return toRegex(m[2]).test((call.input.command ?? "").trim());
   const path = (call.input.file_path ?? "").replace(`${projectDir.replace(/\/$/, "")}/`, "./");
   const rel = path.startsWith("./") || path.startsWith("/") ? path : `./${path}`;
-  const spec = m[2].startsWith("./") || m[2].startsWith("/") || m[2].startsWith("~") ? m[2] : `./**/${m[2]}`;
+  const spec =
+    m[2].startsWith("./") || m[2].startsWith("/") || m[2].startsWith("~") ? m[2] : `./**/${m[2]}`;
   return toRegex(spec.replace(/\*\*\//g, "*")).test(rel);
 }
 

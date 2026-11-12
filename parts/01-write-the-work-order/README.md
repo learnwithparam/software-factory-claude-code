@@ -27,11 +27,11 @@ flowchart LR
   S --> FA[The factory, from Part 5 on]
 ```
 
-| Step | Minutes | What you produce |
-|---|---|---|
-| `write-the-issue-form` | 15 | `.github/ISSUE_TEMPLATE/change.yml` with required fields |
-| `size-the-backlog` | 10 | `factory/backlog.json`: ready, split or refuse for all seven issues |
-| `write-the-spec` | 25 | `specs/5/SPEC.md` with EARS requirements and `specs/5/passes.json` |
+| Step                   | Minutes | What you produce                                                    |
+| ---------------------- | ------- | ------------------------------------------------------------------- |
+| `write-the-issue-form` | 15      | `.github/ISSUE_TEMPLATE/change.yml` with required fields            |
+| `size-the-backlog`     | 10      | `factory/backlog.json`: ready, split or refuse for all seven issues |
+| `write-the-spec`       | 25      | `specs/5/SPEC.md` with EARS requirements and `specs/5/passes.json`  |
 
 Each step's files go in that step's `problem/` folder. Open the Claude Code CLI there with `claude`.
 

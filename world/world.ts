@@ -20,7 +20,9 @@ if (reset) {
 const db = open();
 const count = (sql: string) => (db.query(sql).get() as { n: number }).n;
 const today = setting(db, "today");
-const out = db.query("SELECT due_date FROM loans WHERE returned_date IS NULL").all() as { due_date: string }[];
+const out = db.query("SELECT due_date FROM loans WHERE returned_date IS NULL").all() as {
+  due_date: string;
+}[];
 const late = out.filter((l) => isOverdue(l.due_date, today)).length;
 console.log(
   `world: ${reset ? "reset to the seed. " : ""}Northside Tool Library is ready: ${count("SELECT COUNT(*) AS n FROM items")} tools, ${count("SELECT COUNT(*) AS n FROM members")} members, ${out.length} loans out (${late} overdue), ${issues().length} open issues.`,

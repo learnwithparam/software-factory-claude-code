@@ -24,11 +24,11 @@ flowchart LR
   B & R --> L["result.json: roles_by_stage, cost_usd"] --> SC[bun run scorecard]
 ```
 
-| Step | Minutes | What you produce | What its check reads |
-|---|---|---|---|
-| `route-models-by-stage` | 15 | a model per agent, set by role | each agent file sets `model`; `result.json` records `roles_by_stage`; a high-risk issue plans on the smart role; the docs issue never does |
-| `cap-the-spend` | 10 | a run budget in `factory/run.ts`, the key kept in `.env` | with `FACTORY_CAP_USD=0.05` the run ends with state `stopped_budget`; a secret scan of tracked files finds no key |
-| `ship-the-factory` | 25 | runs over issues 1 to 7, the scorecard, `notes/retro.md` | `bun run scorecard`: 3 of issues 1 to 5 at `draft_pr` with branches whose tests pass the local gate, 0 test files edited, issue 3 blocked once, issue 6 refused, issue 7 stopped at plan, cost under the cap, `cost_usd` equal to the summed `total_cost_usd` of the logged calls; the retro has three headings with text |
+| Step                    | Minutes | What you produce                                         | What its check reads                                                                                                                                                                                                                                                                                                      |
+| ----------------------- | ------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `route-models-by-stage` | 15      | a model per agent, set by role                           | each agent file sets `model`; `result.json` records `roles_by_stage`; a high-risk issue plans on the smart role; the docs issue never does                                                                                                                                                                                |
+| `cap-the-spend`         | 10      | a run budget in `factory/run.ts`, the key kept in `.env` | with `FACTORY_CAP_USD=0.05` the run ends with state `stopped_budget`; a secret scan of tracked files finds no key                                                                                                                                                                                                         |
+| `ship-the-factory`      | 25      | runs over issues 1 to 7, the scorecard, `notes/retro.md` | `bun run scorecard`: 3 of issues 1 to 5 at `draft_pr` with branches whose tests pass the local gate, 0 test files edited, issue 3 blocked once, issue 6 refused, issue 7 stopped at plan, cost under the cap, `cost_usd` equal to the summed `total_cost_usd` of the logged calls; the retro has three headings with text |
 
 ## Walkthrough
 

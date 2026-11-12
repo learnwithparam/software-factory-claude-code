@@ -24,9 +24,9 @@ flowchart LR
   C[[Required check]] -.wall.-> D
 ```
 
-| Step | Minutes | What you produce |
-|---|---|---|
-| `meet-the-library` | 15 | a passing doctor, a run of the finished factory, `notes/goal.md` |
+| Step               | Minutes | What you produce                                                 |
+| ------------------ | ------- | ---------------------------------------------------------------- |
+| `meet-the-library` | 15      | a passing doctor, a run of the finished factory, `notes/goal.md` |
 
 ## Walkthrough
 

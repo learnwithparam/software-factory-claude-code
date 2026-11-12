@@ -8,7 +8,11 @@ import { searchMembers } from "./members/search";
 const db = open();
 export const app = new Hono();
 
-const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] as string);
+const esc = (s: string) =>
+  s.replace(
+    /[&<>"]/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] as string,
+  );
 const money = (cents: number) => `£${(cents / 100).toFixed(2)}`;
 
 app.get("/api/items", (c) => c.json(db.query("SELECT * FROM items ORDER BY id").all()));
@@ -22,7 +26,10 @@ app.get("/api/members", (c) => {
 app.post("/api/loans", async (c) => {
   const { item_id, member_id } = await c.req.json();
   const item = db.query("SELECT * FROM items WHERE id = ?").get(item_id) as Item | null;
-  const row = db.query("SELECT * FROM members WHERE id = ?").get(member_id) as Record<string, unknown> | null;
+  const row = db.query("SELECT * FROM members WHERE id = ?").get(member_id) as Record<
+    string,
+    unknown
+  > | null;
   if (!item || !row) return c.json({ ok: false, reason: "no such item or member" }, 404);
   const decision = canBorrow(toMember(row), item);
   logEvent("lend", { item_id, member_id, ...decision });

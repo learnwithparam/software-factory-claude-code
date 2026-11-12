@@ -21,13 +21,15 @@ const events = (stage: string) =>
     .split("\n")
     .filter(Boolean)
     .map((l) => JSON.parse(l));
-const realEdit = (stage: string, file: RegExp) => events(stage).find((e) => e.tool_name === "Edit" && file.test(e.tool_input.file_path));
+const realEdit = (stage: string, file: RegExp) =>
+  events(stage).find((e) => e.tool_name === "Edit" && file.test(e.tool_input.file_path));
 const realStop = () => events("build").find((e) => e.hook_event_name === "Stop");
 
 // A project folder laid out like a factory run: the app, the factory's .claude/, and the gate.
 function project() {
   const dir = mkdtempSync(join(tmpdir(), "factory-"));
-  for (const p of ["src", "tests", "seed"]) cpSync(join(ROOT, "world/app", p), join(dir, p), { recursive: true });
+  for (const p of ["src", "tests", "seed"])
+    cpSync(join(ROOT, "world/app", p), join(dir, p), { recursive: true });
   cpSync(FACTORY, dir, { recursive: true });
   mkdirSync(join(dir, ".factory"), { recursive: true });
   cpSync(join(ROOT, "world/gate.ts"), join(dir, ".factory/gate.ts"));
@@ -45,7 +47,16 @@ test("the backlog has seven issues and issue 6 names the protected path", () => 
 test("the recorded events are what Claude Code sends a PreToolUse and a Stop hook", () => {
   const e = realEdit("spec", /tests\/fees\/split\.test\.ts$/);
   expect(e).toBeDefined();
-  for (const k of ["session_id", "transcript_path", "cwd", "permission_mode", "hook_event_name", "tool_name", "tool_input", "tool_use_id"])
+  for (const k of [
+    "session_id",
+    "transcript_path",
+    "cwd",
+    "permission_mode",
+    "hook_event_name",
+    "tool_name",
+    "tool_input",
+    "tool_use_id",
+  ])
     expect(Object.keys(e)).toContain(k);
   expect(e.hook_event_name).toBe("PreToolUse");
   expect(realStop()).toMatchObject({ hook_event_name: "Stop", stop_hook_active: false });
@@ -58,13 +69,21 @@ test("the test-lock hook blocks the real test edit in build and allows it in spe
   expect(inBuild.code).toBe(2);
   expect(inBuild.reason).toContain("tests are locked");
   expect(runHook(lockTests, e, dir, { FACTORY_STAGE: "spec" }).blocked).toBe(false);
-  expect(runHook(lockTests, realEdit("build", /src\/fees\/split\.ts$/), dir, { FACTORY_STAGE: "build" }).blocked).toBe(false);
+  expect(
+    runHook(lockTests, realEdit("build", /src\/fees\/split\.ts$/), dir, { FACTORY_STAGE: "build" })
+      .blocked,
+  ).toBe(false);
 });
 
 test("the test-lock hook blocks a shell write to a test file (a real Bash event, its command changed)", () => {
   const real = events("build").find((e) => e.tool_name === "Bash");
-  const ev = { ...real, tool_input: { ...real.tool_input, command: "sed -i 's/1667/1666/' tests/fees/split.test.ts" } };
-  const v = runHook(hooksFor(settings, "PreToolUse", "Bash")[0], ev, project(), { FACTORY_STAGE: "build" });
+  const ev = {
+    ...real,
+    tool_input: { ...real.tool_input, command: "sed -i 's/1667/1666/' tests/fees/split.test.ts" },
+  };
+  const v = runHook(hooksFor(settings, "PreToolUse", "Bash")[0], ev, project(), {
+    FACTORY_STAGE: "build",
+  });
   expect(v.blocked).toBe(true);
   expect(v.reason).toContain("locked");
 });
@@ -79,36 +98,70 @@ test("the Stop hook holds the builder until the gate passed on the code as it is
   expect(runHook(stopGate, stop, dir, { FACTORY_STAGE: "review" }).blocked).toBe(false);
   expect(sh(["bun", "run", "gate"], { cwd: dir }).code).toBe(0);
   expect(runHook(stopGate, stop, dir, env).blocked).toBe(false);
-  writeFileSync(join(dir, "src/fees/split.ts"), `${readFileSync(join(dir, "src/fees/split.ts"), "utf8")}\n// changed after the gate\n`);
+  writeFileSync(
+    join(dir, "src/fees/split.ts"),
+    `${readFileSync(join(dir, "src/fees/split.ts"), "utf8")}\n// changed after the gate\n`,
+  );
   expect(runHook(stopGate, stop, dir, env).reason).toContain("changed after the last gate run");
 }, 30000);
 
 test("the Stop hook and the gate hash the same tree", async () => {
   const dir = project();
   sh(["bun", "run", "gate"], { cwd: dir });
-  expect(JSON.parse(readFileSync(join(dir, ".factory/gate.json"), "utf8")).tree).toBe(treeHash(dir));
+  expect(JSON.parse(readFileSync(join(dir, ".factory/gate.json"), "utf8")).tree).toBe(
+    treeHash(dir),
+  );
 }, 30000);
 
 test("permission rules: deny wins, the grammar matches prefixes, and src/auth/ is denied", () => {
-  expect(decide(settings, { tool: "Bash", input: { command: "git push --force origin main" } })).toBe("deny");
-  expect(decide(settings, { tool: "Bash", input: { command: "git commit -m x --no-verify" } })).toBe("deny");
+  expect(
+    decide(settings, { tool: "Bash", input: { command: "git push --force origin main" } }),
+  ).toBe("deny");
+  expect(
+    decide(settings, { tool: "Bash", input: { command: "git commit -m x --no-verify" } }),
+  ).toBe("deny");
   expect(decide(settings, { tool: "Read", input: { file_path: ".env.local" } })).toBe("deny");
-  expect(decide(settings, { tool: "Edit", input: { file_path: "src/auth/roles.ts" } })).toBe("deny");
-  expect(decide(settings, { tool: "Bash", input: { command: "bun test tests/fees" } })).toBe("allow");
-  expect(decide({ permissions: { allow: ["Bash"], deny: ["Bash(rm:*)"] } }, { tool: "Bash", input: { command: "rm x" } })).toBe("deny");
+  expect(decide(settings, { tool: "Edit", input: { file_path: "src/auth/roles.ts" } })).toBe(
+    "deny",
+  );
+  expect(decide(settings, { tool: "Bash", input: { command: "bun test tests/fees" } })).toBe(
+    "allow",
+  );
+  expect(
+    decide(
+      { permissions: { allow: ["Bash"], deny: ["Bash(rm:*)"] } },
+      { tool: "Bash", input: { command: "rm x" } },
+    ),
+  ).toBe("deny");
 });
 
 test("frontmatter and sections read what a learner writes", () => {
   const dir = mkdtempSync(join(tmpdir(), "fm-"));
-  writeFileSync(join(dir, "SKILL.md"), "---\nname: triage\nallowed-tools: Read, Grep\n---\n# Triage\n\n## Reply\n\nTYPE:\n");
+  writeFileSync(
+    join(dir, "SKILL.md"),
+    "---\nname: triage\nallowed-tools: Read, Grep\n---\n# Triage\n\n## Reply\n\nTYPE:\n",
+  );
   expect(frontmatter(join(dir, "SKILL.md"))?.data.name).toBe("triage");
   expect(sections("# A\n\n## Outcome\n\nx\n## Done when\n- y").get("done when")).toBe("- y");
-  expect(requirementLines("## Requirements\n\n- R1. When a, the system shall b.\n- R2: If c, the system shall d.")).toHaveLength(2);
+  expect(
+    requirementLines(
+      "## Requirements\n\n- R1. When a, the system shall b.\n- R2: If c, the system shall d.",
+    ),
+  ).toHaveLength(2);
 });
 
 const replay = (n: number, run: string) => {
   const out = join(mkdtempSync(join(tmpdir(), "finished-")), "run");
-  const r = sh(["bun", join(ROOT, "world/finished/run.ts"), String(n), "--replay", "--run", run, "--out", out]);
+  const r = sh([
+    "bun",
+    join(ROOT, "world/finished/run.ts"),
+    String(n),
+    "--replay",
+    "--run",
+    run,
+    "--out",
+    out,
+  ]);
   const parsed = parseResult(JSON.parse(readFileSync(join(out, "result.json"), "utf8")));
   if (!parsed.ok) throw new Error(parsed.why);
   return { stdout: r.stdout, result: parsed.result };

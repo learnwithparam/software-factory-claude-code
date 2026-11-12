@@ -2,7 +2,13 @@
 // Any design passes if it writes this shape. Roles, not model ids, are recorded per stage.
 import { z } from "zod";
 
-export const STATES = ["draft_pr", "refused", "stopped_at_plan", "stopped_budget", "gate_failed"] as const;
+export const STATES = [
+  "draft_pr",
+  "refused",
+  "stopped_at_plan",
+  "stopped_budget",
+  "gate_failed",
+] as const;
 export const STAGES = ["triage", "spec", "plan", "build", "review"] as const;
 
 export const Result = z.object({
@@ -11,26 +17,48 @@ export const Result = z.object({
   branch: z.string().nullable(),
   worktree: z.string().nullable(),
   pr_url: z.string().nullable(),
-  gate: z.object({ command: z.string(), exit_code: z.number().int(), tree: z.string(), rounds: z.number().int().min(0) }).nullable(),
+  gate: z
+    .object({
+      command: z.string(),
+      exit_code: z.number().int(),
+      tree: z.string(),
+      rounds: z.number().int().min(0),
+    })
+    .nullable(),
   review: z
     .object({
       verdict: z.enum(["pass", "block"]),
-      findings: z.array(z.object({ file: z.string(), line: z.number().int(), evidence: z.string() })),
+      findings: z.array(
+        z.object({ file: z.string(), line: z.number().int(), evidence: z.string() }),
+      ),
     })
     .nullable(),
   tests_edited: z.array(z.string()),
-  blocked_by_hooks: z.array(z.object({ stage: z.string(), tool: z.string(), file: z.string(), reason: z.string() })),
+  blocked_by_hooks: z.array(
+    z.object({ stage: z.string(), tool: z.string(), file: z.string(), reason: z.string() }),
+  ),
   roles_by_stage: z.record(z.string(), z.enum(["fast", "smart", "judge", "none"])),
   cost_usd: z.number().min(0),
   replayed: z.boolean(),
   // One entry per claude -p run: its stream-json transcript (relative to the run folder), turns and cost.
   claude_runs: z
-    .array(z.object({ stage: z.string(), transcript: z.string(), turns: z.number().int().min(0), cost_usd: z.number().min(0) }))
+    .array(
+      z.object({
+        stage: z.string(),
+        transcript: z.string(),
+        turns: z.number().int().min(0),
+        cost_usd: z.number().min(0),
+      }),
+    )
     .optional(),
 });
 export type Result = z.infer<typeof Result>;
 
-export function parseResult(raw: unknown): { ok: true; result: Result } | { ok: false; why: string } {
+export function parseResult(
+  raw: unknown,
+): { ok: true; result: Result } | { ok: false; why: string } {
   const r = Result.safeParse(raw);
-  return r.success ? { ok: true, result: r.data } : { ok: false, why: r.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ") };
+  return r.success
+    ? { ok: true, result: r.data }
+    : { ok: false, why: r.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ") };
 }

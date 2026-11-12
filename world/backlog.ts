@@ -4,7 +4,14 @@ import { join } from "node:path";
 
 export const BACKLOG = join(import.meta.dir, "backlog");
 
-export type Issue = { number: number; title: string; opened_by: string; labels: string[]; body: string; file: string };
+export type Issue = {
+  number: number;
+  title: string;
+  opened_by: string;
+  labels: string[];
+  body: string;
+  file: string;
+};
 
 export function parseIssue(text: string, file = ""): Issue {
   const m = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);

@@ -57,15 +57,30 @@ pre{margin:0;padding:12px 16px;white-space:pre-wrap;word-break:break-word}.promp
 
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 const port = 3199;
-const server = Bun.spawn(["bun", join(ROOT, "world/app/src/server.ts")], { env: { ...process.env, PORT: String(port) }, stdout: "pipe" });
+const server = Bun.spawn(["bun", join(ROOT, "world/app/src/server.ts")], {
+  env: { ...process.env, PORT: String(port) },
+  stdout: "pipe",
+});
 await Bun.sleep(800);
 try {
   for (const s of SHOTS) {
-    const page = await browser.newPage({ viewport: { width: s.page ? 1100 : 800, height: s.page ? 400 : 120 }, deviceScaleFactor: 2 });
+    const page = await browser.newPage({
+      viewport: { width: s.page ? 1100 : 800, height: s.page ? 400 : 120 },
+      deviceScaleFactor: 2,
+    });
     if (s.page) await page.goto(`http://localhost:${port}${s.page}`);
     else if (s.cmd) {
-      const r = Bun.spawnSync(s.cmd, { cwd: s.cwd ?? ROOT, env: { ...process.env, FORCE_COLOR: "1" }, stdout: "pipe", stderr: "pipe" });
-      const text = r.stdout.toString().split("\n").filter((l) => !l.startsWith("$ ")).join("\n");
+      const r = Bun.spawnSync(s.cmd, {
+        cwd: s.cwd ?? ROOT,
+        env: { ...process.env, FORCE_COLOR: "1" },
+        stdout: "pipe",
+        stderr: "pipe",
+      });
+      const text = r.stdout
+        .toString()
+        .split("\n")
+        .filter((l) => !l.startsWith("$ "))
+        .join("\n");
       await page.setContent(terminalPage(s.cmd, text));
     }
     for (const o of s.out) {

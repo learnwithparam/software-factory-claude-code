@@ -47,12 +47,12 @@ Expect: `Done. All 8 rules pass.`
 
 ## If you get stuck
 
-| What you see | Fix |
-|---|---|
-| `FAIL factory/backlog.json is a JSON list` | The file must start with `[`. A trailing comma breaks JSON. |
-| `FAIL every issue ... has exactly one entry` | Count your entries: 1 to 7, each once. |
-| `FAIL every file a ready issue names is in the app` | Write `src/fees/split.ts`, not `world/app/src/fees/split.ts`. |
-| `FAIL issue 6 is refused ...` | Which folder does issue 6 name? Put that folder in the reason. |
+| What you see                                        | Fix                                                            |
+| --------------------------------------------------- | -------------------------------------------------------------- |
+| `FAIL factory/backlog.json is a JSON list`          | The file must start with `[`. A trailing comma breaks JSON.    |
+| `FAIL every issue ... has exactly one entry`        | Count your entries: 1 to 7, each once.                         |
+| `FAIL every file a ready issue names is in the app` | Write `src/fees/split.ts`, not `world/app/src/fees/split.ts`.  |
+| `FAIL issue 6 is refused ...`                       | Which folder does issue 6 name? Put that folder in the reason. |
 
 ## Words you will use
 

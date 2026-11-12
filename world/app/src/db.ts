@@ -17,7 +17,14 @@ CREATE TABLE damage_charges (id TEXT PRIMARY KEY, loan_id TEXT NOT NULL REFERENC
 CREATE TABLE settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
 `;
 
-export type Member = { id: string; name: string; phone: string; email: string; joined: string; inductions: string[] };
+export type Member = {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  joined: string;
+  inductions: string[];
+};
 export type Item = {
   id: string;
   name: string;
@@ -26,12 +33,21 @@ export type Item = {
   deposit_cents: number;
   status: "in" | "out" | "repair";
 };
-export type Loan = { id: string; item_id: string; member_id: string; out_date: string; due_date: string; returned_date: string | null };
+export type Loan = {
+  id: string;
+  item_id: string;
+  member_id: string;
+  out_date: string;
+  due_date: string;
+  returned_date: string | null;
+};
 
-const seedFile = (name: string) => JSON.parse(readFileSync(join(import.meta.dir, "..", "seed", name), "utf8"));
+const seedFile = (name: string) =>
+  JSON.parse(readFileSync(join(import.meta.dir, "..", "seed", name), "utf8"));
 
 // bun:sqlite wants $-prefixed keys for named parameters.
-const named = (o: Record<string, unknown>) => Object.fromEntries(Object.entries(o).map(([k, v]) => [`$${k}`, v]));
+const named = (o: Record<string, unknown>) =>
+  Object.fromEntries(Object.entries(o).map(([k, v]) => [`$${k}`, v]));
 
 export function seed(path = DB_PATH): Database {
   mkdirSync(DATA, { recursive: true });
@@ -43,16 +59,28 @@ export function seed(path = DB_PATH): Database {
     const q = db.prepare(sql);
     for (const r of rows) q.run(named(r) as never);
   };
-  insert("INSERT INTO items VALUES ($id,$name,$category,$safety_class,$deposit_cents,$status)", seedFile("items.json"));
+  insert(
+    "INSERT INTO items VALUES ($id,$name,$category,$safety_class,$deposit_cents,$status)",
+    seedFile("items.json"),
+  );
   insert(
     "INSERT INTO members VALUES ($id,$name,$phone,$email,$joined,$inductions)",
     seedFile("members.json").map((m: Member) => ({ ...m, inductions: m.inductions.join(",") })),
   );
-  insert("INSERT INTO loans VALUES ($id,$item_id,$member_id,$out_date,$due_date,$returned_date)", book.loans);
-  insert("INSERT INTO reservations VALUES ($id,$item_id,$member_id,$from_date,$to_date)", book.reservations);
+  insert(
+    "INSERT INTO loans VALUES ($id,$item_id,$member_id,$out_date,$due_date,$returned_date)",
+    book.loans,
+  );
+  insert(
+    "INSERT INTO reservations VALUES ($id,$item_id,$member_id,$from_date,$to_date)",
+    book.reservations,
+  );
   insert(
     "INSERT INTO damage_charges VALUES ($id,$loan_id,$amount_cents,$note,$split_between)",
-    book.damage_charges.map((d: { split_between: string[] }) => ({ ...d, split_between: d.split_between.join(",") })),
+    book.damage_charges.map((d: { split_between: string[] }) => ({
+      ...d,
+      split_between: d.split_between.join(","),
+    })),
   );
   insert("INSERT INTO settings VALUES ($key,$value)", [
     { key: "today", value: book.today },

@@ -46,12 +46,12 @@ Expect: `Done. All 7 rules pass.`
 
 ## If you get stuck
 
-| What you see | Fix |
-|---|---|
-| `FAIL ... is valid YAML` | Indent with two spaces. A list item under `body:` starts with `  - type:`. |
-| `FAIL those four textareas are required` | Add `validations:` then `required: true` under each. GitHub's samples use `false`. |
-| `FAIL a required dropdown with id risk ...` | Use `type: dropdown`, not `input`, and list the options under `attributes:`. |
-| `FAIL issue 5's answers fill ...` | An id is spelled differently from the answers file, such as `must_not_change`. |
+| What you see                                | Fix                                                                                |
+| ------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `FAIL ... is valid YAML`                    | Indent with two spaces. A list item under `body:` starts with `  - type:`.         |
+| `FAIL those four textareas are required`    | Add `validations:` then `required: true` under each. GitHub's samples use `false`. |
+| `FAIL a required dropdown with id risk ...` | Use `type: dropdown`, not `input`, and list the options under `attributes:`.       |
+| `FAIL issue 5's answers fill ...`           | An id is spelled differently from the answers file, such as `must_not_change`.     |
 
 Syntax: https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms
 

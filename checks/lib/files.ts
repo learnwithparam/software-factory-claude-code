@@ -1,9 +1,10 @@
 // Read what the learner produced: files, YAML, JSON, Markdown sections and frontmatter.
 // A reader never throws on a missing file; it returns null so a rule can say what is missing.
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-export const read = (path: string): string | null => (existsSync(path) && statSync(path).isFile() ? readFileSync(path, "utf8") : null);
+export const read = (path: string): string | null =>
+  existsSync(path) && statSync(path).isFile() ? readFileSync(path, "utf8") : null;
 
 export function json<T = unknown>(path: string): T | null {
   const t = read(path);
@@ -32,7 +33,9 @@ export function frontmatter(path: string): { data: Record<string, unknown>; body
   if (!m) return null;
   try {
     const data = Bun.YAML.parse(m[1]);
-    return data && typeof data === "object" ? { data: data as Record<string, unknown>, body: m[2] } : null;
+    return data && typeof data === "object"
+      ? { data: data as Record<string, unknown>, body: m[2] }
+      : null;
   } catch {
     return null;
   }
@@ -57,7 +60,11 @@ export function sections(markdown: string): Map<string, string> {
   return out;
 }
 
-export const nonEmptyLines = (t: string) => t.split("\n").map((l) => l.trim()).filter(Boolean);
+export const nonEmptyLines = (t: string) =>
+  t
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
 
 export function listFiles(dir: string, base = dir): string[] {
   if (!existsSync(dir)) return [];

@@ -10,9 +10,15 @@ import { ROOT } from "./lib/world";
 
 // bun run finished 2 writes runs/finished-2/ at the repo root, live or replayed. A folder can also carry its
 // own copy (the sample solution does).
-const resultPath = (d: string) => [join(d, "runs", "finished-2", "result.json"), join(ROOT, "runs", "finished-2", "result.json")].find(existsSync);
+const resultPath = (d: string) =>
+  [
+    join(d, "runs", "finished-2", "result.json"),
+    join(ROOT, "runs", "finished-2", "result.json"),
+  ].find(existsSync);
 const goalLines = (d: string) =>
-  nonEmptyLines(read(join(d, "notes", "goal.md")) ?? "").filter((l) => !l.startsWith("<!--") && !l.startsWith("#"));
+  nonEmptyLines(read(join(d, "notes", "goal.md")) ?? "").filter(
+    (l) => !l.startsWith("<!--") && !l.startsWith("#"),
+  );
 const ISSUE = /\b(?:issue\s*#?|#)([1-7])\b/i;
 
 export default [
@@ -38,11 +44,13 @@ export default [
   {
     says: "the line names one issue from the backlog, 1 to 7",
     test: (d) => goalLines(d).some((l) => ISSUE.test(l)),
-    tryNext: "name the issue by number, for example: Issue 3, because the due date looks like a free date",
+    tryNext:
+      "name the issue by number, for example: Issue 3, because the due date looks like a free date",
   },
   {
     says: "the line says why, in at least eight words",
     test: (d) => goalLines(d).some((l) => ISSUE.test(l) && l.split(/\s+/).length >= 8),
-    tryNext: "add the reason after the issue number: what about that issue would fool an agent working alone",
+    tryNext:
+      "add the reason after the issue number: what about that issue would fool an agent working alone",
   },
 ] satisfies Rule[];

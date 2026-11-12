@@ -91,15 +91,15 @@ public number from a real company, and a diagram. Each step has a challenge, a D
 command, `bun run verify <step-name>`, that reads the files you produced and prints PASS or FAIL with what to
 try next. You work in the Claude Code CLI; the checks read your files, never your chat.
 
-| Part | Answers | Steps | Minutes |
-|---|---|---|---|
-| [0. Meet the library](parts/00-meet-the-library/README.md) | what are we building | `meet-the-library` | 15 |
-| [1. Write the work order](parts/01-write-the-work-order/README.md) | does it know what done looks like | `write-the-issue-form`, `size-the-backlog`, `write-the-spec` | 50 |
-| [2. Teach the repo](parts/02-teach-the-repo/README.md) | what must it know, what may it touch | `trim-the-agents-file`, `add-a-path-rule`, `package-the-triage-skill` | 45 |
-| [3. Split the roles](parts/03-split-the-roles/README.md) | can it check its own work | `split-planner-and-builder`, `isolate-the-builder`, `build-the-reviewer`, `catch-the-planted-bug` | 65 |
-| [4. Gate the agent](parts/04-gate-the-agent/README.md) | who has the last word | `deny-the-shortcuts`, `lock-the-tests`, `demand-proof-before-stop`, `protect-the-main-branch` | 60 |
-| [5. Run it unattended](parts/05-run-it-unattended/README.md) | what stops it, where the result goes | `run-one-issue-headless`, `run-from-a-label`, `run-two-at-once` (elective) | 65 |
-| [6. Price and ship](parts/06-price-and-ship/README.md) | what it cost, was it worth it | `route-models-by-stage`, `cap-the-spend`, `ship-the-factory` | 50 |
+| Part                                                               | Answers                              | Steps                                                                                             | Minutes |
+| ------------------------------------------------------------------ | ------------------------------------ | ------------------------------------------------------------------------------------------------- | ------- |
+| [0. Meet the library](parts/00-meet-the-library/README.md)         | what are we building                 | `meet-the-library`                                                                                | 15      |
+| [1. Write the work order](parts/01-write-the-work-order/README.md) | does it know what done looks like    | `write-the-issue-form`, `size-the-backlog`, `write-the-spec`                                      | 50      |
+| [2. Teach the repo](parts/02-teach-the-repo/README.md)             | what must it know, what may it touch | `trim-the-agents-file`, `add-a-path-rule`, `package-the-triage-skill`                             | 45      |
+| [3. Split the roles](parts/03-split-the-roles/README.md)           | can it check its own work            | `split-planner-and-builder`, `isolate-the-builder`, `build-the-reviewer`, `catch-the-planted-bug` | 65      |
+| [4. Gate the agent](parts/04-gate-the-agent/README.md)             | who has the last word                | `deny-the-shortcuts`, `lock-the-tests`, `demand-proof-before-stop`, `protect-the-main-branch`     | 60      |
+| [5. Run it unattended](parts/05-run-it-unattended/README.md)       | what stops it, where the result goes | `run-one-issue-headless`, `run-from-a-label`, `run-two-at-once` (elective)                        | 65      |
+| [6. Price and ship](parts/06-price-and-ship/README.md)             | what it cost, was it worth it        | `route-models-by-stage`, `cap-the-spend`, `ship-the-factory`                                      | 50      |
 
 The same parts run as one long session, four shorter sessions, or a six-session cohort: see `schedules.toml`.
 The build map for every part is in [PARTS.md](PARTS.md).

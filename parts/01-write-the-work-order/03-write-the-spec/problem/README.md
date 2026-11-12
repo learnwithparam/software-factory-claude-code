@@ -50,12 +50,12 @@ Expect: `Done. All 7 rules pass.`
 
 ## If you get stuck
 
-| What you see | Fix |
-|---|---|
-| `FAIL ... has Outcome, Requirements ...` | Use `## Outcome` and the other four headings exactly, with text under each. |
-| `FAIL Requirements lists at least three lines` | Start each line `- R1. ` with the id first. |
+| What you see                                        | Fix                                                                                                             |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `FAIL ... has Outcome, Requirements ...`            | Use `## Outcome` and the other four headings exactly, with text under each.                                     |
+| `FAIL Requirements lists at least three lines`      | Start each line `- R1. ` with the id first.                                                                     |
 | `FAIL every requirement opens with an EARS keyword` | "Inducted members can take class C tools" has no trigger. Write "When a member with ..., the system shall ...". |
-| `FAIL every pass entry starts with passes: false` | Nothing is built yet, so nothing passes. Only a green test may flip it. |
+| `FAIL every pass entry starts with passes: false`   | Nothing is built yet, so nothing passes. Only a green test may flip it.                                         |
 
 EARS was first described by Alistair Mavin and colleagues at Rolls-Royce: https://alistairmavin.com/ears/
 

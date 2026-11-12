@@ -18,10 +18,15 @@ const money = (cents: number) => `£${(cents / 100).toFixed(2)}`;
 
 if (cmd === "overdue") {
   const rows = db
-    .query("SELECT loans.*, items.name AS item FROM loans JOIN items ON items.id = item_id WHERE returned_date IS NULL")
+    .query(
+      "SELECT loans.*, items.name AS item FROM loans JOIN items ON items.id = item_id WHERE returned_date IS NULL",
+    )
     .all() as { id: string; item: string; due_date: string }[];
   const late = rows.filter((r) => isOverdue(r.due_date, today));
-  for (const r of late) console.log(`${r.id}  ${r.item}  due ${r.due_date}  fee so far ${money(lateFeeCents(r.due_date, today, perDay))}`);
+  for (const r of late)
+    console.log(
+      `${r.id}  ${r.item}  due ${r.due_date}  fee so far ${money(lateFeeCents(r.due_date, today, perDay))}`,
+    );
   console.log(`desk: ${late.length} overdue loan(s)`);
 } else if (cmd === "search") {
   const found = searchMembers(db, args.join(" "));
@@ -30,7 +35,10 @@ if (cmd === "overdue") {
   console.log(`desk: ${found.length} member(s) found`);
 } else if (cmd === "lend") {
   const item = db.query("SELECT * FROM items WHERE id = ?").get(args[0]) as Item | null;
-  const row = db.query("SELECT * FROM members WHERE id = ?").get(args[1]) as Record<string, unknown> | null;
+  const row = db.query("SELECT * FROM members WHERE id = ?").get(args[1]) as Record<
+    string,
+    unknown
+  > | null;
   if (!item || !row) {
     console.log("desk: no such item or member");
     process.exit(1);
@@ -39,9 +47,10 @@ if (cmd === "overdue") {
   logEvent("lend", { item_id: args[0], member_id: args[1], ...d });
   console.log(d.ok ? `desk: ${item.name} can go out` : `desk: refused, ${d.reason}`);
 } else if (cmd === "split") {
-  const charge = db.query("SELECT * FROM damage_charges WHERE id = ?").get(args[0]) as
-    | { amount_cents: number; split_between: string }
-    | null;
+  const charge = db.query("SELECT * FROM damage_charges WHERE id = ?").get(args[0]) as {
+    amount_cents: number;
+    split_between: string;
+  } | null;
   if (!charge) {
     console.log("desk: no such damage charge");
     process.exit(1);

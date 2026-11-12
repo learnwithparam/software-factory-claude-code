@@ -9,7 +9,9 @@ export function overlaps(a: Range, b: Range): boolean {
 
 export function clashes(db: Database, itemId: string, wanted: Range): string[] {
   const loans = db
-    .query("SELECT id, out_date AS 'from', due_date AS 'to' FROM loans WHERE item_id = ? AND returned_date IS NULL")
+    .query(
+      "SELECT id, out_date AS 'from', due_date AS 'to' FROM loans WHERE item_id = ? AND returned_date IS NULL",
+    )
     .all(itemId) as (Range & { id: string })[];
   const held = db
     .query("SELECT id, from_date AS 'from', to_date AS 'to' FROM reservations WHERE item_id = ?")

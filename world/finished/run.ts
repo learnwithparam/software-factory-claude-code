@@ -8,7 +8,16 @@
 // replays a recorded run from world/recordings/: the stream-json transcripts a real run printed and the
 // changes it made. A replay applies those changes to a fresh copy, runs the gate for real, and runs the
 // factory's hooks again on the exact events Claude Code sent them, so every claim is checked again.
-import { appendFileSync, cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  appendFileSync,
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { parseResult, type Result } from "../../checks/lib/result";
 import { runHook } from "../../checks/lib/run";
@@ -31,7 +40,14 @@ const green = paint(32);
 const dim = paint(2);
 
 type StageName = "triage" | "spec" | "build" | "review";
-type Stage = { name: StageName; role: Role; tools: string; maxTurns: number; budget: number; schema?: object };
+type Stage = {
+  name: StageName;
+  role: Role;
+  tools: string;
+  maxTurns: number;
+  budget: number;
+  schema?: object;
+};
 const TRIAGE_SCHEMA = {
   type: "object",
   properties: {
@@ -51,7 +67,11 @@ const REVIEW_SCHEMA = {
       type: "array",
       items: {
         type: "object",
-        properties: { file: { type: "string" }, line: { type: "integer" }, evidence: { type: "string" } },
+        properties: {
+          file: { type: "string" },
+          line: { type: "integer" },
+          evidence: { type: "string" },
+        },
         required: ["file", "line", "evidence"],
       },
     },
@@ -64,23 +84,48 @@ const STAGES: Stage[] = [
   { name: "triage", role: "fast", tools: READ, maxTurns: 12, budget: 0.5, schema: TRIAGE_SCHEMA },
   { name: "spec", role: "smart", tools: WORK, maxTurns: 30, budget: 2 },
   { name: "build", role: "smart", tools: WORK, maxTurns: 40, budget: 3 },
-  { name: "review", role: "judge", tools: `${READ},Bash(git diff *)`, maxTurns: 20, budget: 1.5, schema: REVIEW_SCHEMA },
+  {
+    name: "review",
+    role: "judge",
+    tools: `${READ},Bash(git diff *)`,
+    maxTurns: 20,
+    budget: 1.5,
+    schema: REVIEW_SCHEMA,
+  },
 ];
 const CAP = Number(process.env.FACTORY_CAP_USD ?? 10);
 
 // ---------- the copy of the app every run works in ----------
 
 const sh = (cmd: string[], cwd: string, env: Record<string, string> = {}) => {
-  const r = Bun.spawnSync(cmd, { cwd, stdout: "pipe", stderr: "pipe", env: { ...process.env, ...env } });
+  const r = Bun.spawnSync(cmd, {
+    cwd,
+    stdout: "pipe",
+    stderr: "pipe",
+    env: { ...process.env, ...env },
+  });
   return { code: r.exitCode ?? 1, out: r.stdout.toString() + r.stderr.toString() };
 };
 const git = (repo: string, ...a: string[]) =>
-  sh(["git", "-c", "user.name=Northside factory", "-c", "user.email=factory@northside.invalid", "-c", "commit.gpgsign=false", ...a], repo);
+  sh(
+    [
+      "git",
+      "-c",
+      "user.name=Northside factory",
+      "-c",
+      "user.email=factory@northside.invalid",
+      "-c",
+      "commit.gpgsign=false",
+      ...a,
+    ],
+    repo,
+  );
 
 function freshCopy(repo: string) {
   rmSync(repo, { recursive: true, force: true });
   mkdirSync(join(repo, ".factory"), { recursive: true });
-  for (const p of ["src", "tests", "seed", "README.md"]) cpSync(join(ROOT, "world", "app", p), join(repo, p), { recursive: true });
+  for (const p of ["src", "tests", "seed", "README.md"])
+    cpSync(join(ROOT, "world", "app", p), join(repo, p), { recursive: true });
   cpSync(join(FINISHED, "factory"), repo, { recursive: true });
   cpSync(join(ROOT, "world", "gate.ts"), join(repo, ".factory", "gate.ts"));
   git(repo, "init", "-q", "-b", "main");
@@ -94,21 +139,39 @@ function snapshot(repo: string, label: string, tag?: string) {
   git(repo, "add", "-A");
   if (live) {
     mkdirSync(join(out, "patches"), { recursive: true });
-    writeFileSync(join(out, "patches", `${label}.patch`), git(repo, "diff", "--cached", "--binary").out);
+    writeFileSync(
+      join(out, "patches", `${label}.patch`),
+      git(repo, "diff", "--cached", "--binary").out,
+    );
   }
   git(repo, "commit", "-q", "--allow-empty", "-m", `factory: ${label} for issue ${n}`);
   if (tag) git(repo, "tag", "-f", tag);
 }
 const gate = (repo: string) => {
   const r = sh(["bun", "run", "gate"], repo);
-  const rec = existsSync(join(repo, ".factory", "gate.json")) ? JSON.parse(readFileSync(join(repo, ".factory", "gate.json"), "utf8")) : null;
-  const line = r.out.split("\n").filter((l) => l.startsWith("gate:")).pop() ?? r.out.trim().split("\n").pop() ?? "";
+  const rec = existsSync(join(repo, ".factory", "gate.json"))
+    ? JSON.parse(readFileSync(join(repo, ".factory", "gate.json"), "utf8"))
+    : null;
+  const line =
+    r.out
+      .split("\n")
+      .filter((l) => l.startsWith("gate:"))
+      .pop() ??
+    r.out.trim().split("\n").pop() ??
+    "";
   return { code: r.code, line, rec };
 };
 
 // ---------- reading a stream-json transcript ----------
 
-type Summary = { cost: number; turns: number; structured: any; isError: boolean; result: string; blocked: { tool: string; file: string; reason: string }[] };
+type Summary = {
+  cost: number;
+  turns: number;
+  structured: any;
+  isError: boolean;
+  result: string;
+  blocked: { tool: string; file: string; reason: string }[];
+};
 function show(line: string, s: Summary) {
   let e: any;
   try {
@@ -119,25 +182,46 @@ function show(line: string, s: Summary) {
   if (e.type === "assistant" && !e.parent_tool_use_id) {
     for (const c of e.message?.content ?? []) {
       if (c.type !== "tool_use") continue;
-      const what = c.input?.file_path ? relativePath(c.input.file_path) : (c.input?.command ?? c.input?.pattern ?? "");
-      if (c.name !== "StructuredOutput") console.log(dim(`        ${c.name} ${String(what).split("\n")[0].slice(0, 90)}`));
+      const what = c.input?.file_path
+        ? relativePath(c.input.file_path)
+        : (c.input?.command ?? c.input?.pattern ?? "");
+      if (c.name !== "StructuredOutput")
+        console.log(dim(`        ${c.name} ${String(what).split("\n")[0].slice(0, 90)}`));
     }
   }
   if (e.type === "user") {
     for (const c of e.message?.content ?? []) {
-      const text = typeof c.content === "string" ? c.content : (c.content ?? []).map((x: any) => x.text ?? "").join(" ");
+      const text =
+        typeof c.content === "string"
+          ? c.content
+          : (c.content ?? []).map((x: any) => x.text ?? "").join(" ");
       if (c.type === "tool_result" && c.is_error && /Blocked: .* tests are locked/.test(text)) {
         const file = text.match(/Blocked: (\S+)/)?.[1] ?? "";
-        s.blocked.push({ tool: "Edit", file: relativePath(file), reason: text.slice(text.indexOf("Blocked:")).trim() });
+        s.blocked.push({
+          tool: "Edit",
+          file: relativePath(file),
+          reason: text.slice(text.indexOf("Blocked:")).trim(),
+        });
         console.log(red(`        BLOCKED by the test-lock hook: ${relativePath(file)}`));
       }
     }
   }
   if (e.type === "system" && e.subtype === "permission_denied") {
-    console.log(dim(`        denied: ${e.tool_name} is not on this stage's allow list (${e.decision_reason_type})`));
+    console.log(
+      dim(
+        `        denied: ${e.tool_name} is not on this stage's allow list (${e.decision_reason_type})`,
+      ),
+    );
   }
-  if (e.type === "system" && e.subtype === "hook_response" && /Stop/.test(e.hook_event ?? e.hook_name ?? "") && /"decision":\s*"block"/.test(e.output ?? e.stdout ?? "")) {
-    console.log(red("        Stop hook held the builder: the gate has not passed on this code yet"));
+  if (
+    e.type === "system" &&
+    e.subtype === "hook_response" &&
+    /Stop/.test(e.hook_event ?? e.hook_name ?? "") &&
+    /"decision":\s*"block"/.test(e.output ?? e.stdout ?? "")
+  ) {
+    console.log(
+      red("        Stop hook held the builder: the gate has not passed on this code yet"),
+    );
   }
   if (e.type === "result") {
     s.cost = e.total_cost_usd ?? 0;
@@ -148,17 +232,35 @@ function show(line: string, s: Summary) {
   }
 }
 const relativePath = (p: string) => String(p).replace(/^.*\/repo\//, "");
-const blank = (): Summary => ({ cost: 0, turns: 0, structured: null, isError: false, result: "", blocked: [] });
+const blank = (): Summary => ({
+  cost: 0,
+  turns: 0,
+  structured: null,
+  isError: false,
+  result: "",
+  blocked: [],
+});
 
 function fill(template: string, extra: Record<string, string> = {}) {
   const i = readIssue(n);
-  const vars: Record<string, string> = { number: String(n), title: i.title, body: i.body, feedback: "", ...extra };
+  const vars: Record<string, string> = {
+    number: String(n),
+    title: i.title,
+    body: i.body,
+    feedback: "",
+    ...extra,
+  };
   return template.replace(/\{\{(\w+)\}\}/g, (_, k) => vars[k] ?? "");
 }
 
 // ---------- one live stage: a real claude -p run ----------
 
-async function liveStage(repo: string, st: Stage, file: string, extra: Record<string, string> = {}): Promise<Summary> {
+async function liveStage(
+  repo: string,
+  st: Stage,
+  file: string,
+  extra: Record<string, string> = {},
+): Promise<Summary> {
   const prompt = fill(readFileSync(join(FINISHED, "stages", `${st.name}.md`), "utf8"), extra);
   const argv = [
     "claude",
@@ -178,13 +280,23 @@ async function liveStage(repo: string, st: Stage, file: string, extra: Record<st
   mkdirSync(dirname(file), { recursive: true });
   mkdirSync(join(out, "hooks"), { recursive: true });
   writeFileSync(file, "");
-  appendFileSync(join(out, "commands.txt"), `${st.name}: (cd repo && FACTORY_STAGE=${st.name} ${argv.slice(0, 2).join(" ")} "<world/finished/stages/${st.name}.md>" ${argv.slice(3).map((a) => (/[\s{"*(]/.test(a) ? `'${a}'` : a)).join(" ")})\n`);
+  appendFileSync(
+    join(out, "commands.txt"),
+    `${st.name}: (cd repo && FACTORY_STAGE=${st.name} ${argv.slice(0, 2).join(" ")} "<world/finished/stages/${st.name}.md>" ${argv
+      .slice(3)
+      .map((a) => (/[\s{"*(]/.test(a) ? `'${a}'` : a))
+      .join(" ")})\n`,
+  );
   const p = Bun.spawn(argv, {
     cwd: repo,
     stdin: "ignore",
     stdout: "pipe",
     stderr: "pipe",
-    env: { ...process.env, FACTORY_STAGE: st.name, FACTORY_HOOK_LOG: join(out, "hooks", `${basename(file, ".jsonl")}.jsonl`) },
+    env: {
+      ...process.env,
+      FACTORY_STAGE: st.name,
+      FACTORY_HOOK_LOG: join(out, "hooks", `${basename(file, ".jsonl")}.jsonl`),
+    },
   });
   const s = blank();
   let buf = "";
@@ -224,7 +336,10 @@ const applyPatch = (repo: string, recDir: string, name: string) => {
   const patch = join(recDir, "patches", `${name}.patch`);
   if (!existsSync(patch) || !readFileSync(patch, "utf8").trim()) return;
   const r = sh(["git", "apply", "--whitespace=nowarn", patch], repo);
-  if (r.code !== 0) throw new Error(`the recording no longer fits the app: ${r.out.trim()}. Restore it with git checkout world/app`);
+  if (r.code !== 0)
+    throw new Error(
+      `the recording no longer fits the app: ${r.out.trim()}. Restore it with git checkout world/app`,
+    );
 };
 
 // ---------- the line ----------
@@ -234,7 +349,16 @@ const live = Boolean(recordAs) || (Boolean(status?.live) && !args.includes("--re
 const runName = flag("--run") ?? "run-1";
 const recDir = join(recordingsFor(n), runName);
 if (!live && !existsSync(recDir)) {
-  console.log(`finished: there is no recorded run for issue ${n} (${runName}). Recorded issues: ${existsSync(join(ROOT, "world", "recordings")) ? readdirSync(join(ROOT, "world", "recordings")).filter((d) => d.startsWith("issue-")).map((d) => d.slice(6)).join(", ") : "none"}.`);
+  console.log(
+    `finished: there is no recorded run for issue ${n} (${runName}). Recorded issues: ${
+      existsSync(join(ROOT, "world", "recordings"))
+        ? readdirSync(join(ROOT, "world", "recordings"))
+            .filter((d) => d.startsWith("issue-"))
+            .map((d) => d.slice(6))
+            .join(", ")
+        : "none"
+    }.`,
+  );
   process.exit(1);
 }
 if (recordAs && !canRunLive().live) {
@@ -249,11 +373,18 @@ freshCopy(repo);
 const issueText = readIssue(n);
 if (live) {
   const s = claudeStatus();
-  writeFileSync(join(out, "run.json"), `${JSON.stringify({ issue: n, claude_code: s.version, recorded_at: new Date().toISOString().slice(0, 10) }, null, 2)}\n`);
-  console.log(`finished: issue ${n}, "${issueText.title}". Live: each stage is a real claude -p run (Claude Code ${s.version}).`);
+  writeFileSync(
+    join(out, "run.json"),
+    `${JSON.stringify({ issue: n, claude_code: s.version, recorded_at: new Date().toISOString().slice(0, 10) }, null, 2)}\n`,
+  );
+  console.log(
+    `finished: issue ${n}, "${issueText.title}". Live: each stage is a real claude -p run (Claude Code ${s.version}).`,
+  );
 } else {
   const meta = JSON.parse(readFileSync(join(recDir, "run.json"), "utf8"));
-  console.log(`finished: issue ${n}, "${issueText.title}". Replay of ${relative(ROOT, recDir)} (${status ? `${status.why}` : "--replay"}): a real claude -p run on Claude Code ${meta.claude_code}; the gate and the hooks run again here.`);
+  console.log(
+    `finished: issue ${n}, "${issueText.title}". Replay of ${relative(ROOT, recDir)} (${status ? `${status.why}` : "--replay"}): a real claude -p run on Claude Code ${meta.claude_code}; the gate and the hooks run again here.`,
+  );
 }
 
 const roles: Result["roles_by_stage"] = {};
@@ -265,7 +396,11 @@ let review: Result["review"] = null;
 let rounds = 0;
 let lastGate: ReturnType<typeof gate> | null = null;
 
-async function stage(st: Stage, label: string, extra: Record<string, string> = {}): Promise<Summary> {
+async function stage(
+  st: Stage,
+  label: string,
+  extra: Record<string, string> = {},
+): Promise<Summary> {
   roles[st.name] = st.role;
   console.log(`\n${label.padEnd(8)} ${st.role.padEnd(5)}`);
   const transcript = join(out, "transcripts", `${label}.jsonl`);
@@ -276,15 +411,28 @@ async function stage(st: Stage, label: string, extra: Record<string, string> = {
     applyPatch(repo, recDir, label);
   }
   cost += s.cost;
-  claudeRuns.push({ stage: label, transcript: relative(out, transcript), turns: s.turns, cost_usd: s.cost });
+  claudeRuns.push({
+    stage: label,
+    transcript: relative(out, transcript),
+    turns: s.turns,
+    cost_usd: s.cost,
+  });
   for (const b of s.blocked) blocked.push({ stage: st.name, ...b });
-  console.log(dim(`        ${s.turns} turns, $${s.cost.toFixed(3)}${s.isError ? `, ended with an error: ${s.result.slice(0, 80)}` : ""}`));
+  console.log(
+    dim(
+      `        ${s.turns} turns, $${s.cost.toFixed(3)}${s.isError ? `, ended with an error: ${s.result.slice(0, 80)}` : ""}`,
+    ),
+  );
   return s;
 }
 const byName = (x: StageName) => STAGES.find((s) => s.name === x)!;
 const overCap = () => {
   if (cost <= CAP) return false;
-  console.log(red(`\nfinished: the run spent $${cost.toFixed(2)}, over the cap of $${CAP.toFixed(2)} (FACTORY_CAP_USD). Stopping.`));
+  console.log(
+    red(
+      `\nfinished: the run spent $${cost.toFixed(2)}, over the cap of $${CAP.toFixed(2)} (FACTORY_CAP_USD). Stopping.`,
+    ),
+  );
   state = "stopped_budget";
   return true;
 };
@@ -302,16 +450,25 @@ if (state === "draft_pr" && !overCap()) {
   await stage(byName("spec"), "spec");
   snapshot(repo, "spec", "factory-spec");
   const g = gate(repo);
-  console.log((g.code === 0 ? dim : red)(`        ${g.line}${g.code === 0 ? "" : " (red on purpose: the new tests fail until the build)"}`));
+  console.log(
+    (g.code === 0 ? dim : red)(
+      `        ${g.line}${g.code === 0 ? "" : " (red on purpose: the new tests fail until the build)"}`,
+    ),
+  );
 }
 
 // 3. Build: tests locked, the Stop hook holds the builder until the gate passes. At most 2 rounds.
 if (state === "draft_pr") {
-  const roundsDone = live ? 2 : readdirSync(join(recDir, "transcripts")).filter((f) => f.startsWith("build")).length;
+  const roundsDone = live
+    ? 2
+    : readdirSync(join(recDir, "transcripts")).filter((f) => f.startsWith("build")).length;
   for (let r = 1; r <= roundsDone && !overCap(); r++) {
     rounds = r;
     const label = r === 1 ? "build" : `build-${r}`;
-    const feedback = r === 1 ? "" : `\nThe gate still fails after your last round:\n${lastGate?.line ?? ""}\nFix the code under src/.`;
+    const feedback =
+      r === 1
+        ? ""
+        : `\nThe gate still fails after your last round:\n${lastGate?.line ?? ""}\nFix the code under src/.`;
     await stage(byName("build"), label, { feedback });
     lastGate = gate(repo);
     snapshot(repo, label);
@@ -324,9 +481,16 @@ if (state === "draft_pr") {
 // 4. Review: read only, a fresh context, a verdict with evidence.
 if (state === "draft_pr" && !overCap()) {
   const r = await stage(byName("review"), "review");
-  review = r.structured ? { verdict: r.structured.verdict, findings: r.structured.findings ?? [] } : null;
-  console.log((review?.verdict === "pass" ? green : red)(`        verdict ${review?.verdict ?? "none"}, ${review?.findings.length ?? 0} findings`));
-  for (const f of review?.findings ?? []) console.log(red(`        ${f.file}:${f.line} ${f.evidence}`));
+  review = r.structured
+    ? { verdict: r.structured.verdict, findings: r.structured.findings ?? [] }
+    : null;
+  console.log(
+    (review?.verdict === "pass" ? green : red)(
+      `        verdict ${review?.verdict ?? "none"}, ${review?.findings.length ?? 0} findings`,
+    ),
+  );
+  for (const f of review?.findings ?? [])
+    console.log(red(`        ${f.file}:${f.line} ${f.evidence}`));
   if (review?.verdict !== "pass") state = "gate_failed";
 }
 
@@ -341,19 +505,29 @@ if (existsSync(hookDir)) {
       if (!line.trim()) continue;
       const ev = JSON.parse(line);
       if (ev.hook_event_name !== "PreToolUse" || !ev.tool_input?.file_path) continue;
-      const v = runHook(`bun "$CLAUDE_PROJECT_DIR"/.claude/hooks/lock-tests.ts`, ev, repo, { FACTORY_STAGE: stageName, FACTORY_HOOK_LOG: "" });
+      const v = runHook(`bun "$CLAUDE_PROJECT_DIR"/.claude/hooks/lock-tests.ts`, ev, repo, {
+        FACTORY_STAGE: stageName,
+        FACTORY_HOOK_LOG: "",
+      });
       const touchesTest = /(^|\/)tests?\//.test(String(ev.tool_input?.file_path ?? ""));
       hookChecks++;
       if (v.blocked !== (stageName === "build" && touchesTest)) hookMismatch++;
     }
   }
-  console.log(dim(`\nhooks    ran the test-lock hook again on the ${hookChecks} file edits Claude Code sent it: ${hookMismatch === 0 ? "every verdict matches" : `${hookMismatch} verdicts differ`}`));
+  console.log(
+    dim(
+      `\nhooks    ran the test-lock hook again on the ${hookChecks} file edits Claude Code sent it: ${hookMismatch === 0 ? "every verdict matches" : `${hookMismatch} verdicts differ`}`,
+    ),
+  );
 }
 
 const testsEdited = existsSync(join(repo, ".git"))
-  ? sh(["git", "diff", "--name-only", "factory-spec", "HEAD"], repo).out.split("\n").filter((f) => /^tests?\//.test(f))
+  ? sh(["git", "diff", "--name-only", "factory-spec", "HEAD"], repo)
+      .out.split("\n")
+      .filter((f) => /^tests?\//.test(f))
   : [];
-if (sh(["git", "rev-parse", "-q", "--verify", "factory-spec"], repo).code !== 0) testsEdited.length = 0;
+if (sh(["git", "rev-parse", "-q", "--verify", "factory-spec"], repo).code !== 0)
+  testsEdited.length = 0;
 if (testsEdited.length && state === "draft_pr") state = "gate_failed";
 
 const prPath = join(out, "pr.md");
@@ -368,7 +542,14 @@ const result: Result = {
   branch: `factory/issue-${n}`,
   worktree: relative(ROOT, repo),
   pr_url: state === "draft_pr" ? relative(ROOT, prPath) : null,
-  gate: lastGate?.rec ? { command: "bun run gate", exit_code: lastGate.rec.exit_code, tree: lastGate.rec.tree, rounds } : null,
+  gate: lastGate?.rec
+    ? {
+        command: "bun run gate",
+        exit_code: lastGate.rec.exit_code,
+        tree: lastGate.rec.tree,
+        rounds,
+      }
+    : null,
   review,
   tests_edited: testsEdited,
   blocked_by_hooks: blocked,
@@ -395,5 +576,10 @@ if (live && recordAs) {
 console.log(
   `\nfinished: issue ${n} ended in ${state}. Gate ${lastGate?.code === 0 ? "pass" : "not passed"} after ${rounds} build round${rounds === 1 ? "" : "s"}, ${blocked.length} edit${blocked.length === 1 ? "" : "s"} blocked by a hook, ${testsEdited.length} test files edited in build, review ${review?.verdict ?? "not run"}, cost $${cost.toFixed(2)}.`,
 );
-console.log(dim(`finished: wrote ${relative(ROOT, join(out, "result.json"))}${state === "draft_pr" ? ` and the draft PR body ${relative(ROOT, prPath)}` : ""}`));
-if (recordAs) console.log(dim(`finished: recorded into ${relative(ROOT, join(recordingsFor(n), recordAs))}`));
+console.log(
+  dim(
+    `finished: wrote ${relative(ROOT, join(out, "result.json"))}${state === "draft_pr" ? ` and the draft PR body ${relative(ROOT, prPath)}` : ""}`,
+  ),
+);
+if (recordAs)
+  console.log(dim(`finished: recorded into ${relative(ROOT, join(recordingsFor(n), recordAs))}`));

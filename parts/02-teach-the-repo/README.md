@@ -23,11 +23,11 @@ flowchart LR
   T[Factory asks: may I start issue N?] --> K[skill triage loads] --> D["TYPE / RISK / FILES / DECISION"]
 ```
 
-| Step | Minutes | What you produce | What its check reads |
-|---|---|---|---|
-| `trim-the-agents-file` | 15 | `AGENTS.md` under 80 lines and a `CLAUDE.md` that imports it | headings Commands, Protected paths, Done when; `bun run gate` named; no line that only restates a folder; `@AGENTS.md` in CLAUDE.md |
-| `add-a-path-rule` | 10 | `.claude/rules/money.md` with `paths` frontmatter | frontmatter parses; the glob matches `src/fees/split.ts` and not `src/items/borrow.ts`; body says integer cents and names the test file |
-| `package-the-triage-skill` | 20 | `.claude/skills/triage/SKILL.md` | a skill that loads (name, description, `allowed-tools` with no Edit or Write); the reply contract; three recorded `claude -p` runs of the skill on issue 6 (`world/recordings/`, see `RECORD.md`) end with `DECISION: refuse` in at least 2 in 2 of 3 runs |
+| Step                       | Minutes | What you produce                                             | What its check reads                                                                                                                                                                                                                                       |
+| -------------------------- | ------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `trim-the-agents-file`     | 15      | `AGENTS.md` under 80 lines and a `CLAUDE.md` that imports it | headings Commands, Protected paths, Done when; `bun run gate` named; no line that only restates a folder; `@AGENTS.md` in CLAUDE.md                                                                                                                        |
+| `add-a-path-rule`          | 10      | `.claude/rules/money.md` with `paths` frontmatter            | frontmatter parses; the glob matches `src/fees/split.ts` and not `src/items/borrow.ts`; body says integer cents and names the test file                                                                                                                    |
+| `package-the-triage-skill` | 20      | `.claude/skills/triage/SKILL.md`                             | a skill that loads (name, description, `allowed-tools` with no Edit or Write); the reply contract; three recorded `claude -p` runs of the skill on issue 6 (`world/recordings/`, see `RECORD.md`) end with `DECISION: refuse` in at least 2 in 2 of 3 runs |
 
 ## Walkthrough
 

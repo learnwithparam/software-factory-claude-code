@@ -24,12 +24,20 @@ const newer = (have: string, want: string) => {
 };
 
 const required: Line[] = [
-  { ok: newer(Bun.version, "1.4.0"), says: `Bun ${Bun.version}`, fix: "install Bun 1.4 or newer from bun.sh" },
+  {
+    ok: newer(Bun.version, "1.4.0"),
+    says: `Bun ${Bun.version}`,
+    fix: "install Bun 1.4 or newer from bun.sh",
+  },
   { ok: await canLoad(["hono", "zod"]), says: "packages installed", fix: "run bun install" },
   (() => {
     const had = existsSync(DB_PATH);
     if (!had) seed();
-    return { ok: existsSync(DB_PATH), says: had ? "library database built" : "library database built just now", fix: "run bun run world reset" };
+    return {
+      ok: existsSync(DB_PATH),
+      says: had ? "library database built" : "library database built just now",
+      fix: "run bun run world reset",
+    };
   })(),
   {
     ok: process.platform !== "win32",
@@ -42,21 +50,39 @@ const cc = claudeStatus();
 const live: Line[] = [
   {
     ok: cc.installed && recentEnough(cc.version),
-    says: cc.installed ? `Claude Code ${cc.version ?? "(version unknown)"}` : "Claude Code not found",
-    fix: cc.installed ? `run claude update (this course is tested on ${MIN_CLAUDE_CODE} and newer)` : `install it: ${INSTALL}`,
+    says: cc.installed
+      ? `Claude Code ${cc.version ?? "(version unknown)"}`
+      : "Claude Code not found",
+    fix: cc.installed
+      ? `run claude update (this course is tested on ${MIN_CLAUDE_CODE} and newer)`
+      : `install it: ${INSTALL}`,
   },
   {
     ok: cc.signedIn === true,
-    says: !cc.installed ? "Claude Code sign-in: not checked" : cc.signedIn === null ? "Claude Code sign-in: unknown" : cc.signedIn ? "Claude Code signed in" : "Claude Code not signed in",
+    says: !cc.installed
+      ? "Claude Code sign-in: not checked"
+      : cc.signedIn === null
+        ? "Claude Code sign-in: unknown"
+        : cc.signedIn
+          ? "Claude Code signed in"
+          : "Claude Code not signed in",
     fix: "run claude, then type /login and sign in with your Claude account",
   },
 ];
 
-for (const l of required) console.log(`  ${l.ok ? "ok  " : "FAIL"}  ${l.says}${l.ok ? "" : `\n        Try next: ${l.fix}`}`);
-for (const l of live) console.log(`  ${l.ok ? "ok  " : "--  "}  ${l.says}${l.ok ? "" : `  (to run Claude Code yourself: ${l.fix})`}`);
+for (const l of required)
+  console.log(
+    `  ${l.ok ? "ok  " : "FAIL"}  ${l.says}${l.ok ? "" : `\n        Try next: ${l.fix}`}`,
+  );
+for (const l of live)
+  console.log(
+    `  ${l.ok ? "ok  " : "--  "}  ${l.says}${l.ok ? "" : `  (to run Claude Code yourself: ${l.fix})`}`,
+  );
 const need = required.filter((l) => l.ok).length;
 if (need < required.length) {
-  console.log(`doctor: not ready, ${need} of ${required.length} required checks pass. Fix the FAIL lines and run it again.`);
+  console.log(
+    `doctor: not ready, ${need} of ${required.length} required checks pass. Fix the FAIL lines and run it again.`,
+  );
   process.exit(1);
 }
 const liveOk = live.every((l) => l.ok);

@@ -16,7 +16,11 @@ const input = event.tool_input ?? {};
 const tool: string = event.tool_name ?? "";
 
 let touches = "";
-if (["Edit", "Write", "MultiEdit", "NotebookEdit"].includes(tool) && TEST.test(String(input.file_path ?? ""))) touches = input.file_path;
+if (
+  ["Edit", "Write", "MultiEdit", "NotebookEdit"].includes(tool) &&
+  TEST.test(String(input.file_path ?? ""))
+)
+  touches = input.file_path;
 if (tool === "Bash") {
   const cmd = String(input.command ?? "");
   const writes = /(\bsed\s+-i|\brm\b|\bmv\b|\bcp\b|>|\btee\b|git\s+(checkout|restore)\b)/.test(cmd);

@@ -45,12 +45,12 @@ Expect: `Done. All 5 rules pass.`
 
 ## If you get stuck
 
-| What you see | Fix |
-|---|---|
-| `FAIL bun run doctor passes its required checks` | Run `bun run doctor` and follow its `Try next:` line. |
-| `FAIL the finished factory ran issue 2 ...` | Run `bun run finished 2` from the repo root, not from this folder. |
-| `FAIL the line names one issue` | Write the number: `Issue 4, because ...`. |
-| `FAIL the line says why` | Say what about that issue would fool an agent that works alone. |
+| What you see                                     | Fix                                                                |
+| ------------------------------------------------ | ------------------------------------------------------------------ |
+| `FAIL bun run doctor passes its required checks` | Run `bun run doctor` and follow its `Try next:` line.              |
+| `FAIL the finished factory ran issue 2 ...`      | Run `bun run finished 2` from the repo root, not from this folder. |
+| `FAIL the line names one issue`                  | Write the number: `Issue 4, because ...`.                          |
+| `FAIL the line says why`                         | Say what about that issue would fool an agent that works alone.    |
 
 ## Words you will use
 
