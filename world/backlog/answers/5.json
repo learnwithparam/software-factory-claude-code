@@ -1,0 +1,11 @@
+{
+  "issue": 5,
+  "note": "What the coordinator said when a volunteer asked the work-order questions about issue 5. A form whose required field ids match these keys can carry the whole answer.",
+  "answers": {
+    "outcome": "A member without the class C induction cannot borrow a class C tool, at the desk or through the API, and is told why.",
+    "acceptance": "- Ada Okafor (inducted) can borrow the chainsaw saw-01.\n- Ben Halloran (not inducted) is refused saw-01 with a reason that names the induction.\n- Class A and B tools are unchanged for everyone.",
+    "must-not-change": "Repair and already-out refusals keep their wording. No change to src/auth/.",
+    "out-of-scope": "Booking an induction, recording who ran it, and induction expiry.",
+    "risk": "medium"
+  }
+}

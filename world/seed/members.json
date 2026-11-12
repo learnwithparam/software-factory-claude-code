@@ -1,0 +1,10 @@
+[
+  { "id": "m-001", "name": "Ada Okafor", "phone": "07700 900101", "email": "ada@example.org", "joined": "2024-03-02", "inductions": ["C"] },
+  { "id": "m-002", "name": "Ben Halloran", "phone": "07700 900102", "email": "ben@example.org", "joined": "2024-05-19", "inductions": [] },
+  { "id": "m-003", "name": "Chen Wei", "phone": "07700 900103", "email": "chen@example.org", "joined": "2024-09-11", "inductions": [] },
+  { "id": "m-004", "name": "Dana Kowalski", "phone": "07700 900104", "email": "dana@example.org", "joined": "2025-01-07", "inductions": ["C"] },
+  { "id": "m-005", "name": "Eli Brennan", "phone": "07700 900105", "email": "eli@example.org", "joined": "2025-02-23", "inductions": [] },
+  { "id": "m-006", "name": "Farah Haddad", "phone": "07700 900106", "email": "farah@example.org", "joined": "2025-06-30", "inductions": [] },
+  { "id": "m-007", "name": "Gus Pereira", "phone": "07700 900107", "email": "gus@example.org", "joined": "2025-08-14", "inductions": [] },
+  { "id": "m-008", "name": "Hana Sato", "phone": "07700 900108", "email": "hana@example.org", "joined": "2025-10-01", "inductions": [] }
+]
