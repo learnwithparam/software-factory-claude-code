@@ -11,14 +11,14 @@
   "roles_by_stage": {
     "triage": "fast"
   },
-  "cost_usd": 0.0028,
+  "cost_usd": 0.0025,
   "replayed": false,
   "claude_runs": [
     {
       "stage": "triage",
       "transcript": "transcripts/triage.jsonl",
-      "turns": 4,
-      "cost_usd": 0.00279405
+      "turns": 3,
+      "cost_usd": 0.0024687100000000003
     }
   ]
 }

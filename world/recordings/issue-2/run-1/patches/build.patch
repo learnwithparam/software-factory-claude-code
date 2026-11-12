@@ -1,9 +1,21 @@
+diff --git a/package.json b/package.json
+index 531ca8e..acb1184 100644
+--- a/package.json
++++ b/package.json
+@@ -3,6 +3,7 @@
+   "private": true,
+   "type": "module",
+   "scripts": {
++    "desk": "bun src/desk.ts",
+     "gate": "bun .factory/gate.ts . --record .factory/gate.json"
+   }
+ }
 diff --git a/src/fees/split.ts b/src/fees/split.ts
-index 63e6c20..6948a05 100644
+index 808a476..19bdc8b 100644
 --- a/src/fees/split.ts
 +++ b/src/fees/split.ts
-@@ -3,5 +3,6 @@ export function splitCharge(totalCents: number, ways: number): number[] {
-   if (!Number.isInteger(totalCents) || totalCents < 0) throw new Error("totalCents must be a whole number of cents");
+@@ -4,5 +4,6 @@ export function splitCharge(totalCents: number, ways: number): number[] {
+     throw new Error("totalCents must be a whole number of cents");
    if (!Number.isInteger(ways) || ways < 1) throw new Error("ways must be at least 1");
    const share = Math.floor(totalCents / ways);
 -  return Array.from({ length: ways }, () => share);

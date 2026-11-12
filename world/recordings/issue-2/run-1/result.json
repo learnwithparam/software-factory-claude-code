@@ -7,7 +7,7 @@
   "gate": {
     "command": "bun run gate",
     "exit_code": 0,
-    "tree": "d5fc13fd637c",
+    "tree": "66f8bbd8342f",
     "rounds": 1
   },
   "review": {
@@ -22,32 +22,32 @@
     "build": "smart",
     "review": "judge"
   },
-  "cost_usd": 0.2067,
+  "cost_usd": 0.5193,
   "replayed": false,
   "claude_runs": [
     {
       "stage": "triage",
       "transcript": "transcripts/triage.jsonl",
       "turns": 7,
-      "cost_usd": 0.00346648
+      "cost_usd": 0.0093345
     },
     {
       "stage": "spec",
       "transcript": "transcripts/spec.jsonl",
       "turns": 9,
-      "cost_usd": 0.09591250000000001
+      "cost_usd": 0.2108846
     },
     {
       "stage": "build",
       "transcript": "transcripts/build.jsonl",
-      "turns": 7,
-      "cost_usd": 0.0590123
+      "turns": 14,
+      "cost_usd": 0.1225018
     },
     {
       "stage": "review",
       "transcript": "transcripts/review.jsonl",
-      "turns": 4,
-      "cost_usd": 0.048326299999999996
+      "turns": 5,
+      "cost_usd": 0.1765557
     }
   ]
 }

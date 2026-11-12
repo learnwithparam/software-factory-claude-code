@@ -1,12 +1,12 @@
 diff --git a/src/fees/split.ts b/src/fees/split.ts
-index 63e6c20..a5ba674 100644
+index 808a476..19bdc8b 100644
 --- a/src/fees/split.ts
 +++ b/src/fees/split.ts
-@@ -3,5 +3,6 @@ export function splitCharge(totalCents: number, ways: number): number[] {
-   if (!Number.isInteger(totalCents) || totalCents < 0) throw new Error("totalCents must be a whole number of cents");
+@@ -4,5 +4,6 @@ export function splitCharge(totalCents: number, ways: number): number[] {
+     throw new Error("totalCents must be a whole number of cents");
    if (!Number.isInteger(ways) || ways < 1) throw new Error("ways must be at least 1");
    const share = Math.floor(totalCents / ways);
 -  return Array.from({ length: ways }, () => share);
-+  const extra = totalCents % ways;
++  const extra = totalCents - share * ways;
 +  return Array.from({ length: ways }, (_, i) => share + (i < extra ? 1 : 0));
  }
