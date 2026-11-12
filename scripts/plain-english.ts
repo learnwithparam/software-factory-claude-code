@@ -62,21 +62,30 @@ function markdownFiles(folder: string, found: string[] = []): string[] {
   return found;
 }
 
+// The fence that a line opens or closes a code block with, or "" for any other line.
+function fenceOn(line: string): string {
+  return line.trim().match(/^`{3,}/)?.[0] ?? "";
+}
+
+// Which fence is open after this line: "" outside a code block.
+// A block closes only on a fence at least as long as the one that opened it,
+// so a ```yaml block quoted inside a ````text block stays inside.
+function openFenceAfter(line: string, openFence: string): string {
+  const fence = fenceOn(line);
+  if (openFence === "") return fence;
+  if (fence.length >= openFence.length) return "";
+  return openFence;
+}
+
 // Keep only the lines a person reads as sentences.
 export function proseOf(markdown: string): string {
   const proseLines: string[] = [];
-  // The fence that opened the current code block, or "" outside one.
   let openFence = "";
   for (const line of markdown.split("\n")) {
-    const fence = line.trim().match(/^`{3,}/)?.[0] ?? "";
-    // A block closes only on a fence at least as long as the one that opened it,
-    // so a ```yaml block quoted inside a ````text block stays inside.
-    const closes = openFence !== "" && fence.length >= openFence.length;
-    if (openFence === "" && fence !== "") openFence = fence;
-    else if (closes) openFence = "";
-    const isFenceOrCode = fence !== "" || openFence !== "";
+    const isFence = fenceOn(line) !== "";
+    openFence = openFenceAfter(line, openFence);
     const isStructure = /^\s*(#|\||<|!\[|Expect:)/.test(line);
-    if (!isFenceOrCode && !isStructure) proseLines.push(line);
+    if (!isFence && openFence === "" && !isStructure) proseLines.push(line);
   }
   // Inline code stays on one line, so a stray backtick cannot hide the paragraphs after it.
   const withoutInlineCode = proseLines.join("\n").replace(/`[^`\n]*`/g, "it");
