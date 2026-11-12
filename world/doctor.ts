@@ -2,7 +2,7 @@
 // Required checks decide the exit code. Live checks only matter from Part 2 on, when Claude Code runs for real.
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { DB_PATH } from "./app/src/db";
+import { DB_PATH, seed } from "./app/src/db";
 import { MIN_CLAUDE_CODE, providerStatus } from "../config/models";
 
 const ROOT = join(import.meta.dir, "..");
@@ -25,7 +25,11 @@ const run = (cmd: string[]) => {
 const required: Line[] = [
   { ok: newer(Bun.version, "1.4.0"), says: `Bun ${Bun.version}`, fix: "install Bun 1.4 or newer from bun.sh" },
   { ok: existsSync(join(ROOT, "node_modules", "hono")), says: "packages installed", fix: "run bun install" },
-  { ok: existsSync(DB_PATH), says: "library database built", fix: "run bun run world" },
+  (() => {
+    const had = existsSync(DB_PATH);
+    if (!had) seed();
+    return { ok: existsSync(DB_PATH), says: had ? "library database built" : "library database built just now", fix: "run bun run world reset" };
+  })(),
   {
     ok: process.platform !== "win32",
     says: `platform ${process.platform}`,
