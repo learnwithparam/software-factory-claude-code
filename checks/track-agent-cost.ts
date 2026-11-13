@@ -39,7 +39,7 @@ function stageRanThroughTheProxy(folder: string): boolean {
 
 function requestAfterBudgetIsRefused(folder: string): boolean {
   const refusal = json<Refusal>(join(folder, "evidence", "refused.json"));
-  return refusal?.status === 400 && refusal.error?.type === "budget_exceeded";
+  return refusal?.status === 422 && refusal.error?.type === "budget_exceeded";
 }
 
 function noKeyInAnyFile(folder: string): boolean {

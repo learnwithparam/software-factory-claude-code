@@ -39,5 +39,5 @@ Stop the stack with docker compose down -v. Search the folder for anything that 
 ## What to check
 
 - `evidence/key-info.json` shows `max_budget` and a `spend` above zero.
-- `evidence/refused.json` has status 400 and the type `budget_exceeded`.
+- `evidence/refused.json` has status 422 and the type `budget_exceeded`.
 - No file outside `.env` holds a key.

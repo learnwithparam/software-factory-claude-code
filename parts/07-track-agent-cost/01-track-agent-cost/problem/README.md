@@ -17,7 +17,7 @@ flowchart LR
   C[Claude Code] -->|ANTHROPIC_BASE_URL, virtual key| L[LiteLLM proxy]
   L -->|provider key| M[model]
   L <--> D[(Postgres: keys and spend)]
-  L -.->|over max_budget| X[budget_exceeded, status 400]
+  L -.->|over max_budget| X[budget_exceeded, status 422]
   L --> E[evidence/ files the check reads]
 ```
 
