@@ -2,9 +2,10 @@
 
 ## The problem
 
-Issue 5 says, in full: "Only people who did the induction should get the chainsaw." A person at the desk
-knows what that means. A factory does not: which tools, which members, what they are told, what must stay
-as it is. Today's template has one free text box, so every order arrives this thin.
+Issue 5 says, in full: "Only people who did the induction should get the chainsaw."
+
+A person at the desk knows what that means. A factory does not. Which tools? Which members? Today's
+template has one free text box, so every order arrives this thin.
 
 ```mermaid
 flowchart LR
@@ -15,18 +16,35 @@ flowchart LR
 
 ## Your challenge
 
-Rewrite `.github/ISSUE_TEMPLATE/change.yml` in this folder as a GitHub issue form that makes every order
-carry what the factory needs:
+Get Claude Code to turn `.github/ISSUE_TEMPLATE/change.yml` (in this folder) into a GitHub issue form: a
+page of boxes a person must fill in.
 
-- four required textareas with ids `outcome`, `acceptance`, `must-not-change`, `out-of-scope`
-- a required dropdown with id `risk` and options `low`, `medium`, `high`
+The form needs:
 
-Then test it against a real answer: `world/backlog/answers/5.json` is what the coordinator said when a
-volunteer asked about issue 5. Your required ids must match its keys.
+- four required text boxes (textareas) with the ids `outcome`, `acceptance`, `must-not-change` and
+  `out-of-scope`;
+- a required dropdown with the id `risk` and the options `low`, `medium` and `high`.
 
-Work in the Claude Code CLI if you like: run `claude` in this folder and ask it to read GitHub's issue form
-syntax page (link below) and the answers file, then check its draft with the command below. Read every line
-it writes; the check reads the file, not the chat.
+For example, `world/backlog/answers/5.json` holds what the coordinator said about issue 5. Its keys are
+`outcome`, `acceptance`, `must-not-change`, `out-of-scope` and `risk`. Your form's ids must match those keys
+letter for letter.
+
+Start Claude Code in this folder, so it can also read the world:
+
+```bash
+claude --add-dir ../../../../world
+```
+
+Expect: Claude Code opens and waits for your prompt.
+
+Type this prompt:
+
+```text
+Rewrite .github/ISSUE_TEMPLATE/change.yml as a GitHub issue form for this tool library. It needs four required textareas with the ids outcome, acceptance, must-not-change and out-of-scope, and a required dropdown with the id risk and the options low, medium and high. Every field needs a label. Read ../../../../world/backlog/answers/5.json first: the required ids must match its keys. Show me your plan before you change anything.
+```
+
+Read the plan before you say yes. Check each id in the answers file. Check that each field says
+`required: true`. If the plan has a part you do not want, say so, then let it write the file.
 
 ## Done when
 
@@ -46,18 +64,20 @@ Expect: `Done. All 7 rules pass.`
 
 ## If you get stuck
 
-| What you see | Fix |
-|---|---|
-| `FAIL ... is valid YAML` | Indent with two spaces. A list item under `body:` starts with `  - type:`. |
-| `FAIL those four textareas are required` | Add `validations:` then `required: true` under each. GitHub's samples use `false`. |
-| `FAIL a required dropdown with id risk ...` | Use `type: dropdown`, not `input`, and list the options under `attributes:`. |
-| `FAIL issue 5's answers fill ...` | An id is spelled differently from the answers file, such as `must_not_change`. |
+| What you see                                | What to tell Claude Code                                                  |
+| ------------------------------------------- | ------------------------------------------------------------------------- |
+| `FAIL ... is valid YAML`                    | "The file is not valid YAML. Fix the indentation and run the check."      |
+| `FAIL those four textareas are required`    | "Add `required: true` under `validations:` for each of the four boxes."   |
+| `FAIL a required dropdown with id risk ...` | "Make risk a dropdown, not an input, with the options low, medium, high." |
+| `FAIL issue 5's answers fill ...`           | "Compare every id with the keys in answers/5.json and fix the spelling."  |
 
-Syntax: https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms
+The prompts and plan from a real run are in `../solution/prompts.md`.
+
+GitHub explains every field type in its [issue form syntax page](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms).
 
 ## Words you will use
 
-- **Issue form**: a YAML file in `.github/ISSUE_TEMPLATE/` that turns GitHub's new-issue page into a form with typed, required fields.
-- **Work order**: an issue complete enough that someone who cannot ask you questions can still finish it.
+- **Issue form**: a file in `.github/ISSUE_TEMPLATE/` that makes GitHub's new-issue page a form.
+- **Work order**: an issue so full that someone who cannot ask you a thing can still finish it.
 - **Acceptance line**: one sentence a test can check, such as "Ben Halloran is refused saw-01".
-- **Risk**: how bad a mistake would be. High means money, privacy or safety, and a person signs off.
+- **Risk**: how bad a mistake would be. High means money, privacy or safety. Then a person signs off.

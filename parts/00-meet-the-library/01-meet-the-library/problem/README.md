@@ -2,13 +2,14 @@
 
 ## The problem
 
-Northside Tool Library has one volunteer engineer and seven open issues. Two of them are about money and
-privacy. You want an agent to take an issue and hand back a pull request while you are away. Before you
-build that, you need to see what a finished one does, and decide where you expect it to go wrong.
+Northside Tool Library has one volunteer engineer and seven open issues. You want an agent to take an issue
+and hand back a pull request while you are away.
+
+First, see a finished one and guess where it goes wrong. For example, issue 2 says a £33.33 charge split two ways bills only £33.32. Can an agent fix that alone?
 
 ```mermaid
 flowchart LR
-  I[Issue 2] --> T[triage] --> S[spec + failing test] --> P[plan] --> B[build in a copy]
+  I[Issue 2] --> T[triage: claude -p] --> S[spec + failing tests] --> B[build in a copy of the app]
   B --> H{test-lock hook}
   H -- edit to a test --> X[blocked]
   H -- edit to src --> G[gate: bun test]
@@ -17,23 +18,42 @@ flowchart LR
 
 ## Your challenge
 
-1. Replay the finished factory on issue 2 and read every stage it prints.
-2. Read the seven issues in `world/backlog/`.
-3. In `notes/goal.md` (in this folder), write one line: the issue you expect the factory to get wrong,
-   and why.
+1. Run the finished factory on issue 2 and read every stage it prints.
+2. Ask Claude Code which issue a factory would get wrong. Then choose your own answer.
+3. Ask Claude Code to save your answer as one line in `notes/goal.md` (in this folder).
 
 ```bash
-bun run factory:replay 2
+bun run finished 2
 ```
 
-Expect: `replay: issue 2 ended in draft_pr.` and one line in red that starts with `BLOCKED Edit tests/fees/split.test.ts`.
+Expect: `finished: issue 2 ended in draft_pr.` The first line says whether Claude Code runs live or a recorded run is replayed.
 
-![The replay of issue 2: the hook blocks the test edit, the gate passes](../images/expected.png)
+Start Claude Code in this folder, so it can also read the world:
+
+```bash
+claude --add-dir ../../../../world
+```
+
+Expect: Claude Code opens and waits for your prompt.
+
+Type this prompt:
+
+```text
+Read the seven issues in ../../../../world/backlog and the code they touch in ../../../../world/app. Which issue is a factory most likely to get wrong when no person watches it? Give me your top two, each with one reason that names what would fool the agent. Do not change any file.
+```
+
+Open the files it names. The pick is yours. Then type:
+
+```text
+Add one line to notes/goal.md, below the comment. Write my pick, not yours: Issue <number>, because <your reason>. Change nothing else.
+```
+
+![The finished factory on issue 2: four Claude Code runs, the gate passes](../images/expected.png)
 
 ## Done when
 
 - `bun run doctor` passes its required checks.
-- `runs/replay-2/result.json` exists and matches the factory contract.
+- `runs/finished-2/result.json` exists, matches the factory contract, and lists the Claude Code runs.
 - `notes/goal.md` has one line of your own that names an issue from 1 to 7.
 - That line says why, in at least eight words.
 
@@ -45,17 +65,17 @@ Expect: `Done. All 5 rules pass.`
 
 ## If you get stuck
 
-| What you see | Fix |
-|---|---|
-| `FAIL bun run doctor passes its required checks` | Run `bun run doctor` and follow its `Try next:` line. |
-| `FAIL the replay of issue 2 wrote ...` | Run `bun run factory:replay 2` from the repo root, not from this folder. |
-| `FAIL the line names one issue` | Write the number: `Issue 4, because ...`. |
-| `FAIL the line says why` | Say what about that issue would fool an agent that works alone. |
+| What you see                                     | Fix                                                                |
+| ------------------------------------------------ | ------------------------------------------------------------------ |
+| `FAIL bun run doctor passes its required checks` | Run `bun run doctor` and follow its `Try next:` line.              |
+| `FAIL the finished factory ran issue 2 ...`      | Run `bun run finished 2` from the repo root, not from this folder. |
+| `FAIL the line names one issue`                  | Ask Claude Code to start the line with the number: `Issue 4, ...`. |
+| `FAIL the line says why`                         | Tell Claude Code what in that issue would fool an agent alone.     |
 
 ## Words you will use
 
 - **Factory**: a fixed line of stages that turns one issue into one draft pull request with no person at the keyboard.
-- **Replay**: running the factory again from recorded model replies. Hooks and the gate still run for real. No key, no cost.
+- **Replay**: a recorded real Claude Code run, shown again on a fresh copy. Hooks and the gate still run for real.
 - **Hook**: a command Claude Code runs before or after a tool call. Exit code 2 blocks the call.
 - **Gate**: the one command that must pass before work counts as done. Here, `bun run gate` runs the app's tests.
-- **Draft pull request**: a change offered for review that cannot be merged until a person marks it ready.
+- **Draft pull request**: a change offered for review. Nobody can merge it until a person marks it ready.

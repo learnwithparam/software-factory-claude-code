@@ -1,0 +1,85 @@
+diff --git a/specs/2/SPEC.md b/specs/2/SPEC.md
+new file mode 100644
+index 0000000..4ff6914
+--- /dev/null
++++ b/specs/2/SPEC.md
+@@ -0,0 +1,32 @@
++# Spec 2: Splitting a damage charge loses a cent
++
++## Outcome
++
++When a damage charge does not divide evenly between its borrowers, every penny is still billed to someone.
++Charge D-301 (£33.33, two borrowers) bills £16.67 and £16.66, and the shares add up to £33.33.
++
++## Requirements
++
++- When a charge is split, the system shall return shares that add up to exactly the charge.
++- When a charge does not divide evenly, the system shall give the leftover cents out one each to the first borrowers in the list, so no share differs from another by more than one cent.
++- While a charge is split, the system shall keep every share a whole number of cents.
++- When `bun run desk split` is run on a charge, the system shall report shares that add up to the charge amount.
++
++## Must not change
++
++- An even charge still splits into equal shares.
++- One borrower still pays the whole charge.
++- A negative charge, a non-whole-cent charge, or fewer than one borrower is still refused.
++- Money stays in integer cents; no floats for amounts.
++- Nothing under `src/auth/` is touched.
++
++## Out of scope
++
++- How the desk prints amounts in pounds.
++- Choosing which borrower receives an extra cent by anything other than list order.
++- Any other fee calculation, such as late fees.
++
++## Done when
++
++- The new tests in `tests/fees/split.test.ts` pass, together with the existing tests.
++- `bun run gate` exits 0.
+diff --git a/tests/fees/split.test.ts b/tests/fees/split.test.ts
+index 936c6bf..776ed00 100644
+--- a/tests/fees/split.test.ts
++++ b/tests/fees/split.test.ts
+@@ -12,3 +12,42 @@ test("one borrower pays the whole charge", () => {
+ test("a negative charge is refused", () => {
+   expect(() => splitCharge(-1, 2)).toThrow();
+ });
++
++const sum = (shares: number[]) => shares.reduce((a, b) => a + b, 0);
++
++test("shares add up to the charge when it does not divide evenly", () => {
++  expect(sum(splitCharge(3333, 2))).toBe(3333);
++  expect(sum(splitCharge(100, 3))).toBe(100);
++  expect(sum(splitCharge(1, 4))).toBe(1);
++});
++
++test("leftover cents go one each to the first borrowers", () => {
++  expect(splitCharge(3333, 2)).toEqual([1667, 1666]);
++  expect(splitCharge(100, 3)).toEqual([34, 33, 33]);
++  expect(splitCharge(101, 3)).toEqual([34, 34, 33]);
++});
++
++test("no two shares differ by more than one cent", () => {
++  for (const [total, ways] of [[3333, 2], [100, 7], [1, 5], [999, 4]]) {
++    const shares = splitCharge(total, ways);
++    expect(Math.max(...shares) - Math.min(...shares)).toBeLessThanOrEqual(1);
++    expect(sum(shares)).toBe(total);
++  }
++});
++
++test("every share is a whole number of cents", () => {
++  for (const share of splitCharge(3333, 7)) expect(Number.isInteger(share)).toBe(true);
++  expect(sum(splitCharge(3333, 7))).toBe(3333);
++});
++
++test("the desk split command reports shares that add up to the charge", async () => {
++  const proc = Bun.spawn(["bun", "run", "desk", "split", "D-301"], {
++    cwd: `${import.meta.dir}/../..`,
++    stdout: "pipe",
++    stderr: "pipe",
++  });
++  const out = await new Response(proc.stdout).text();
++  await proc.exited;
++  expect(out).toContain("£16.67");
++  expect(out).toContain("charge £33.33, shares add up to £33.33");
++});

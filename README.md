@@ -2,14 +2,31 @@
 
 Let Claude Code turn an issue into a pull request you can trust, and know what it cost.
 
-**For** tech leads, staff and senior engineers who already use Claude Code at work and want it to take an
-issue to a reviewed draft pull request while they are away, without edited tests or a surprise bill.
+This course is for tech leads, staff and senior engineers who already use Claude Code at work. You want
+it to take an issue to a reviewed draft pull request while you are away. You want no edited tests and no
+surprise bill.
 
-**You leave with** a factory in a repo: a typed issue goes in; a spec, a plan, a build in its own worktree, a
-gate the agent cannot skip, a reviewer that must show evidence, and a draft pull request with its cost
-come out. Every step is checked by a script you run. No API key is needed until you choose to run live.
+- **Objective:** you can set up Claude Code so it turns one issue into one draft pull request with no
+  person at the keyboard. It stays inside the walls you set.
+- **Outcome:** you leave with a factory in a repo. A typed issue goes in. Out comes a spec, a plan, a build
+  in its own worktree, and a gate the agent cannot skip. A reviewer must show evidence. You get a draft
+  pull request with its cost.
+- **Transformation:** before the course, you watch Claude Code all the time, or you cannot trust what it
+  did. After it, you give it an issue and walk away. You come back to a draft pull request you can check
+  in minutes.
+- **Goal:** your factory runs all seven Northside issues and meets the scorecard targets in
+  `bun run scorecard`.
+
+For example, issue 2 says a damage charge of £33.33 split two ways loses a penny. The finished factory
+reads it, writes a failing test, fixes `src/fees/split.ts`, passes the gate, and opens a draft pull request.
+
+You do every step in the real Claude Code, signed in with your own Claude account. You type prompts; Claude
+Code writes the files. A script you run checks each step. No step asks for an API key.
 
 ## Run the finished system first
+
+You need Bun 1.4 or newer and Claude Code (the `claude` CLI, signed in with a Pro, Max or Console account;
+see [00-orientation](00-orientation/README.md) to install it).
 
 ```bash
 bun install
@@ -24,15 +41,32 @@ bun run world
 Expect: `world: Northside Tool Library is ready: 12 tools, 8 members, 4 loans out (1 overdue), 7 open issues.`
 
 ```bash
-bun run factory:replay 2
+bun run finished 2
 ```
 
-Expect: `replay: issue 2 ended in draft_pr. Gate pass after 1 build round, 1 edit blocked by a hook, 0 test files edited in build, review pass, recorded cost $0.84.`
+Expect: `finished: issue 2 ended in draft_pr. Gate pass after 1 build round, 0 edits blocked by a hook, 0 test files edited in build, review pass,` then the cost.
 
-![The finished factory on issue 2: the hook blocks the edit to the test, the builder fixes the code, the gate passes](images/finished-system.png)
+![The finished factory on issue 2: triage, a spec with failing tests, a build that makes them pass, a review](images/finished-system.png)
 
-The model replies in the replay are recorded. Everything else runs for real: the test-lock hook, the Stop
-hook and the gate (the app's tests) all run on a fresh copy of the app.
+Each stage of the finished factory is one real Claude Code run, `claude -p`. It runs in a fresh copy of the
+app. That copy holds the factory's own `CLAUDE.md`, `.claude/settings.json` and hooks
+(`world/finished/factory/`).
+
+With `claude` installed and signed in, the command runs live on your account. The cost line is what Claude
+Code reported. Without `claude`, or in CI, it says so in one line and replays a recorded real run from
+`world/recordings/`. A replay does four things:
+
+- it shows that run's transcript;
+- it applies the changes that run made to a fresh copy;
+- it runs the gate (the app's tests) for real;
+- it runs the factory's hooks again on the exact events Claude Code sent them.
+  `bun run finished 2 --replay` replays even when `claude` is ready.
+
+```bash
+bun run finished 6
+```
+
+Expect: `finished: issue 6 ended in refused.` Issue 6 needs a change under `src/auth/`, which the factory refuses.
 
 ```bash
 bun run scorecard
@@ -44,9 +78,15 @@ targets your own factory meets by the end.
 ## The world and what you build
 
 Northside Tool Library is a member-run library that lends drills, ladders and a chainsaw. Its lending app
-(TypeScript, Bun, Hono, SQLite) has seven open issues in `world/backlog/`, with planted trouble: a damage
-charge that loses a cent, a double booking on a due date, a member search that leaks phone numbers, a
-safety rule nobody wrote, and a request to change a protected folder. See [world/README.md](world/README.md).
+(TypeScript, Bun, Hono, SQLite) has seven open issues in `world/backlog/`. Each one hides a trap:
+
+- a damage charge that loses a cent;
+- a double booking on a due date;
+- a member search that leaks phone numbers;
+- a safety rule nobody wrote;
+- a request to change a protected folder.
+
+See [world/README.md](world/README.md).
 
 ![The library's desk view](images/catalogue.png)
 
@@ -72,19 +112,21 @@ flowchart LR
 ## How the course works
 
 Start in [00-orientation](00-orientation/README.md). Each part opens with a problem at the library, a
-public number from a real company, and a diagram. Each step has a challenge, a Done when list, and one
-command, `bun run verify <step-name>`, that reads the files you produced and prints PASS or FAIL with what to
-try next. You work in the Claude Code CLI; the checks read your files, never your chat.
+public number from a real company, and a diagram.
 
-| Part | Answers | Steps | Minutes |
-|---|---|---|---|
-| [0. Meet the library](parts/00-meet-the-library/README.md) | what are we building | `meet-the-library` | 15 |
-| [1. Write the work order](parts/01-write-the-work-order/README.md) | does it know what done looks like | `write-the-issue-form`, `size-the-backlog`, `write-the-spec` | 50 |
-| [2. Teach the repo](parts/02-teach-the-repo/README.md) | what must it know, what may it touch | `trim-the-agents-file`, `add-a-path-rule`, `package-the-triage-skill` | 45 |
-| [3. Split the roles](parts/03-split-the-roles/README.md) | can it check its own work | `split-planner-and-builder`, `isolate-the-builder`, `build-the-reviewer`, `catch-the-planted-bug` | 65 |
-| [4. Gate the agent](parts/04-gate-the-agent/README.md) | who has the last word | `deny-the-shortcuts`, `lock-the-tests`, `demand-proof-before-stop`, `protect-the-main-branch` | 60 |
-| [5. Run it unattended](parts/05-run-it-unattended/README.md) | what stops it, where the result goes | `run-one-issue-headless`, `run-from-a-label`, `run-two-at-once` (elective) | 65 |
-| [6. Price and ship](parts/06-price-and-ship/README.md) | what it cost, was it worth it | `route-models-by-stage`, `cap-the-spend`, `ship-the-factory` | 50 |
+Each step has a challenge, a Done when list, and one command: `bun run verify <step-name>`. The challenge is
+a job you give Claude Code, with the prompt to type. The command reads the files Claude Code made and
+prints PASS or FAIL, with what to try next. The checks read your files, never your chat.
+
+| Part                                                               | Answers                              | Steps                                                                                             | Minutes |
+| ------------------------------------------------------------------ | ------------------------------------ | ------------------------------------------------------------------------------------------------- | ------- |
+| [0. Meet the library](parts/00-meet-the-library/README.md)         | what are we building                 | `meet-the-library`                                                                                | 15      |
+| [1. Write the work order](parts/01-write-the-work-order/README.md) | does it know what done looks like    | `write-the-issue-form`, `size-the-backlog`, `write-the-spec`                                      | 50      |
+| [2. Teach the repo](parts/02-teach-the-repo/README.md)             | what must it know, what may it touch | `trim-the-agents-file`, `add-a-path-rule`, `package-the-triage-skill`                             | 45      |
+| [3. Split the roles](parts/03-split-the-roles/README.md)           | can it check its own work            | `split-planner-and-builder`, `isolate-the-builder`, `build-the-reviewer`, `catch-the-planted-bug` | 65      |
+| [4. Gate the agent](parts/04-gate-the-agent/README.md)             | who has the last word                | `deny-the-shortcuts`, `lock-the-tests`, `demand-proof-before-stop`, `protect-the-main-branch`     | 60      |
+| [5. Run it unattended](parts/05-run-it-unattended/README.md)       | what stops it, where the result goes | `run-one-issue-headless`, `run-from-a-label`, `run-two-at-once` (elective)                        | 65      |
+| [6. Price and ship](parts/06-price-and-ship/README.md)             | what it cost, was it worth it        | `route-models-by-stage`, `cap-the-spend`, `ship-the-factory`                                      | 50      |
 
 The same parts run as one long session, four shorter sessions, or a six-session cohort: see `schedules.toml`.
 The build map for every part is in [PARTS.md](PARTS.md).
@@ -92,24 +134,31 @@ The build map for every part is in [PARTS.md](PARTS.md).
 ## The project
 
 You ship the Northside factory in your own repo: your `.claude/`, `factory/` and `specs/`, the result
-files of a run over all seven issues, and the scorecard. It is graded with yes or no questions a script
-answers from git and the result files: at least 3 of issues 1 to 5 reach a draft pull request on a branch
-whose tests pass the gate; no test file edited in the build; the reviewer blocked the planted off-by-one in
-issue 3 and passed a clean diff; issue 6 refused; issue 7 stopped at the plan; every cost recorded and under
-your cap; no key in any tracked file; a retro with one gate that fired and one change you will make.
+files of a run over all seven issues, and the scorecard. A script grades it with yes or no questions. It reads the answers from git and the result files:
 
-## Models and keys
+- At least 3 of issues 1 to 5 reach a draft pull request on a branch whose tests pass the gate.
+- No test file is edited in the build.
+- The reviewer blocks the planted off-by-one in issue 3, and passes a clean diff.
+- Issue 6 is refused, and issue 7 stops at the plan.
+- Every cost is recorded and under your cap.
+- No key is in any tracked file.
+- A retro names one gate that fired and one change you will make.
 
-Every model call goes through one file, `config/models.ts`, which maps three roles (fast, smart, judge) to
-a model per provider. `LLM_PROVIDER` is `replay` by default, so the course, its checks and CI run with no key.
-To run live, copy `.env.example` to `.env`, set `LLM_PROVIDER` to `anthropic`, `openrouter` or `openai`, add
-that one key, and check it:
+## Claude Code, not the API
+
+You work in the real Claude Code: the `claude` CLI in a terminal, Claude Code in your editor, or the Code tab
+of Claude Desktop, signed in with your own Claude account. The course never calls the model API and never
+asks for an API key. What you build is Claude Code configuration (`CLAUDE.md`, rules, settings, hooks, skills,
+subagents) and the work Claude Code does with it. The checks read those files and what Claude Code produced
+in the world (files, git history, result files), never a chat reply. Hooks are tested by feeding them the
+JSON Claude Code sends on stdin. `config/claude-code.ts` holds the model alias per role, the headless flags,
+and the oldest Claude Code version the course is tested on, 2.1.311.
 
 ```bash
-bun run models
+bun run doctor
 ```
 
-Expect: `models: every role answers on replay.` (or on the provider you set).
+Expect: `doctor: ready, 4 of 4 required checks pass.` and a `Claude Code` line with your version and whether you are signed in.
 
 ## Read before you start
 
@@ -118,7 +167,7 @@ About 65 minutes of reading in all:
 1. [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices), Anthropic. Read "Let
    Claude run without you": the five questions this course is built on.
 2. [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents),
-   Anthropic. The pass list you write in Part 1.
+   Anthropic. The pass list Claude Code writes for you in Part 1.
 3. [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps),
    Anthropic. Why the reviewer is a separate agent that must show evidence.
 
