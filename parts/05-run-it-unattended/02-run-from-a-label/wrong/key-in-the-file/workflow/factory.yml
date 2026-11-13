@@ -1,0 +1,100 @@
+# Runs the factory on one issue when a person adds the label factory:ready, and only then.
+# In your own repo this file lives in .github/workflows/.
+# It opens at most a draft pull request. It never merges, enables auto-merge or marks a PR ready.
+name: Factory
+
+on:
+  issues:
+    types: [labeled]
+
+permissions: {}
+
+jobs:
+  factory:
+    if: github.event.label.name == 'factory:ready' && github.event.sender.type == 'User'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    concurrency:
+      group: factory-issue-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    env:
+      ISSUE: ${{ github.event.issue.number }}
+      FACTORY_DIR: factory-root # the folder that holds factory/run.ts and package.json
+      APP_DIR: world/app # the app the factory copies; the patch lands here
+      FACTORY_CAP_USD: "10"
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run the factory
+        uses: anthropics/claude-code-action@v1
+        env:
+          BASH_DEFAULT_TIMEOUT_MS: "2400000"
+          BASH_MAX_TIMEOUT_MS: "2400000"
+        with:
+          claude_code_oauth_token: "sk-ant-oat01-NOT-A-REAL-TOKEN-only-for-this-course"
+          github_token: ${{ github.token }}
+          prompt: |
+            Run this one command and nothing else, then reply with the "state" from its output:
+            bun run --cwd ${{ env.FACTORY_DIR }} factory ${{ env.ISSUE }} --json
+          claude_args: >-
+            --max-turns 4
+            --max-budget-usd 1
+            --permission-mode dontAsk
+            --allowedTools "Bash(bun run --cwd ${{ env.FACTORY_DIR }} factory ${{ env.ISSUE }} --json)"
+            --disallowedTools "Bash(gh pr merge *),Bash(gh pr ready *),Bash(git push *)"
+
+      - name: Read the result
+        id: result
+        run: |
+          file="$FACTORY_DIR/runs/$ISSUE/result.json"
+          if [ ! -f "$file" ]; then echo "state=no_result" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "state=$(jq -r .state "$file")" >> "$GITHUB_OUTPUT"
+          echo "cost=$(jq -r .cost_usd "$file")" >> "$GITHUB_OUTPUT"
+
+      - name: Keep the run record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: factory-issue-${{ env.ISSUE }}
+          path: ${{ env.FACTORY_DIR }}/runs/${{ env.ISSUE }}/
+          if-no-files-found: warn
+
+      - name: Push the branch
+        if: steps.result.outputs.state == 'draft_pr'
+        run: |
+          copy="$FACTORY_DIR/runs/$ISSUE/repo"
+          git -C "$copy" diff --binary factory-base HEAD -- . ':(exclude).factory' > factory.patch
+          git switch -c "factory/issue-$ISSUE"
+          git apply --directory="$APP_DIR" factory.patch
+          rm factory.patch
+          git add -A "$APP_DIR"
+          git -c user.name="Northside factory" -c user.email="factory@users.noreply.github.com" \
+            commit -m "factory: issue #$ISSUE"
+          git push origin "factory/issue-$ISSUE"
+
+      - name: Open a draft pull request
+        if: steps.result.outputs.state == 'draft_pr'
+        run: |
+          gh pr create --draft \
+            --head "factory/issue-$ISSUE" \
+            --title "factory: issue #$ISSUE" \
+            --body "Closes #$ISSUE. Opened by the factory as a draft. A person reviews, marks it ready, and merges."
+
+      - name: Report on the issue
+        if: always()
+        run: |
+          gh issue comment "$ISSUE" --body \
+            "Factory run finished: \`${{ steps.result.outputs.state || 'error' }}\`, cost \$${{ steps.result.outputs.cost || '0' }}. Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          gh issue edit "$ISSUE" --remove-label "factory:ready"
