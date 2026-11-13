@@ -83,7 +83,7 @@ export default [
     tryNext: "ask Claude Code to write in the skill: if a file is under src/auth/, refuse",
   },
   {
-    says: "the skill ends with the reply contract: TYPE, RISK, FILES and DECISION proceed or refuse",
+    says: "the skill ends with the reply contract: TYPE, RISK, FILES, DECISION proceed or refuse",
     test: (folder) => {
       const body = skill(folder)?.body ?? "";
       const lastPart = body.slice(Math.floor(body.length / 2));
@@ -108,9 +108,9 @@ export default [
     says: "no run changed a file: no Edit or Write call in any transcript",
     test: (folder) => {
       const transcripts = runs(folder);
-      const changedAFile = (transcript: Transcript) =>
+      const changedFile = (transcript: Transcript) =>
         toolsCalled(transcript).some((tool) => WRITING_TOOLS.includes(tool));
-      return transcripts.length > 0 && !transcripts.some(changedAFile);
+      return transcripts.length > 0 && !transcripts.some(changedFile);
     },
     tryNext: "ask Claude Code to add disallowed-tools: Edit, Write to the skill, then run it again",
   },

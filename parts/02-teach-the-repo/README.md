@@ -1,5 +1,7 @@
 # Part 2: Teach the repo
 
+Moves the **Outcome**: the factory's instructions, short enough to load every time and exact where they matter.
+
 Answers the question: **what is it allowed to touch, and what must it know?**
 
 ## The problem
@@ -44,39 +46,76 @@ flowchart LR
   T[Factory asks: may I start issue N?] --> K[skill triage loads] --> D["TYPE / RISK / FILES / DECISION"]
 ```
 
-| Step                       | Minutes | What you produce                                             | What its check reads                                                                                                                                                                                                                                       |
-| -------------------------- | ------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `trim-the-agents-file`     | 15      | `AGENTS.md` under 80 lines and a `CLAUDE.md` that imports it | headings Commands, Protected paths, Done when; `bun run gate` named; no line that only restates a folder; `@AGENTS.md` in CLAUDE.md                                                                                                                        |
-| `add-a-path-rule`          | 10      | `.claude/rules/money.md` with `paths` frontmatter            | frontmatter parses; the glob matches `src/fees/split.ts` and not `src/items/borrow.ts`; body says integer cents and names the test file                                                                                                                    |
-| `package-the-triage-skill` | 20      | `.claude/skills/triage/SKILL.md`                             | a skill that loads (name, description, `allowed-tools` with no Edit or Write); the reply contract; three recorded `claude -p` runs of the skill on issue 6 (`world/recordings/`, see `RECORD.md`) end with `DECISION: refuse` in at least 2 in 2 of 3 runs |
+| Step                       | Minutes | What you produce                                               | What its check reads                                                                                                                                                                  |
+| -------------------------- | ------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `trim-the-agents-file`     | 15      | `AGENTS.md` under 80 lines and a `CLAUDE.md` that imports it   | headings Commands, Protected paths, Done when; `bun run gate` named; no line that only says where a folder is; `@AGENTS.md` in CLAUDE.md                                              |
+| `add-a-path-rule`          | 10      | `.claude/rules/money.md` with `paths` frontmatter              | the globs match `src/fees/split.ts` and no app file outside `src/fees/` and `tests/fees/`; the body says integer cents and names the test                                             |
+| `package-the-triage-skill` | 20      | `.claude/skills/triage/SKILL.md` and three runs of `/triage 6` | the frontmatter (`allowed-tools` reads only, `disallowed-tools` Edit and Write); the reply contract; the three stream-json runs: the skill loaded, no file changed, at least 2 refuse |
 
-Claude Code writes every file in this table. You tell it what you want in plain words. For example, for the
-first step you could type this prompt:
-
-```text
-Make AGENTS.md shorter. Remove every line that only repeats the folder tree. Keep the commands, the protected paths and what "done" means. Keep it under 80 lines.
-```
-
-Before you approve, read its plan. Check that it keeps `bun run gate` and the `src/auth/` protected path.
+Claude Code writes every file in this table. You tell it what you want in plain words, read its plan, and
+approve it. Each step's `problem/` folder is where you start `claude`. Each step's `solution/prompts.md` shows
+the prompts, the plan and the reply from a real run.
 
 ## Walkthrough
 
-TODO(part session): write each step's walkthrough and replace these Expect lines with real output.
+Do each step's challenge in its `problem/` folder first. Then run its check from the repo root.
 
 ```bash
 bun run verify trim-the-agents-file
 ```
 
-Expect: TODO(part session)
+Expect: `Done. All 8 rules pass.`
 
 ```bash
 bun run verify add-a-path-rule
 ```
 
-Expect: TODO(part session)
+Expect: `Done. All 6 rules pass.`
 
 ```bash
 bun run verify package-the-triage-skill
 ```
 
-Expect: TODO(part session)
+Expect: `Done. All 8 rules pass.`
+
+```bash
+bun run verify part teach-the-repo
+```
+
+Expect: `Part teach-the-repo is done: 3/3 steps pass.`
+
+To see a passing answer at any time, check the sample solution. For example:
+
+```bash
+bun run verify package-the-triage-skill solution
+```
+
+Expect: `Done. All 8 rules pass.`
+
+## Assignment
+
+**The problem:** the agents file is long, and it is still ignored where money is handled.
+
+**What you hand in:** one commit on your own copy of the course. It holds `AGENTS.md` under 80 lines and
+`CLAUDE.md` that imports it. It also holds `.claude/rules/money.md`, `.claude/skills/triage/SKILL.md` and
+the three runs in `runs/triage-6/`.
+
+**How it is checked:** each line is yes or no.
+
+1. Does `bun run verify trim-the-agents-file` pass?
+2. Does `bun run verify add-a-path-rule` pass?
+3. Does `bun run verify package-the-triage-skill` pass, with at least 2 of 3 runs refusing issue 6?
+4. Does `AGENTS.md` still name `src/auth/` and `bun run gate`?
+
+**Extension:** open `claude` in the starter folder of `trim-the-agents-file` and type `/context`. Note the
+tokens for memory files. Do the same in your trimmed folder. Write both numbers in your commit message.
+
+## Finished
+
+You now have the factory's instructions in three layers. `AGENTS.md` loads every session and holds only
+what Claude Code cannot read for itself. The money rule loads only when Claude Code touches `src/fees/`.
+The triage skill loads only when the factory asks "may I start this issue?", and it refuses issue 6 every
+time.
+
+Next, in Part 3, you split the work between three agents: a planner that only reads, a builder in its own
+worktree, and a reviewer that must show the input that breaks the code.
