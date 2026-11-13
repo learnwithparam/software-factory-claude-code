@@ -1,0 +1,41 @@
+diff --git a/src/loans/reserve.ts b/src/loans/reserve.ts
+index d590bf2..7953071 100644
+--- a/src/loans/reserve.ts
++++ b/src/loans/reserve.ts
+@@ -4,8 +4,9 @@ export type Range = { from: string; to: string };
+ type Booking = Range & { id: string };
+ 
+ // Two bookings of one item clash when their date ranges share any date.
++// Both end dates count: a member keeps a tool through its due date.
+ export function overlaps(first: Range, second: Range): boolean {
+-  return first.from < second.to && second.from < first.to;
++  return first.from <= second.to && second.from <= first.to;
+ }
+ 
+ export function clashes(db: Database, itemId: string, wanted: Range): string[] {
+diff --git a/tests/loans/reserve.test.ts b/tests/loans/reserve.test.ts
+index bc49bd5..517e646 100644
+--- a/tests/loans/reserve.test.ts
++++ b/tests/loans/reserve.test.ts
+@@ -12,3 +12,21 @@ test("a booking inside another clashes", () => {
+     overlaps({ from: "2026-03-01", to: "2026-03-10" }, { from: "2026-03-04", to: "2026-03-06" }),
+   ).toBe(true);
+ });
++
++test("a booking that starts on the due date clashes", () => {
++  expect(
++    overlaps({ from: "2026-03-01", to: "2026-03-13" }, { from: "2026-03-13", to: "2026-03-15" }),
++  ).toBe(true);
++});
++
++test("a booking that ends on the start date of another clashes", () => {
++  expect(
++    overlaps({ from: "2026-03-13", to: "2026-03-15" }, { from: "2026-03-10", to: "2026-03-13" }),
++  ).toBe(true);
++});
++
++test("a booking that starts the day after the due date does not clash", () => {
++  expect(
++    overlaps({ from: "2026-03-01", to: "2026-03-13" }, { from: "2026-03-14", to: "2026-03-16" }),
++  ).toBe(false);
++});

@@ -1,0 +1,3 @@
+# Copy into a new worktree only what the builder needs.
+# Never list .env or .env.local: the builder runs unattended and must not get secrets.
+.env.example
