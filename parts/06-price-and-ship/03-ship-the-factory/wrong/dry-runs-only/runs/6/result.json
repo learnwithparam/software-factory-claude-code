@@ -1,0 +1,17 @@
+{
+  "issue": 6,
+  "state": "refused",
+  "branch": "factory/issue-6",
+  "worktree": "runs/6/repo",
+  "pr_url": null,
+  "gate": null,
+  "review": null,
+  "tests_edited": [],
+  "blocked_by_hooks": [],
+  "roles_by_stage": {
+    "triage": "fast"
+  },
+  "cost_usd": 0,
+  "replayed": false,
+  "claude_runs": []
+}
