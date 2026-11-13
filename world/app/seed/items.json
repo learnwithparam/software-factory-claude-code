@@ -1,0 +1,98 @@
+[
+  {
+    "id": "drill-01",
+    "name": "Cordless drill",
+    "category": "power tools",
+    "safety_class": "B",
+    "deposit_cents": 2000,
+    "status": "out"
+  },
+  {
+    "id": "drill-02",
+    "name": "Hammer drill",
+    "category": "power tools",
+    "safety_class": "B",
+    "deposit_cents": 2500,
+    "status": "in"
+  },
+  {
+    "id": "ladder-01",
+    "name": "Step ladder, 6 tread",
+    "category": "access",
+    "safety_class": "A",
+    "deposit_cents": 1000,
+    "status": "in"
+  },
+  {
+    "id": "ladder-02",
+    "name": "Extension ladder, 3 section",
+    "category": "access",
+    "safety_class": "B",
+    "deposit_cents": 3000,
+    "status": "out"
+  },
+  {
+    "id": "washer-01",
+    "name": "Pressure washer",
+    "category": "garden",
+    "safety_class": "B",
+    "deposit_cents": 3000,
+    "status": "in"
+  },
+  {
+    "id": "saw-01",
+    "name": "Chainsaw, 35 cm bar",
+    "category": "garden",
+    "safety_class": "C",
+    "deposit_cents": 6000,
+    "status": "in"
+  },
+  {
+    "id": "saw-02",
+    "name": "Circular saw",
+    "category": "power tools",
+    "safety_class": "C",
+    "deposit_cents": 4000,
+    "status": "repair"
+  },
+  {
+    "id": "sander-01",
+    "name": "Orbital sander",
+    "category": "power tools",
+    "safety_class": "A",
+    "deposit_cents": 1500,
+    "status": "out"
+  },
+  {
+    "id": "tile-01",
+    "name": "Tile cutter",
+    "category": "hand tools",
+    "safety_class": "A",
+    "deposit_cents": 1000,
+    "status": "in"
+  },
+  {
+    "id": "trimmer-01",
+    "name": "Hedge trimmer",
+    "category": "garden",
+    "safety_class": "B",
+    "deposit_cents": 2000,
+    "status": "in"
+  },
+  {
+    "id": "jack-01",
+    "name": "Trolley jack",
+    "category": "car",
+    "safety_class": "B",
+    "deposit_cents": 2500,
+    "status": "out"
+  },
+  {
+    "id": "level-01",
+    "name": "Laser level",
+    "category": "hand tools",
+    "safety_class": "A",
+    "deposit_cents": 2000,
+    "status": "in"
+  }
+]

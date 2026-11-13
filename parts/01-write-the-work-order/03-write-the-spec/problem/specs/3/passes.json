@@ -1,0 +1,23 @@
+[
+  {
+    "id": "R1",
+    "requirement": "A pickup on an open loan's due date clashes",
+    "test_file": "tests/loans/reserve.test.ts",
+    "test_name": "a pickup on the due date clashes",
+    "passes": false
+  },
+  {
+    "id": "R2",
+    "requirement": "Reservations that share an end date clash",
+    "test_file": "tests/loans/reserve.test.ts",
+    "test_name": "reservations sharing an end date clash",
+    "passes": false
+  },
+  {
+    "id": "R3",
+    "requirement": "Bookings with no shared date do not clash",
+    "test_file": "tests/loans/reserve.test.ts",
+    "test_name": "bookings far apart do not clash",
+    "passes": false
+  }
+]

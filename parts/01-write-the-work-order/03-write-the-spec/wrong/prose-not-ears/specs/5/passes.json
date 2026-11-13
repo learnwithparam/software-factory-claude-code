@@ -1,0 +1,30 @@
+[
+  {
+    "id": "R1",
+    "requirement": "An inducted member may borrow a free class C tool",
+    "test_file": "tests/items/borrow.test.ts",
+    "test_name": "an inducted member can borrow the chainsaw",
+    "passes": false
+  },
+  {
+    "id": "R2",
+    "requirement": "A member without the induction is refused with a reason naming it",
+    "test_file": "tests/items/borrow.test.ts",
+    "test_name": "a member without the induction is refused the chainsaw",
+    "passes": false
+  },
+  {
+    "id": "R3",
+    "requirement": "Class A and B decisions are unchanged",
+    "test_file": "tests/items/borrow.test.ts",
+    "test_name": "a free class A tool can go out",
+    "passes": false
+  },
+  {
+    "id": "R4",
+    "requirement": "Repair and already-out refusals keep their reason",
+    "test_file": "tests/items/borrow.test.ts",
+    "test_name": "a class C tool in repair is refused as in repair",
+    "passes": false
+  }
+]

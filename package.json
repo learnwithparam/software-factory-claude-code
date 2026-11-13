@@ -1,10 +1,30 @@
 {
-  "name": "workshop-template",
+  "name": "software-factory-claude-code",
   "private": true,
   "type": "module",
   "packageManager": "bun@1.4.4",
   "scripts": {
-    "check": "bun scripts/check.ts && bun scripts/verify.ts --all",
-    "verify": "bun scripts/verify.ts"
+    "check": "bun scripts/readable.ts && bun scripts/plain-english.ts && bun scripts/check.ts && bun scripts/verify.ts --all",
+    "readable": "bun scripts/readable.ts",
+    "plain-english": "bun scripts/plain-english.ts",
+    "format": "biome check --write .",
+    "verify": "bun scripts/verify.ts",
+    "doctor": "bun scripts/doctor.ts",
+    "world": "bun world/world.ts",
+    "app": "bun world/app/src/server.ts",
+    "desk": "bun world/app/src/desk.ts",
+    "gate": "bun world/gate.ts",
+    "scorecard": "bun world/finished/scorecard.ts",
+    "shots": "bun images/capture.ts",
+    "finished": "bun world/finished/run.ts"
+  },
+  "dependencies": {
+    "hono": "4.13.18",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.5",
+    "@types/bun": "1.4.4",
+    "playwright": "1.65.0"
   }
 }

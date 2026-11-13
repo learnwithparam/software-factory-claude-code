@@ -1,0 +1,64 @@
+{
+  "today": "2026-03-10",
+  "late_fee_per_day_cents": 50,
+  "loans": [
+    {
+      "id": "L-101",
+      "item_id": "drill-01",
+      "member_id": "m-002",
+      "out_date": "2026-03-06",
+      "due_date": "2026-03-13",
+      "returned_date": null
+    },
+    {
+      "id": "L-102",
+      "item_id": "ladder-02",
+      "member_id": "m-003",
+      "out_date": "2026-02-27",
+      "due_date": "2026-03-06",
+      "returned_date": null
+    },
+    {
+      "id": "L-103",
+      "item_id": "sander-01",
+      "member_id": "m-005",
+      "out_date": "2026-03-08",
+      "due_date": "2026-03-15",
+      "returned_date": null
+    },
+    {
+      "id": "L-104",
+      "item_id": "jack-01",
+      "member_id": "m-006",
+      "out_date": "2026-03-09",
+      "due_date": "2026-03-12",
+      "returned_date": null
+    },
+    {
+      "id": "L-100",
+      "item_id": "washer-01",
+      "member_id": "m-007",
+      "out_date": "2026-02-20",
+      "due_date": "2026-02-27",
+      "returned_date": "2026-03-01"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "R-201",
+      "item_id": "drill-01",
+      "member_id": "m-008",
+      "from_date": "2026-03-20",
+      "to_date": "2026-03-24"
+    }
+  ],
+  "damage_charges": [
+    {
+      "id": "D-301",
+      "loan_id": "L-100",
+      "amount_cents": 3333,
+      "note": "Pressure washer lance bent. Borrowed jointly by Gus Pereira and Ben Halloran.",
+      "split_between": ["m-007", "m-002"]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+[
+  {
+    "issue": 1,
+    "decision": "ready",
+    "reason": "One docs change with one outcome a person can check by reading.",
+    "outcome": "The app README has a run it section with the commands to start the app, the desk CLI and the tests.",
+    "files": ["README.md"]
+  }
+]

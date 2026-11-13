@@ -1,0 +1,10 @@
+# Today's issue template at the library: one free text box. Issue 5 was written with it.
+name: Change request
+description: Ask for a change to the lending app
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What do you want?
+    validations:
+      required: false

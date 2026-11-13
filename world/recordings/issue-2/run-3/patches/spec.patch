@@ -1,0 +1,89 @@
+diff --git a/specs/2/SPEC.md b/specs/2/SPEC.md
+new file mode 100644
+index 0000000..d58311e
+--- /dev/null
++++ b/specs/2/SPEC.md
+@@ -0,0 +1,35 @@
++# Issue 2: Splitting a damage charge two ways loses a cent
++
++## Outcome
++
++When a damage charge is shared between borrowers, every cent of it is billed to someone. The shares
++add up exactly to the charge. D-301 (£33.33, two borrowers) bills £16.67 and £16.66, totalling £33.33.
++
++## Requirements
++
++- The system shall return shares from `splitCharge` that add up exactly to the charge, for any whole-cent charge and any number of ways.
++- When a charge does not divide evenly, the system shall give each of the first `remainder` borrowers one extra cent, where remainder is the charge in cents modulo the number of ways.
++- The system shall keep every pair of shares within one cent of each other.
++- When a charge divides evenly, the system shall give every borrower the same share.
++- The system shall return as many shares as there are ways, as integer cents.
++- If the charge is negative or not a whole number of cents, or ways is less than 1 or not a whole number, the system shall refuse the split with an error.
++
++## Must not change
++
++- Amounts stay integer cents; no floats are used for money.
++- Even charges split into equal shares as before, and one borrower still pays the whole charge.
++- Negative charges are still refused.
++- `src/auth/` is untouched.
++- The `bun run desk split` output format stays the same.
++
++## Out of scope
++
++- Weighted or percentage splits.
++- Changing which borrower gets the extra cent per charge (the first borrowers in the listed order always do).
++- Any change to late fees, reservations, borrowing rules or member search.
++
++## Done when
++
++- The new tests in `tests/fees/split.test.ts` pass, and the existing tests still pass.
++- `bun run desk split D-301` shows shares that add up to £33.33.
++- `bun run gate` exits 0.
+diff --git a/tests/fees/split.test.ts b/tests/fees/split.test.ts
+index 936c6bf..8aba27f 100644
+--- a/tests/fees/split.test.ts
++++ b/tests/fees/split.test.ts
+@@ -12,3 +12,43 @@ test("one borrower pays the whole charge", () => {
+ test("a negative charge is refused", () => {
+   expect(() => splitCharge(-1, 2)).toThrow();
+ });
++
++const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
++
++test("shares add up exactly to the charge", () => {
++  expect(sum(splitCharge(3333, 2))).toBe(3333);
++  for (const total of [0, 1, 99, 3333, 10001]) {
++    for (const ways of [1, 2, 3, 4, 7]) {
++      expect(sum(splitCharge(total, ways))).toBe(total);
++    }
++  }
++});
++
++test("the first borrowers get the extra cents", () => {
++  expect(splitCharge(3333, 2)).toEqual([1667, 1666]);
++  expect(splitCharge(100, 3)).toEqual([34, 33, 33]);
++  expect(splitCharge(101, 3)).toEqual([34, 34, 33]);
++});
++
++test("no two shares differ by more than a cent", () => {
++  for (const total of [1, 2, 5, 3333, 10001]) {
++    const shares = splitCharge(total, 4);
++    expect(Math.max(...shares) - Math.min(...shares)).toBeLessThanOrEqual(1);
++  }
++});
++
++test("an even charge gives everyone the same share", () => {
++  expect(splitCharge(900, 3)).toEqual([300, 300, 300]);
++});
++
++test("there is one integer share per borrower", () => {
++  const shares = splitCharge(3333, 5);
++  expect(shares).toHaveLength(5);
++  expect(shares.every(Number.isInteger)).toBe(true);
++});
++
++test("a bad split is refused", () => {
++  expect(() => splitCharge(10.5, 2)).toThrow();
++  expect(() => splitCharge(1000, 0)).toThrow();
++  expect(() => splitCharge(1000, 1.5)).toThrow();
++});
