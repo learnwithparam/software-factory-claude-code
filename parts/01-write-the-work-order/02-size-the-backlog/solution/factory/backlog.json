@@ -9,39 +9,39 @@
   {
     "issue": 2,
     "decision": "ready",
-    "reason": "One function loses the leftover cent; high risk because it is money, so a person signs off.",
-    "outcome": "splitCharge returns shares that add up to the charge, so D-301 splits into 16.67 and 16.66.",
+    "reason": "One bug in one function: splitCharge floors every share and drops the remainder; the treasurer states the rule (shares must add up to the charge).",
+    "outcome": "bun run desk split D-301 bills £33.33 as £16.67 and £16.66, and the shares add up to the charge.",
     "files": ["src/fees/split.ts", "tests/fees/split.test.ts"]
   },
   {
     "issue": 3,
     "decision": "ready",
-    "reason": "One overlap rule treats the due date as free; the fix and its test fit in two files.",
-    "outcome": "A reservation that starts on another loan's due date is refused as a clash.",
+    "reason": "One bug in one function: overlaps treats date ranges as end-exclusive, but a loan holds the tool through its due date, so ranges must be inclusive.",
+    "outcome": "A reservation of drill-01 starting on L-101's due date (the 13th) is reported as clashing with L-101, while one starting on the 14th is not.",
     "files": ["src/loans/reserve.ts", "tests/loans/reserve.test.ts"]
   },
   {
     "issue": 4,
     "decision": "ready",
-    "reason": "Search returns whole member rows; high risk because it is privacy, so a person signs off.",
-    "outcome": "Member search at the desk and in the API shows names and ids but no phone number or email.",
+    "reason": "One privacy bug in one function: searchMembers returns whole member rows, and both the desk CLI and /api/members print what it returns.",
+    "outcome": "Searching for \"Ha\" at the desk or through /api/members shows matching members' names but no phone number or email.",
     "files": ["src/members/search.ts", "tests/members/search.test.ts"]
   },
   {
     "issue": 5,
     "decision": "ready",
-    "reason": "The coordinator's answers give one outcome and the checks fit the borrow rule; it still needs a spec first.",
-    "outcome": "A member without the class C induction is refused a class C tool and told why.",
+    "reason": "The issue alone is too vague, but the coordinator's answers give the outcome, acceptance, scope and limits; the rule fits in canBorrow, which the desk and API both use, and the seed already records inductions and class C tools.",
+    "outcome": "Ben Halloran (not inducted) is refused the chainsaw saw-01 with a reason naming the class C induction, at the desk and through the API, while Ada Okafor (inducted) can borrow it and class A and B tools are unchanged.",
     "files": ["src/items/borrow.ts", "tests/items/borrow.test.ts"]
   },
   {
     "issue": 6,
     "decision": "refuse",
-    "reason": "It changes src/auth/roles.ts, a protected path that only a coordinator may change after review."
+    "reason": "Changing who may waive fees means changing canWaiveFee in src/auth/roles.ts, and src/auth/ is protected: only a coordinator may change it, so this goes to a coordinator, not the factory."
   },
   {
     "issue": 7,
     "decision": "split",
-    "reason": "A major upgrade has unknown breakage; first read the changelog and list what breaks, then one issue per break."
+    "reason": "Real work but too unknown for one run: \"fix whatever breaks\" has no checkable outcome or known files. First smaller issue: once the next Hono major ships, list what in it breaks src/server.ts (the routes, c.json, c.html and the Bun.serve fetch hookup), so each break becomes its own issue with one outcome."
   }
 ]

@@ -1,36 +1,98 @@
 // bun run doctor: is this machine ready? One line per check, then a verdict.
-// Required checks decide the exit code. The Claude Code lines come from claude itself (`claude --version`
-// and `claude auth status`); the doctor never reads a credentials file. Without them the course still
-// replays its recorded runs, so they are listed but do not fail the doctor.
+// Required checks decide the exit code. The Claude Code lines come from claude itself
+// (`claude --version` and `claude auth status`); the doctor never reads a credentials file.
+// Without them the course still replays its recorded runs,
+// so they are listed but do not fail the doctor.
 import { existsSync } from "node:fs";
-import { claudeStatus, INSTALL, MIN_CLAUDE_CODE, recentEnough } from "../config/claude-code";
+import {
+  type ClaudeStatus,
+  claudeStatus,
+  INSTALL,
+  MIN_CLAUDE_CODE,
+  recentEnough,
+} from "../config/claude-code";
 import { DB_PATH, seed } from "../world/app/src/db";
 
 type Line = { ok: boolean; says: string; fix: string };
-// Packages count as installed when they load. Bun can also install them on first import, as CI does.
-const canLoad = async (names: string[]) => {
+
+// Packages count as installed when they load.
+// Bun can also install them on first import, as CI does.
+async function canLoad(packageNames: string[]): Promise<boolean> {
   try {
-    for (const n of names) await import(n);
+    for (const packageName of packageNames) await import(packageName);
     return true;
   } catch {
     return false;
   }
-};
-const newer = (have: string, want: string) => {
-  const a = have.split(".").map(Number);
-  const b = want.split(".").map(Number);
-  for (let i = 0; i < 3; i++) if ((a[i] ?? 0) !== (b[i] ?? 0)) return (a[i] ?? 0) > (b[i] ?? 0);
+}
+
+// True when version `have` is the same as or newer than version `want`, both written as "1.2.3".
+function newer(have: string, want: string): boolean {
+  const haveParts = have.split(".").map(Number);
+  const wantParts = want.split(".").map(Number);
+  for (let i = 0; i < 3; i++) {
+    const havePart = haveParts[i] ?? 0;
+    const wantPart = wantParts[i] ?? 0;
+    if (havePart !== wantPart) return havePart > wantPart;
+  }
   return true;
-};
+}
+
+// Build the library database if it is missing, so the first run of the doctor also sets it up.
+function databaseLine(): Line {
+  const hadDatabase = existsSync(DB_PATH);
+  if (!hadDatabase) seed();
+  return {
+    ok: existsSync(DB_PATH),
+    says: hadDatabase ? "library database built" : "library database built just now",
+    fix: "run bun run world reset",
+  };
+}
+
+function claudeCodeLine(claude: ClaudeStatus): Line {
+  if (!claude.installed) {
+    return { ok: false, says: "Claude Code not found", fix: `install it: ${INSTALL}` };
+  }
+  return {
+    ok: recentEnough(claude.version),
+    says: `Claude Code ${claude.version ?? "(version unknown)"}`,
+    fix: `run claude update (this course is tested on ${MIN_CLAUDE_CODE} and newer)`,
+  };
+}
+
+function signInText(claude: ClaudeStatus): string {
+  if (!claude.installed) return "Claude Code sign-in: not checked";
+  if (claude.signedIn === null) return "Claude Code sign-in: unknown";
+  if (claude.signedIn) return "Claude Code signed in";
+  return "Claude Code not signed in";
+}
+
+function signInLine(claude: ClaudeStatus): Line {
+  return {
+    ok: claude.signedIn === true,
+    says: signInText(claude),
+    fix: "run claude, then type /login and sign in with your Claude account",
+  };
+}
+
+function printRequiredLine(line: Line) {
+  if (line.ok) console.log(`  ok    ${line.says}`);
+  else console.log(`  FAIL  ${line.says}\n        Try next: ${line.fix}`);
+}
+
+function printLiveLine(line: Line) {
+  if (line.ok) console.log(`  ok    ${line.says}`);
+  else console.log(`  --    ${line.says}  (to run Claude Code yourself: ${line.fix})`);
+}
 
 const required: Line[] = [
-  { ok: newer(Bun.version, "1.4.0"), says: `Bun ${Bun.version}`, fix: "install Bun 1.4 or newer from bun.sh" },
+  {
+    ok: newer(Bun.version, "1.4.0"),
+    says: `Bun ${Bun.version}`,
+    fix: "install Bun 1.4 or newer from bun.sh",
+  },
   { ok: await canLoad(["hono", "zod"]), says: "packages installed", fix: "run bun install" },
-  (() => {
-    const had = existsSync(DB_PATH);
-    if (!had) seed();
-    return { ok: existsSync(DB_PATH), says: had ? "library database built" : "library database built just now", fix: "run bun run world reset" };
-  })(),
+  databaseLine(),
   {
     ok: process.platform !== "win32",
     says: `platform ${process.platform}`,
@@ -38,28 +100,18 @@ const required: Line[] = [
   },
 ];
 
-const cc = claudeStatus();
-const live: Line[] = [
-  {
-    ok: cc.installed && recentEnough(cc.version),
-    says: cc.installed ? `Claude Code ${cc.version ?? "(version unknown)"}` : "Claude Code not found",
-    fix: cc.installed ? `run claude update (this course is tested on ${MIN_CLAUDE_CODE} and newer)` : `install it: ${INSTALL}`,
-  },
-  {
-    ok: cc.signedIn === true,
-    says: !cc.installed ? "Claude Code sign-in: not checked" : cc.signedIn === null ? "Claude Code sign-in: unknown" : cc.signedIn ? "Claude Code signed in" : "Claude Code not signed in",
-    fix: "run claude, then type /login and sign in with your Claude account",
-  },
-];
+const claude = claudeStatus();
+const live: Line[] = [claudeCodeLine(claude), signInLine(claude)];
 
-for (const l of required) console.log(`  ${l.ok ? "ok  " : "FAIL"}  ${l.says}${l.ok ? "" : `\n        Try next: ${l.fix}`}`);
-for (const l of live) console.log(`  ${l.ok ? "ok  " : "--  "}  ${l.says}${l.ok ? "" : `  (to run Claude Code yourself: ${l.fix})`}`);
-const need = required.filter((l) => l.ok).length;
-if (need < required.length) {
-  console.log(`doctor: not ready, ${need} of ${required.length} required checks pass. Fix the FAIL lines and run it again.`);
+for (const line of required) printRequiredLine(line);
+for (const line of live) printLiveLine(line);
+
+const passing = required.filter((line) => line.ok).length;
+const counted = `${passing} of ${required.length} required checks pass`;
+if (passing < required.length) {
+  console.log(`doctor: not ready, ${counted}. Fix the FAIL lines and run it again.`);
   process.exit(1);
 }
-const liveOk = live.every((l) => l.ok);
-console.log(
-  `doctor: ready, ${need} of ${required.length} required checks pass. Claude Code: ${liveOk ? "ready for live runs" : "not ready yet, so the finished factory replays its recorded runs"}.`,
-);
+let liveVerdict = "not ready yet, so the finished factory replays its recorded runs";
+if (live.every((line) => line.ok)) liveVerdict = "ready for live runs";
+console.log(`doctor: ready, ${counted}. Claude Code: ${liveVerdict}.`);

@@ -1,25 +1,28 @@
 // Read what the learner produced: files, YAML, JSON, Markdown sections and frontmatter.
 // A reader never throws on a missing file; it returns null so a rule can say what is missing.
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-export const read = (path: string): string | null => (existsSync(path) && statSync(path).isFile() ? readFileSync(path, "utf8") : null);
+export function read(path: string): string | null {
+  if (existsSync(path) && statSync(path).isFile()) return readFileSync(path, "utf8");
+  return null;
+}
 
 export function json<T = unknown>(path: string): T | null {
-  const t = read(path);
-  if (t === null) return null;
+  const text = read(path);
+  if (text === null) return null;
   try {
-    return JSON.parse(t) as T;
+    return JSON.parse(text) as T;
   } catch {
     return null;
   }
 }
 
 export function yaml<T = unknown>(path: string): T | null {
-  const t = read(path);
-  if (t === null) return null;
+  const text = read(path);
+  if (text === null) return null;
   try {
-    return Bun.YAML.parse(t) as T;
+    return Bun.YAML.parse(text) as T;
   } catch {
     return null;
   }
@@ -27,42 +30,55 @@ export function yaml<T = unknown>(path: string): T | null {
 
 // A Markdown file with a --- frontmatter block, as skills, agents and path rules use.
 export function frontmatter(path: string): { data: Record<string, unknown>; body: string } | null {
-  const t = read(path);
-  const m = t?.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
-  if (!m) return null;
+  const text = read(path);
+  const parts = text?.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+  if (!parts) return null;
   try {
-    const data = Bun.YAML.parse(m[1]);
-    return data && typeof data === "object" ? { data: data as Record<string, unknown>, body: m[2] } : null;
+    const data = Bun.YAML.parse(parts[1]);
+    if (!data || typeof data !== "object") return null;
+    return { data: data as Record<string, unknown>, body: parts[2] };
   } catch {
     return null;
   }
 }
 
-// "## Outcome" and the text under it, keyed by heading text in lower case. Any heading level counts.
+// "## Outcome" and the text under it, keyed by heading text in lower case.
+// Any heading level counts. A "#" line inside a ``` code block is not a heading.
 export function sections(markdown: string): Map<string, string> {
-  const out = new Map<string, string>();
-  let current: string | null = null;
-  let buf: string[] = [];
-  let fence = false;
+  const textByHeading = new Map<string, string>();
+  let currentHeading: string | null = null;
+  let linesUnderHeading: string[] = [];
+  let insideCodeBlock = false;
+  const saveCurrentSection = () => {
+    if (currentHeading === null) return;
+    textByHeading.set(currentHeading, linesUnderHeading.join("\n").trim());
+  };
   for (const line of markdown.split("\n")) {
-    if (line.trim().startsWith("```")) fence = !fence;
-    const h = !fence && line.match(/^#{1,6}\s+(.+?)\s*#*\s*$/);
-    if (h) {
-      if (current !== null) out.set(current, buf.join("\n").trim());
-      current = h[1].toLowerCase();
-      buf = [];
-    } else buf.push(line);
+    if (line.trim().startsWith("```")) insideCodeBlock = !insideCodeBlock;
+    const heading = insideCodeBlock ? null : line.match(/^#{1,6}\s+(.+?)\s*#*\s*$/);
+    if (heading) {
+      saveCurrentSection();
+      currentHeading = heading[1].toLowerCase();
+      linesUnderHeading = [];
+    } else {
+      linesUnderHeading.push(line);
+    }
   }
-  if (current !== null) out.set(current, buf.join("\n").trim());
-  return out;
+  saveCurrentSection();
+  return textByHeading;
 }
 
-export const nonEmptyLines = (t: string) => t.split("\n").map((l) => l.trim()).filter(Boolean);
+export function nonEmptyLines(text: string): string[] {
+  const trimmedLines = text.split("\n").map((line) => line.trim());
+  return trimmedLines.filter(Boolean);
+}
 
-export function listFiles(dir: string, base = dir): string[] {
-  if (!existsSync(dir)) return [];
-  return readdirSync(dir).flatMap((e) => {
-    const p = join(dir, e);
-    return statSync(p).isDirectory() ? listFiles(p, base) : [p.slice(base.length + 1)];
+// Every file under a folder, as a path relative to the folder it started from.
+export function listFiles(folder: string, startFolder = folder): string[] {
+  if (!existsSync(folder)) return [];
+  return readdirSync(folder).flatMap((entry) => {
+    const path = join(folder, entry);
+    if (statSync(path).isDirectory()) return listFiles(path, startFolder);
+    return [path.slice(startFolder.length + 1)];
   });
 }

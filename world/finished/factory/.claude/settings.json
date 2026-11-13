@@ -1,6 +1,12 @@
 {
   "permissions": {
-    "allow": ["Bash(bun test *)", "Bash(bun run gate)", "Bash(git diff *)", "Bash(git status)", "Bash(git log *)"],
+    "allow": [
+      "Bash(bun test *)",
+      "Bash(bun run gate)",
+      "Bash(git diff *)",
+      "Bash(git status)",
+      "Bash(git log *)"
+    ],
     "deny": [
       "Edit(src/auth/**)",
       "Write(src/auth/**)",
@@ -15,12 +21,19 @@
     "PreToolUse": [
       {
         "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash",
-        "hooks": [{ "type": "command", "command": "bun \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lock-tests.ts" }]
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lock-tests.ts"
+          }
+        ]
       }
     ],
     "Stop": [
       {
-        "hooks": [{ "type": "command", "command": "bun \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/stop-gate.ts" }]
+        "hooks": [
+          { "type": "command", "command": "bun \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/stop-gate.ts" }
+        ]
       }
     ]
   }

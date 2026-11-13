@@ -1,4 +1,5 @@
 ---
+
 number: 2
 title: Splitting a damage charge two ways loses a cent
 opened_by: Dana Kowalski (treasurer)

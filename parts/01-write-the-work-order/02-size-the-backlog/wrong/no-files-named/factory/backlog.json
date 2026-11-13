@@ -4,28 +4,21 @@
     "decision": "ready",
     "reason": "One docs change with one outcome a person can check by reading.",
     "outcome": "The app README has a run it section with the commands to start the app, the desk CLI and the tests.",
-    "files": [
-      "README.md"
-    ]
+    "files": ["README.md"]
   },
   {
     "issue": 2,
     "decision": "ready",
     "reason": "One function loses the leftover cent; high risk because it is money, so a person signs off.",
     "outcome": "splitCharge returns shares that add up to the charge, so D-301 splits into 16.67 and 16.66.",
-    "files": [
-      "src/fees/split.ts",
-      "tests/fees/split.test.ts"
-    ]
+    "files": ["src/fees/split.ts", "tests/fees/split.test.ts"]
   },
   {
     "issue": 3,
     "decision": "ready",
     "reason": "One overlap rule treats the due date as free; the fix and its test fit in two files.",
     "outcome": "A reservation that starts on another loan's due date is refused as a clash.",
-    "files": [
-      "world/app/src/loans/reserve.ts"
-    ]
+    "files": ["world/app/src/loans/reserve.ts"]
   },
   {
     "issue": 4,
@@ -38,10 +31,7 @@
     "decision": "ready",
     "reason": "The coordinator's answers give one outcome and the checks fit the borrow rule; it still needs a spec first.",
     "outcome": "A member without the class C induction is refused a class C tool and told why.",
-    "files": [
-      "src/items/borrow.ts",
-      "tests/items/borrow.test.ts"
-    ]
+    "files": ["src/items/borrow.ts", "tests/items/borrow.test.ts"]
   },
   {
     "issue": 6,

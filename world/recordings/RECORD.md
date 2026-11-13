@@ -19,10 +19,10 @@ Each run folder holds:
 
 | Recording | Command (run at the repo root) | Folder Claude Code runs in | Output goes to | Made with |
 |---|---|---|---|---|
-| issue 2, run 1 | `bun run finished 2 --record run-1` | `runs/finished-2/repo/` (a fresh copy of the app plus `world/finished/factory/`) | `world/recordings/issue-2/run-1/` | Claude Code 2.1.322 |
-| issue 2, run 2 | `bun run finished 2 --record run-2` | `runs/finished-2/repo/` | `world/recordings/issue-2/run-2/` | Claude Code 2.1.322 |
-| issue 2, run 3 | `bun run finished 2 --record run-3` | `runs/finished-2/repo/` | `world/recordings/issue-2/run-3/` | Claude Code 2.1.322 |
-| issue 6, run 1 | `bun run finished 6 --record run-1` | `runs/finished-6/repo/` | `world/recordings/issue-6/run-1/` | Claude Code 2.1.322 |
+| issue 2, run 1 | `bun run finished 2 --record run-1` | `runs/finished-2/repo/` (a fresh copy of the app plus `world/finished/factory/`) | `world/recordings/issue-2/run-1/` | Claude Code 2.1.323 |
+| issue 2, run 2 | `bun run finished 2 --record run-2` | `runs/finished-2/repo/` | `world/recordings/issue-2/run-2/` | Claude Code 2.1.323 |
+| issue 2, run 3 | `bun run finished 2 --record run-3` | `runs/finished-2/repo/` | `world/recordings/issue-2/run-3/` | Claude Code 2.1.323 |
+| issue 6, run 1 | `bun run finished 6 --record run-1` | `runs/finished-6/repo/` | `world/recordings/issue-6/run-1/` | Claude Code 2.1.323 |
 
 Issue 2 has three runs because what Claude Code writes varies from run to run: the tests check that all three
 reach a draft PR with the gate green, no test file edited in the build, and the review passing.

@@ -1,4 +1,5 @@
 ---
+
 number: 7
 title: Upgrade Hono to the next major version
 opened_by: Farah Haddad (volunteer engineer)

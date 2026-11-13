@@ -3,10 +3,18 @@
 You will install Claude Code and sign in, set up the repo, meet the library, run the finished factory, and
 see the goal. Then you pass the first step, `meet-the-library`.
 
-You do the work of this course in the real Claude Code: the `claude` CLI in a terminal (what the commands
-below use), Claude Code in VS Code or a JetBrains editor, or the Code tab of Claude Desktop. You sign in with
-your own Claude account: a Pro or Max plan, or a Console account. The free plan does not include Claude
-Code. No step asks for an API key, and nothing in this repo calls the model API.
+You do the work of this course in the real Claude Code. You can use it in three places:
+
+- the `claude` CLI in a terminal (the commands below use this);
+- Claude Code in VS Code or a JetBrains editor;
+- the Code tab of Claude Desktop.
+
+You never write code by hand in this course. You type a prompt, read the plan Claude Code shows, say yes
+or no, and check the result. For example, in the first step you ask Claude Code which issue a factory
+would get wrong. Then you ask it to save your own answer in a file.
+
+You sign in with your own Claude account: a Pro or Max plan, or a Console account. The free plan does not
+include Claude Code. No step asks for an API key, and nothing in this repo calls the model API.
 
 ## 1. Set up
 
@@ -51,8 +59,8 @@ bun run doctor
 ```
 
 Expect: `doctor: ready, 4 of 4 required checks pass. Claude Code: ready for live runs.` The doctor asks
-`claude` itself for its version and sign-in. If Claude Code is missing or signed out, the line ends `not
-ready yet, so the finished factory replays its recorded runs`: the course still works, and the `--` lines
+`claude` itself for its version and sign-in. Is Claude Code missing or signed out? Then the line ends `not
+ready yet, so the finished factory replays its recorded runs`. The course still works, and the `--` lines
 say what to do.
 
 ## 2. Meet the library
@@ -85,9 +93,8 @@ Expect: `finished: issue 2 ended in draft_pr.` The first line says whether it ru
 
 Read it stage by stage. Each stage is one `claude -p` run in a fresh copy of the app, with the factory's own
 `CLAUDE.md`, settings and hooks. Triage reads the issue and decides. The spec stage writes
-`specs/2/SPEC.md` and tests that fail on purpose. The build stage changes `src/` until `bun run gate` passes;
-the tests are locked by a hook, and a Stop hook will not let it finish until the gate passed on the code as
-it is. The review stage reads the change in a fresh context and returns pass or block. Lines that start
+`specs/2/SPEC.md` and tests that fail on purpose. The build stage changes `src/` until `bun run gate` passes.
+A hook locks the tests. A Stop hook will not let it finish until the gate passes on the code as it is. The review stage reads the change in a fresh context and returns pass or block. Lines that start
 with `denied:` are Claude Code's permission rules at work: each stage may only run the commands it needs.
 
 Live, it uses your Claude plan, and the last line shows the cost Claude Code estimated for the run. With
@@ -107,8 +114,9 @@ These are the targets your own factory must meet at the end of the course.
 
 ## 5. Pass the first step
 
-Open [the first step](../parts/00-meet-the-library/01-meet-the-library/problem/README.md), write your one
-line in its `notes/goal.md`, then:
+Open [the first step](../parts/00-meet-the-library/01-meet-the-library/problem/README.md). Follow its
+prompts: Claude Code reads the issues, you choose one, and Claude Code saves your line in its
+`notes/goal.md`. Then run:
 
 ```bash
 bun run verify meet-the-library
