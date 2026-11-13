@@ -23,9 +23,10 @@ flowchart LR
 Get Claude Code to write `.claude/skills/triage/SKILL.md` in this folder. Then run the skill three times
 on issue 6 and save each run.
 
-Start Claude Code in this folder:
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/02-teach-the-repo/03-package-the-triage-skill/problem
 claude --add-dir ../../../../world
 ```
 

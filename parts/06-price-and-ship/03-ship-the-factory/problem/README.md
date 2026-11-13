@@ -19,9 +19,10 @@ flowchart LR
 
 ## Your challenge
 
-Run the factory on every issue, one at a time. In the real run behind this step, the seven cost $1.53 of usage together:
+From the repo root, run the factory on every issue, one at a time. In the real run behind this step, the seven cost $1.53 of usage together:
 
 ```bash
+cd parts/06-price-and-ship/03-ship-the-factory/problem
 for issue in 1 2 3 4 5 6 7; do bun run factory $issue --json > /dev/null; done
 ```
 

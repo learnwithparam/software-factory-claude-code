@@ -5,16 +5,17 @@
 The factory has a run cap, `FACTORY_CAP_USD`. But it only looks at money already spent. So a run with $1 left
 can still start the build stage, which may spend up to $3.
 
-For example, in this folder a dry run with a cap of $0.05 still ends in `draft_pr`:
+For example, from the repo root, a dry run in this folder with a cap of $0.05 still ends in `draft_pr`:
 
 ```bash
+cd parts/06-price-and-ship/02-cap-the-spend/problem
 FACTORY_CAP_USD=0.05 bun run factory 1 --dry-run --json
 ```
 
-Expect: `"state": "draft_pr"`. Every stage started, even though one stage alone may spend $0.50.
+Expect: `"state": "draft_pr"`. Every stage started, though one stage alone may spend $0.50.
 
 There is a second problem. `factory/ci.env` is a tracked file, and someone pasted a token into it. The token
-here is a fake one, but a real one in git can be read by anyone who can read the repo.
+here is fake, but anyone who can read the repo can read a real one.
 
 ```mermaid
 flowchart LR
@@ -28,7 +29,8 @@ flowchart LR
 ## Your challenge
 
 Get Claude Code to check the cap before each stage starts, and to move the token out of every tracked file.
-Start Claude Code here:
+
+Start Claude Code in this folder:
 
 ```bash
 claude --add-dir ../../../../world --add-dir ../../../../checks
@@ -36,11 +38,25 @@ claude --add-dir ../../../../world --add-dir ../../../../checks
 
 Expect: Claude Code opens and waits for your prompt.
 
-In plan mode, type:
+Press Shift+Tab until you see plan mode (Claude Code plans but changes no file), then type:
 
 ```text
 The run cap FACTORY_CAP_USD only looks at money already spent. Plan a change so that before each stage starts, run.ts adds that stage's --max-budget-usd to the spend so far. If the total would go over the cap, the stage does not start and the run ends as stopped_budget. A dry run follows the same rule. Keep the default cap at 10. Also, factory/ci.env is a tracked file with a token in it. Plan how to move the token into a git-ignored .env, and say what the build server should use instead. Write nothing yet.
 ```
+
+When the plan is right, press Shift+Tab until plan mode is off, then type:
+
+```text
+Go ahead. Make the changes now.
+```
+
+Type `/exit`, then run:
+
+```bash
+FACTORY_CAP_USD=2.5 bun run factory 2 --dry-run --json > /dev/null
+```
+
+Expect: the build line says `not started`, and the last line ends `stopped_budget`.
 
 ![A cap of $2.5 stops issue 2 before the build](../images/expected.png)
 

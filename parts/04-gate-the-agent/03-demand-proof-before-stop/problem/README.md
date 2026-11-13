@@ -23,9 +23,10 @@ Get Claude Code to write `.claude/hooks/stop-gate.ts` and register it under `hoo
 run, `bun run gate` writes `.factory/gate.json` with `exit_code` and `tree`. A new edit gives a
 new tree.
 
-Start Claude Code in this folder:
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/04-gate-the-agent/03-demand-proof-before-stop/problem
 claude --add-dir ../../../../world
 ```
 

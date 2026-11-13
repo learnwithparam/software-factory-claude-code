@@ -23,9 +23,10 @@ list in its frontmatter. Frontmatter is the block between two `---` lines at the
 
 In the factory, the app sits at the root of the repo. So the paths start at `src/`, not at `world/app/`.
 
-Start Claude Code in this folder:
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/02-teach-the-repo/02-add-a-path-rule/problem
 claude --add-dir ../../../../world
 ```
 

@@ -45,7 +45,8 @@ export default [
       const claudeRuns = parsed.result.claude_runs?.length ?? 0;
       return parsed.result.issue === 2 && claudeRuns > 0;
     },
-    tryNext: "run bun run finished 2 from the repo root and read what each stage printed",
+    tryNext:
+      "run bun run finished 2 again, wait for its last line, and read what each stage printed",
   },
   {
     says: "notes/goal.md has a line of your own",

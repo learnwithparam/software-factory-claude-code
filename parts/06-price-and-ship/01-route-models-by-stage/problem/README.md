@@ -22,21 +22,30 @@ flowchart LR
 ## Your challenge
 
 Get Claude Code to give each stage a model by its role. A **role** names a kind of model: fast, smart or
-judge. One map turns a role into a Claude Code alias. Start Claude Code here:
+judge. One map turns a role into a Claude Code alias.
+
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/06-price-and-ship/01-route-models-by-stage/problem
 claude --add-dir ../../../../world --add-dir ../../../../checks
 ```
 
 Expect: Claude Code opens and waits for your prompt.
 
-In plan mode, type:
+Press Shift+Tab until you see plan mode (Claude Code plans but changes no file), then type:
 
 ```text
 Every stage in factory/run.ts runs on the smart role, even triage, which only reads. Plan a change so each stage gets a model by its role. Each file in factory/stages starts with a frontmatter block that names its role: triage fast, spec smart, build smart, review judge. Add a plan stage, factory/stages/plan.md, on the smart role. It writes specs/<issue>/PLAN.md before the build, and runs only for high-risk issues. In a dry run, an issue labelled money, privacy or safety is high risk. run.ts maps roles to aliases in one place: fast haiku, smart sonnet, judge sonnet. Never a full model id. Show me the plan. Write nothing yet.
 ```
 
-Then check the routing with a free dry run:
+When the plan is right, press Shift+Tab until plan mode is off, then type:
+
+```text
+Go ahead. Make the changes in factory/run.ts and factory/stages now.
+```
+
+Then type `/exit` and check the routing with a free dry run:
 
 ```bash
 bun run factory 2 --dry-run --json > /dev/null

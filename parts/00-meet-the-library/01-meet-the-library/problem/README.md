@@ -5,7 +5,7 @@
 Northside Tool Library has one volunteer engineer and seven open issues. You want an agent to take an issue
 and hand back a pull request while you are away.
 
-First, see a finished one and guess where it goes wrong. For example, issue 2 says a £33.33 charge split two ways bills only £33.32. Can an agent fix that alone?
+First, see a finished one. For example, issue 2 says a £33.33 charge split two ways bills only £33.32. Can an agent fix that alone?
 
 ```mermaid
 flowchart LR
@@ -18,11 +18,14 @@ flowchart LR
 
 ## Your challenge
 
-1. Run the finished factory on issue 2 and read every stage it prints.
+1. Run the finished factory on issue 2 and read each stage.
 2. Ask Claude Code which issue a factory would get wrong. Then choose your own answer.
 3. Ask Claude Code to save your answer as one line in `notes/goal.md` (in this folder).
 
+From the repo root, run:
+
 ```bash
+cd parts/00-meet-the-library/01-meet-the-library/problem
 bun run finished 2
 ```
 
@@ -68,7 +71,7 @@ Expect: `Done. All 5 rules pass.`
 | What you see                                     | Fix                                                                |
 | ------------------------------------------------ | ------------------------------------------------------------------ |
 | `FAIL bun run doctor passes its required checks` | Run `bun run doctor` and follow its `Try next:` line.              |
-| `FAIL the finished factory ran issue 2 ...`      | Run `bun run finished 2` from the repo root, not from this folder. |
+| `FAIL the finished factory ran issue 2 ...`      | Run `bun run finished 2` again and wait for its last line.         |
 | `FAIL the line names one issue`                  | Ask Claude Code to start the line with the number: `Issue 4, ...`. |
 | `FAIL the line says why`                         | Tell Claude Code what in that issue would fool an agent alone.     |
 

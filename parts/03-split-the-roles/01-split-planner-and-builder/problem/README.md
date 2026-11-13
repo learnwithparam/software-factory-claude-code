@@ -20,9 +20,10 @@ flowchart LR
 Get Claude Code to write two subagents in `.claude/agents/` in this folder. A subagent is a Markdown file
 with a `tools` list, a `model` and a prompt. Then run the planner three times on issue 3.
 
-Start Claude Code in this folder:
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/03-split-the-roles/01-split-planner-and-builder/problem
 claude --add-dir ../../../../world
 ```
 

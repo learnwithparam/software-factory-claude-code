@@ -22,9 +22,10 @@ flowchart LR
 Run your reviewer three times on each diff. It must block the planted bug with a date pair as evidence,
 and pass the clean fix in the same runs. If it misses, tell Claude Code what to change in `reviewer.md`.
 
-Run each pair of reviews from this folder:
+From the repo root, run each pair of reviews:
 
 ```bash
+cd parts/03-split-the-roles/04-catch-the-planted-bug/problem
 mkdir -p runs/review-planted runs/review-clean && for run in 1 2 3; do for diff in planted clean; do file=issue-3-clean.diff; [ $diff = planted ] && file=issue-3-offbyone.diff; claude -p "Review the change in diffs/$file for issue 3." --agent reviewer --add-dir ../../../../world --output-format stream-json --verbose --setting-sources project,local --no-session-persistence > runs/review-$diff/run-$run.jsonl; done; done
 ```
 

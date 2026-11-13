@@ -30,9 +30,10 @@ For example, the worked spec in `specs/3/SPEC.md` has this line:
 - R1. When a reservation starts on the due date of an open loan of the same item, the system shall report a clash.
 ```
 
-Start Claude Code in this folder:
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/01-write-the-work-order/03-write-the-spec/problem
 claude --add-dir ../../../../world
 ```
 

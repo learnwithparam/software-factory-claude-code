@@ -26,9 +26,10 @@ Get Claude Code to cut `AGENTS.md` down to what only you know. Then make `CLAUDE
 An import is a line that starts with `@` and names a file. Claude Code reads that file in its place. So the
 rules live in one file, and both names point at it.
 
-Start Claude Code in this folder:
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/02-teach-the-repo/01-trim-the-agents-file/problem
 claude --add-dir ../../../../world
 ```
 

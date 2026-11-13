@@ -23,9 +23,10 @@ flowchart LR
 
 Get Claude Code to put the builder in its own worktree and keep secrets out of it.
 
-Start Claude Code in this folder:
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/03-split-the-roles/02-isolate-the-builder/problem
 claude --add-dir ../../../../world
 ```
 
