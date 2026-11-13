@@ -1,0 +1,28 @@
+# The gateway: LiteLLM in front of the model, with Postgres to remember keys and spend.
+# Secrets come from .env, which git ignores. Never type one on a command line.
+services:
+  litellm:
+    image: ghcr.io/berriai/litellm:v1.109.1
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    ports:
+      - "127.0.0.1:4000:4000"
+    volumes:
+      - ./litellm.yaml:/app/config.yaml:ro
+    environment:
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:?run the openssl line from the README first}
+      DATABASE_URL: postgresql://litellm:litellm@db:5432/litellm
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:?put your provider key in .env}
+      UPSTREAM_MODEL: ${UPSTREAM_MODEL:?put the model id in .env}
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: litellm
+      POSTGRES_PASSWORD: litellm
+      POSTGRES_DB: litellm
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U litellm"]
+      interval: 5s
+      retries: 10

@@ -14,6 +14,7 @@ elective).
 | `parts/04-gate-the-agent`       | who has the last word                   | `deny-the-shortcuts` (10), `lock-the-tests` (20), `demand-proof-before-stop` (15), `protect-the-main-branch` (15)     | 60           | skeleton |
 | `parts/05-run-it-unattended`    | what stops it, where does the result go | `run-one-issue-headless` (25), `run-from-a-label` (25), `run-two-at-once` (15, elective)                              | 65           | skeleton |
 | `parts/06-price-and-ship`       | what did it cost, was it worth it       | `route-models-by-stage` (15), `cap-the-spend` (10), `ship-the-factory` (25)                                           | 50           | skeleton |
+| `parts/07-track-agent-cost`     | can anything go around the cap          | `track-agent-cost` (15, optional, homework)                                                                           | 15           | built    |
 
 ## What each step's check reads
 

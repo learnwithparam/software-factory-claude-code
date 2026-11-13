@@ -219,3 +219,9 @@ test("the recorded run of issue 6 is refused at triage: it needs src/auth/", () 
   expect(result.state).toBe("refused");
   expect(result.claude_runs?.map((claudeRun) => claudeRun.stage)).toEqual(["triage"]);
 }, 30000);
+
+test("the assignment starter and the step starter hold the same compose file", () => {
+  const step = join(ROOT, "parts", "07-track-agent-cost", "01-track-agent-cost", "problem");
+  const assignmentCompose = readFileSync(join(ROOT, "assignment", "compose.yml"), "utf8");
+  expect(readFileSync(join(step, "compose.yml"), "utf8")).toBe(assignmentCompose);
+});
