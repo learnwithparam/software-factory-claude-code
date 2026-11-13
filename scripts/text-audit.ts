@@ -14,6 +14,12 @@ if (!existsSync(routesFile)) {
 }
 
 const configFile = join(ROOT, "e2e", "playwright.config.ts");
+// CI runs bun run check without an install step, so the audit gets its own packages first.
+const packages = Bun.spawnSync(["bun", "install", "--frozen-lockfile"], { cwd: ROOT });
+if (packages.exitCode !== 0) {
+  console.error("Could not install the packages. Try next: run bun install, then rerun.");
+  process.exit(2);
+}
 const install = Bun.spawnSync(["bunx", "playwright", "install", "chromium"], { cwd: ROOT });
 if (install.exitCode !== 0 && !process.env.AUDIT_BROWSER) {
   console.error("Could not get the browser. Try next: run bunx playwright install chromium.");
