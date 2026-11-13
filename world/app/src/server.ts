@@ -67,13 +67,15 @@ const STYLE = [
   "header{background:#24493a;color:#fff;padding:16px 24px}" +
     "header h1{margin:0;font-size:22px}header p{margin:4px 0 0;opacity:.85}",
   "main{padding:16px 24px;display:grid;gap:24px;grid-template-columns:3fr 2fr}",
-  "section{background:#fff;border-radius:8px;padding:12px 16px;box-shadow:0 1px 2px #0002}",
+  "section{min-width:0;background:#fff;border-radius:8px;padding:12px 16px}",
+  "section{box-shadow:0 1px 2px #0002}",
   "h2{font-size:16px;margin:4px 0 8px}table{border-collapse:collapse;width:100%;font-size:14px}",
   "td,th{text-align:left;padding:6px 8px;border-bottom:1px solid #eee}",
   ".class{padding:2px 6px;border-radius:4px;font-size:12px;font-weight:600}",
   ".class-A{background:#e3f1e7}.class-B{background:#fdf1d6}" +
     ".class-C{background:#f9d9d6;color:#8a1c12}",
   ".status-repair{color:#8a6d00}.status-out{color:#555}",
+  ".scroll{overflow-x:auto}",
   "tr.overdue td{color:#b3261e;font-weight:600}",
   "@media (max-width:700px){main{grid-template-columns:1fr}}",
 ].join("\n");
@@ -85,8 +87,22 @@ function headerRow(titles: string[]): string {
 
 function safetyBadge(item: Item): string {
   const letter = item.safety_class;
-  const label = ["class", letter].join(" ");
+  const label = ["Safety class", letter].join(" ");
   return `<span class="class class-${letter}">${label}</span>`;
+}
+
+const STATUS_LABEL: Record<string, string> = {
+  in: "Available",
+  out: "On loan",
+  repair: "In repair",
+};
+
+const MONTHS = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" ");
+
+function longDate(iso: string): string {
+  const [year, month, day] = iso.split("-").map(Number);
+  const name = MONTHS[(month ?? 0) - 1];
+  return name ? `${day} ${name} ${year}` : iso;
 }
 
 function itemRow(item: Item): string {
@@ -95,17 +111,17 @@ function itemRow(item: Item): string {
     `<td>${escapeHtml(item.category)}</td>`,
     `<td>${safetyBadge(item)}</td>`,
     `<td>${money(item.deposit_cents)}</td>`,
-    `<td class="status-${item.status}">${item.status}</td>`,
+    `<td class="status-${item.status}">${STATUS_LABEL[item.status] ?? item.status}</td>`,
   ];
   return `<tr>${cells.join("")}</tr>`;
 }
 
 function loanRow(loan: LoanOut, today: string): string {
   let rowClass = "";
-  let state = "on loan";
+  let state = "On loan";
   if (isOverdue(loan.due_date, today)) {
     rowClass = "overdue";
-    state = "overdue";
+    state = "Overdue";
   }
   const cells = [
     `<td>${escapeHtml(loan.item)}</td>`,
@@ -117,11 +133,14 @@ function loanRow(loan: LoanOut, today: string): string {
 }
 
 function deskPage(today: string, items: Item[], loans: LoanOut[]): string {
-  const summary = `Desk view. Today is ${today}. ${items.length} tools, ${loans.length} on loan.`;
+  const summary = `Today is ${longDate(today)}. ${items.length} tools, ${loans.length} on loan.`;
   const catalogueHeader = headerRow(["Tool", "Category", "Safety", "Deposit", "Status"]);
   const itemRows = items.map(itemRow).join("");
-  const loanHeader = headerRow(["Tool", "Member", "Due", ""]);
+  const loanHeader = headerRow(["Tool", "Member", "Due", "Status"]);
   const loanRows = loans.map((loan) => loanRow(loan, today)).join("");
+  const loanTable = loans.length
+    ? `<div class="scroll"><table>${loanHeader}${loanRows}</table></div>`
+    : "<p data-empty-state>Nothing is on loan.</p>";
   const lines = [
     '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
       "<title>Northside Tool Library</title>",
@@ -130,8 +149,9 @@ function deskPage(today: string, items: Item[], loans: LoanOut[]): string {
     STYLE,
     "</style></head><body>",
     `<header><h1>Northside Tool Library</h1><p>${summary}</p></header>`,
-    `<main><section><h2>Catalogue</h2><table>${catalogueHeader}${itemRows}</table></section>`,
-    `<section><h2>On loan</h2><table>${loanHeader}${loanRows}</table></section></main>`,
+    "<main><section><h2>Catalogue</h2>",
+    `<div class="scroll"><table>${catalogueHeader}${itemRows}</table></div></section>`,
+    `<section><h2>On loan</h2>${loanTable}</section></main>`,
     "</body></html>",
   ];
   return lines.join("\n");
