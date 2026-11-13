@@ -62,11 +62,11 @@ Expect: `Done. All 8 rules pass.`
 
 ## If you get stuck
 
-| What you see                                       | What to tell Claude Code                                         |
-| -------------------------------------------------- | ---------------------------------------------------------------- |
-| `FAIL  no line in AGENTS.md only says where ...`   | "Delete every line that says what a folder holds."               |
-| `FAIL  Protected paths names src/auth/`            | "Keep a Protected paths heading. src/auth/ goes under it."       |
-| `FAIL  CLAUDE.md imports AGENTS.md ...`            | "Make CLAUDE.md one line: @AGENTS.md."                           |
+| What you see                                     | What to tell Claude Code                                   |
+| ------------------------------------------------ | ---------------------------------------------------------- |
+| `FAIL  no line in AGENTS.md only says where ...` | "Delete every line that says what a folder holds."         |
+| `FAIL  Protected paths names src/auth/`          | "Keep a Protected paths heading. src/auth/ goes under it." |
+| `FAIL  CLAUDE.md imports AGENTS.md ...`          | "Make CLAUDE.md one line: @AGENTS.md."                     |
 
 The prompts and the plan from a real run are in `../solution/prompts.md`.
 

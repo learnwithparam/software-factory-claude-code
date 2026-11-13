@@ -39,7 +39,7 @@ function bareLine(line: string): string {
 
 // True when a line only tells Claude Code where a folder is, which it can see for itself.
 // A tree entry such as "fees/" counts too.
-function restatesAFolder(line: string, folders: string[]): boolean {
+function restatesFolder(line: string, folders: string[]): boolean {
   const bare = bareLine(line).replace(/^world\/app\//, "");
   if (/^[a-z0-9_.-]+\/`?$/.test(bare)) return true;
   return folders.some((folder) => bare.startsWith(folder));
@@ -53,7 +53,7 @@ function folderLines(folder: string): string[] {
   for (const line of agentsText(folder).split("\n")) {
     const headingMatch = line.match(/^#{1,6}\s+(.+?)\s*$/);
     if (headingMatch) heading = headingMatch[1].toLowerCase();
-    else if (heading !== "protected paths" && restatesAFolder(line, folders)) found.push(line);
+    else if (heading !== "protected paths" && restatesFolder(line, folders)) found.push(line);
   }
   return found;
 }
