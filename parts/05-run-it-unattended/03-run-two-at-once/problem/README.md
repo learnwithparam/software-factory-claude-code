@@ -23,15 +23,16 @@ flowchart LR
 
 ## Your challenge
 
-First, ask Claude Code what the two runs could share. Start it here:
+First, ask Claude Code what the two runs could share. Start Claude Code from the repo root:
 
 ```bash
+cd parts/05-run-it-unattended/03-run-two-at-once/problem
 claude --add-dir ../../../../world
 ```
 
 Expect: Claude Code opens and waits for your prompt.
 
-In plan mode, type:
+Press Shift+Tab until you see plan mode (Claude Code plans but changes no file), then type:
 
 ```text
 I want to run issues 3 and 5 at the same time: bun run factory 3 --json and bun run factory 5 --json in two terminals. Read factory/run.ts, factory/backlog.json and the two issues in ../../../../world/backlog. Before I start them, tell me: will the two runs share any folder, git branch, gate record or app file? Name anything that could collide. Do not change any file.

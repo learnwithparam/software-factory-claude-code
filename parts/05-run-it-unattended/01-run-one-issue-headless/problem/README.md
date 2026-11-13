@@ -5,8 +5,8 @@
 The factory must run with nobody at the keyboard. For that it uses `claude -p`: Claude Code gets one
 prompt, works, prints its result and exits.
 
-A `claude -p` call with no limits can loop and spend for a long time. And one flag, `--bare`, skips
-the project's hooks. Then the test lock and the Stop gate from Part 4 vanish, and nothing tells you.
+A `claude -p` call with no limits can loop and spend. And one flag, `--bare`, skips
+the project's hooks. Then the test lock and Stop gate from Part 4 vanish silently.
 
 For example, `factory/run.ts` in this folder only prints `factory: not built yet` and exits 1.
 
@@ -23,9 +23,12 @@ flowchart LR
 ## Your challenge
 
 Get Claude Code to write `factory/run.ts`, the runner. `CLAUDE.md` in this folder holds the contract it must
-answer. Start Claude Code here:
+answer.
+
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/05-run-it-unattended/01-run-one-issue-headless/problem
 claude --add-dir ../../../../world --add-dir ../../../../checks
 ```
 
@@ -37,7 +40,13 @@ Ask for a plan first:
 Read CLAUDE.md, factory/stages, factory/app and ../../../../checks/lib/result.ts. Then plan factory/run.ts, the runner for the factory contract in CLAUDE.md. Each stage is one claude -p call with a permission mode, its tools, --max-turns, --max-budget-usd and stream-json output, never --bare. The builder gets at most 2 gate rounds. Show me the flags per stage, how the retry loop stops, and what the dry run does. Write nothing yet.
 ```
 
-Then try a dry run. It makes no `claude` call and spends nothing:
+Check the flags and the 2-round limit, then type:
+
+```text
+Go ahead. Write factory/run.ts now.
+```
+
+Then type `/exit` and try a free dry run, with no `claude` call:
 
 ```bash
 bun run factory 1 --dry-run --json
@@ -71,11 +80,11 @@ Expect: `Done. All 10 rules pass.`
 
 ## If you get stuck
 
-| What you see                                                    | What to do                                                                                                                                           |
-| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Ignoring 5 permissions.allow entries ... has not been trusted` | Nothing. The copy is a new folder, so Claude Code skips its allow list. Each call names its own tools with `--allowedTools`, so the run still works. |
-| `FAIL ... 2 rounds`                                             | Run `FACTORY_DRY_GATE=fail bun run factory 1 --dry-run --json` and count the build lines in `runs/1/commands.txt`.                                   |
-| `FAIL a live run of issue 1 ...`                                | Run `claude auth status`. Then run issue 1 again without `--dry-run`.                                                                                |
+| What you see                                                    | What to do                                                                                                               |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `Ignoring 5 permissions.allow entries ... has not been trusted` | Nothing. The copy is a new folder, so Claude Code skips its allow list. Each call names its tools with `--allowedTools`. |
+| `FAIL ... 2 rounds`                                             | Run `FACTORY_DRY_GATE=fail bun run factory 1 --dry-run --json` and count the build lines in `runs/1/commands.txt`.       |
+| `FAIL a live run of issue 1 ...`                                | Run `claude auth status`. Then run issue 1 again without `--dry-run`.                                                    |
 
 The prompts from a real run are in `../solution/prompts.md`.
 
@@ -83,5 +92,5 @@ The prompts from a real run are in `../solution/prompts.md`.
 
 - **Headless**: Claude Code runs with no person to answer it. `claude -p` is the headless mode.
 - **Dry run**: the factory does every step except the `claude` calls, so you can test it for free.
-- **Transcript**: the stream-json lines one `claude -p` call printed. Its last line holds the cost.
+- **Transcript**: the stream-json lines one `claude -p` call printed, cost included.
 - **Retry loop**: the builder gets one more round when the gate fails, up to a limit.

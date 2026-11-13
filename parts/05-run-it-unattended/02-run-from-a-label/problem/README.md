@@ -8,8 +8,7 @@ issue, and the factory runs on GitHub's machines.
 The library already has one workflow, `workflow/claude.yml`. It starts Claude on any comment that says
 `@claude`. It has no cap on turns or spend, no timeout, and no limit on runs at the same time.
 
-For example, two volunteers who comment `@claude fix this` on issue 3 start two runs. Both spend, both
-push, and nobody set a limit.
+For example, two volunteers who comment `@claude fix this` on issue 3 start two runs. Both spend and push.
 
 ```mermaid
 flowchart LR
@@ -24,21 +23,28 @@ flowchart LR
 ## Your challenge
 
 Get Claude Code to write `workflow/factory.yml`. In your own repo the file goes in `.github/workflows/`.
-Here it stays in this folder, so the check reads it with no GitHub account. Start Claude Code here:
+Here it stays in this folder, so the check reads it with no GitHub account.
+
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/05-run-it-unattended/02-run-from-a-label/problem
 claude --add-dir ../../../../world
 ```
 
 Expect: Claude Code opens and waits for your prompt.
 
-In plan mode, type:
+Press Shift+Tab until you see plan mode (Claude Code plans but changes no file), then type:
 
 ```text
 Read CLAUDE.md, factory/run.ts and workflow/claude.yml. Plan workflow/factory.yml: it runs the factory when a person adds the label factory:ready to an issue, and only then. It uses anthropics/claude-code-action@v1 and the CLAUDE_CODE_OAUTH_TOKEN secret, never a key in the file. It sets --max-turns and --max-budget-usd in claude_args, has one concurrency group per issue and a timeout, names its permissions, and opens the pull request as a draft. It never merges. Show me the plan and the YAML. Write nothing yet.
 ```
 
-Read the YAML before you approve. Look for each line the Done when list asks for.
+Check the YAML against the Done when list. When it is right, press Shift+Tab until plan mode is off, then type:
+
+```text
+Go ahead. Write workflow/factory.yml now. Leave workflow/claude.yml as it is.
+```
 
 ## Done when
 
