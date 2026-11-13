@@ -113,7 +113,7 @@ export default [
     tryNext: "fix the planner's tools so it can only read, then record the three runs again",
   },
   {
-    says: `in ${PASSING_RUNS_NEEDED} or more runs the plan has Steps and its Files name ${THE_FILE}`,
+    says: `in ${PASSING_RUNS_NEEDED} or more runs the plan has Steps and Files names ${THE_FILE}`,
     test: (folder) => enoughRuns(runs(folder), PASSING_RUNS_NEEDED, planNamesTheFile),
     tryNext:
       "read a plan that missed it; tell Claude Code the planner must list each file under " +
