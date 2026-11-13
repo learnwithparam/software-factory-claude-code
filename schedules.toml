@@ -1,3 +1,4 @@
+# track-agent-cost is the optional closing part, listed last in each format.
 # Parts mapped onto formats. Minutes are step minutes plus the review time named in each note.
 # Part minutes: meet-the-library 15, write-the-work-order 50, teach-the-repo 45, split-the-roles 65,
 # gate-the-agent 60, run-it-unattended 65 (one 15 minute elective), price-and-ship 50. Total 350.
@@ -11,6 +12,7 @@ sessions = [
   { parts = ["gate-the-agent"], minutes = 60 },
   { parts = ["run-it-unattended"], minutes = 65 },
   { parts = ["price-and-ship"], minutes = 50 },
+  { parts = ["track-agent-cost"], minutes = 15 },
 ]
 
 # Four evenings. Each evening after the first opens with a short review of the last one's results.
@@ -20,6 +22,7 @@ sessions = [
   { parts = ["teach-the-repo", "split-the-roles"], minutes = 120 },
   { parts = ["gate-the-agent"], minutes = 80 },
   { parts = ["run-it-unattended", "price-and-ship"], minutes = 125 },
+  { parts = ["track-agent-cost"], minutes = 15 },
 ]
 
 # Cohort: six sessions a week apart, each a 75 minute live session plus the step work done between sessions.
@@ -31,4 +34,5 @@ sessions = [
   { parts = ["gate-the-agent"], minutes = 135 },
   { parts = ["run-it-unattended"], minutes = 140 },
   { parts = ["price-and-ship"], minutes = 125 },
+  { parts = ["track-agent-cost"], minutes = 15 },
 ]

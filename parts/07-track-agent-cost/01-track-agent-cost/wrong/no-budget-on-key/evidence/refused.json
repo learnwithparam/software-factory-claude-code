@@ -1,0 +1,9 @@
+{
+  "status": 400,
+  "error": {
+    "message": "Budget has been exceeded! Current cost: 0.0412, Max budget: 0.05",
+    "type": "budget_exceeded",
+    "param": null,
+    "code": "400"
+  }
+}
