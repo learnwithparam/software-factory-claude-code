@@ -19,9 +19,10 @@ flowchart LR
 
 Get Claude Code to add `permissions.deny` to `.claude/settings.json` in this folder. Keep the allow list.
 
-Start Claude Code in this folder:
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/04-gate-the-agent/01-deny-the-shortcuts/problem
 claude --add-dir ../../../../world
 ```
 

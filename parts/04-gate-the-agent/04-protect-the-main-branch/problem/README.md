@@ -2,12 +2,12 @@
 
 ## The problem
 
-Hooks and deny rules are files in `.claude/`, and a file can be changed. The last wall must live where
+Hooks and deny rules are files in `.claude/`, which can change. The last wall must live where
 the agent cannot reach: on GitHub.
 
 GitHub's docs say "Any person or integration with write permissions to a repository can set the state of
-any status check". For example, the factory's own token could post a green status named `gate` without
-running a single test. A ruleset can require that the `gate` check comes from the GitHub Actions app. Then only
+any status check". For example, the factory's own token could post a green status named `gate` with
+no test run. A ruleset can require that the `gate` check comes from the GitHub Actions app. Then only
 a real workflow run can turn it green.
 
 ```mermaid
@@ -29,9 +29,10 @@ Get Claude Code to write three files in this folder:
 
 In your own repo, `github/` is called `.github/`. Here it is not, so this course repo never runs it.
 
-Start Claude Code in this folder:
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/04-gate-the-agent/04-protect-the-main-branch/problem
 claude --add-dir ../../../../world
 ```
 

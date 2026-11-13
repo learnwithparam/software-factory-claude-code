@@ -24,9 +24,10 @@ flowchart LR
 Get Claude Code to write `.claude/agents/reviewer.md` in this folder. Then run it three times on the clean
 fix.
 
-Start Claude Code in this folder:
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/03-split-the-roles/03-build-the-reviewer/problem
 claude --add-dir ../../../../world
 ```
 

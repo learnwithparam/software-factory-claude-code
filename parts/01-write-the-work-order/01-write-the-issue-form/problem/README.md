@@ -29,9 +29,10 @@ For example, `world/backlog/answers/5.json` holds what the coordinator said abou
 `outcome`, `acceptance`, `must-not-change`, `out-of-scope` and `risk`. Your form's ids must match those keys
 letter for letter.
 
-Start Claude Code in this folder, so it can also read the world:
+Start Claude Code from the repo root, so it can also read the world:
 
 ```bash
+cd parts/01-write-the-work-order/01-write-the-issue-form/problem
 claude --add-dir ../../../../world
 ```
 

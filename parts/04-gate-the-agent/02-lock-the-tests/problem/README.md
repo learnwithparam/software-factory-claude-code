@@ -23,9 +23,10 @@ flowchart LR
 Get Claude Code to write `.claude/hooks/lock-tests.ts` and register it in `.claude/settings.json`. The
 factory sets `FACTORY_STAGE` for each stage. Only the spec stage may write tests.
 
-Start Claude Code in this folder:
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/04-gate-the-agent/02-lock-the-tests/problem
 claude --add-dir ../../../../world
 ```
 

@@ -30,9 +30,10 @@ For example, issue 1 is already in the file:
 { "issue": 1, "decision": "ready", "reason": "One docs change ...", "outcome": "...", "files": ["README.md"] }
 ```
 
-Start Claude Code in this folder:
+Start Claude Code from the repo root:
 
 ```bash
+cd parts/01-write-the-work-order/02-size-the-backlog/problem
 claude --add-dir ../../../../world
 ```
 
@@ -44,7 +45,7 @@ Type this prompt:
 Read every issue in ../../../../world/backlog and the app in ../../../../world/app. Then propose one decision for each issue in factory/backlog.json: ready, split or refuse, with a reason. A ready issue also gets an outcome (one sentence a person can check) and files (the 1 to 5 app paths it will change, written as they appear inside world/app). src/auth/ is protected: only a coordinator may change it. Issue 1 is already in the file; follow its shape. Show me your plan before you write the file.
 ```
 
-Argue with any call you do not agree with. Then read the file: does it match the plan?
+Argue with any call you disagree with. Then read the file: does it match the plan?
 
 ## Done when
 
