@@ -111,3 +111,35 @@ export function liveRun(folder: string, issue: number): LiveRun {
   const costMatches = allFound && Math.abs(total - parsed.result.cost_usd) < 0.001;
   return { result: parsed.result, transcriptCosts: known, costMatches };
 }
+
+// biome-ignore lint/style/useNamingConvention: Claude Code names this field file_path.
+type ToolUse = { type?: string; name?: string; input?: { file_path?: string } };
+type TranscriptLine = { type?: string; message?: { content?: ToolUse[] } };
+
+const FILE_TOOLS = ["Edit", "Write", "MultiEdit", "NotebookEdit"];
+
+function editedFile(block: ToolUse): string | null {
+  const editsFile = block.type === "tool_use" && FILE_TOOLS.includes(block.name ?? "");
+  if (!editsFile) return null;
+  return block.input?.file_path ?? null;
+}
+
+function filesEditedIn(transcriptPath: string): string[] {
+  const lines = (read(transcriptPath) ?? "").split("\n");
+  const events = lines.map((line) => parsePrinted(line) as TranscriptLine | null);
+  const replies = events.filter((event) => event?.type === "assistant");
+  const blocks = replies.flatMap((event) => event?.message?.content ?? []);
+  const files = blocks.map(editedFile);
+  return files.filter((file): file is string => file !== null);
+}
+
+// Every app file Claude Code edited in a live run, read from its transcripts,
+// as a path inside the copy: "src/loans/reserve.ts".
+export function filesChangedInRun(folder: string, issue: number): string[] {
+  const live = liveRun(folder, issue);
+  const runFolder = join(folder, "runs", String(issue));
+  const calls = live.result?.claude_runs ?? [];
+  const paths = calls.flatMap((call) => filesEditedIn(join(runFolder, call.transcript)));
+  const insideCopy = paths.map((path) => path.replace(/^.*\/repo\//, ""));
+  return [...new Set(insideCopy)];
+}

@@ -9,13 +9,21 @@ import { chromium } from "playwright";
 
 const ROOT = join(import.meta.dir, "..", "..");
 const PART = "parts/05-run-it-unattended";
-type Shot = { out: string; command: string; cmd?: string[]; savedOutput?: string };
+type Shot = { out: string; command: string; cmd?: string[]; savedOutput?: string[] };
 
 const SHOTS: Shot[] = [
   {
     out: `${PART}/01-run-one-issue-headless/images/expected.png`,
     command: "bun run factory 1 --json",
-    savedOutput: `${PART}/01-run-one-issue-headless/solution/runs/1/console.txt`,
+    savedOutput: [`${PART}/01-run-one-issue-headless/solution/runs/1/console.txt`],
+  },
+  {
+    out: `${PART}/03-run-two-at-once/images/expected.png`,
+    command: "bun run factory 3 --json & bun run factory 5 --json & wait",
+    savedOutput: [
+      `${PART}/03-run-two-at-once/solution/runs/3/console.txt`,
+      `${PART}/03-run-two-at-once/solution/runs/5/console.txt`,
+    ],
   },
 ];
 
@@ -41,7 +49,10 @@ function visibleLines(output: string): string {
 }
 
 function outputOf(shot: Shot): string {
-  if (shot.savedOutput) return readFileSync(join(ROOT, shot.savedOutput), "utf8");
+  if (shot.savedOutput) {
+    const outputs = shot.savedOutput.map((path) => readFileSync(join(ROOT, path), "utf8"));
+    return outputs.join("\n");
+  }
   const finished = Bun.spawnSync(shot.cmd ?? [], { cwd: ROOT, stdout: "pipe", stderr: "pipe" });
   return finished.stdout.toString();
 }

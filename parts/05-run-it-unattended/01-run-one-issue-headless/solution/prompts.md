@@ -31,8 +31,8 @@ Every call is `claude -p <prompt> --model <alias>` plus the shared headless flag
 | stage | model | `--allowedTools` | `--max-turns` | `--max-budget-usd` | `--json-schema` |
 |---|---|---|---|---|---|
 | triage | haiku | `Read,Grep,Glob` | 12 | 0.5 | type, risk, files, decision (`proceed`/`refuse`/`plan_only`), reason |
-| spec | sonnet | `Read,Grep,Glob,Edit,Write,Bash(bun test *),Bash(bun run gate)` | 30 | 2 | — |
-| build | sonnet | same as spec (the hooks lock the tests and won't let it stop until the gate passes) | 40 | 3 | — |
+| spec | sonnet | `Read,Grep,Glob,Edit,Write,Bash(bun test *),Bash(bun run gate)` | 30 | 2 | - |
+| build | sonnet | same as spec (the hooks lock the tests and won't let it stop until the gate passes) | 40 | 3 | - |
 | review | sonnet | `Read,Grep,Glob,Bash(git diff *)` | 20 | 1.5 | verdict (`pass`/`block`), findings with file, line, evidence |
 
 - `--bare` is never used.

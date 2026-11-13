@@ -1,0 +1,17 @@
+$ bun factory/run.ts "5" --json
+factory: issue 5: Chainsaw rule (live, cap $10)
+factory: triage: claude -p with haiku, up to $0.5
+Ignoring 5 permissions.allow entries from .claude/settings.json: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["/home/user/software-factory-claude-code/parts/05-run-it-unattended/03-run-two-at-once/solution/runs/5/repo"].hasTrustDialogAccepted: true in /root/.claude.json.
+factory: triage: success, 9 turns, $0.01
+factory: spec: claude -p with sonnet, up to $2
+Ignoring 5 permissions.allow entries from .claude/settings.json: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["/home/user/software-factory-claude-code/parts/05-run-it-unattended/03-run-two-at-once/solution/runs/5/repo"].hasTrustDialogAccepted: true in /root/.claude.json.
+factory: spec: success, 11 turns, $0.13
+factory: build: claude -p with sonnet, up to $3
+Ignoring 5 permissions.allow entries from .claude/settings.json: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["/home/user/software-factory-claude-code/parts/05-run-it-unattended/03-run-two-at-once/solution/runs/5/repo"].hasTrustDialogAccepted: true in /root/.claude.json.
+factory: build: success, 7 turns, $0.08
+factory: build: gate pass (round 1 of 2)
+factory: review: claude -p with sonnet, up to $1.5
+Ignoring 5 permissions.allow entries from .claude/settings.json: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["/home/user/software-factory-claude-code/parts/05-run-it-unattended/03-run-two-at-once/solution/runs/5/repo"].hasTrustDialogAccepted: true in /root/.claude.json.
+factory: review: success, 3 turns, $0.05
+factory: review: pass
+factory: issue 5: draft_pr, runs/5/result.json
