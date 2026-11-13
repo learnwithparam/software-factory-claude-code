@@ -1,0 +1,5 @@
+{
+  "permissions": {
+    "allow": ["Bash(bun test *)", "Bash(bun run gate)", "Bash(git diff *)", "Bash(git status)"]
+  }
+}
