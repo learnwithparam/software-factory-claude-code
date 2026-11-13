@@ -1,5 +1,7 @@
 # Part 3: Split the roles
 
+Moves the **Outcome**: the planner, the builder in its own worktree, and a reviewer that must show evidence.
+
 Answers the question: **can it check its own work?**
 
 ## The problem
@@ -43,41 +45,86 @@ flowchart LR
   V -- pass --> PR[draft PR]
 ```
 
-| Step                        | Minutes | What you produce                                         | What its check reads                                                                                                                                                                      |
-| --------------------------- | ------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `split-planner-and-builder` | 20      | `.claude/agents/planner.md` and `builder.md`             | planner `tools` has no Edit, Write or Bash and sets `model`; builder has Edit and Bash; a recorded `claude -p` run of the planner on issue 3 (its `plan.md`) names `src/loans/reserve.ts` |
-| `isolate-the-builder`       | 10      | `isolation: worktree` on the builder, `.worktreeinclude` | the frontmatter; `.worktreeinclude` lists `.env.example` and never `.env`; a dry run creates and removes a worktree                                                                       |
-| `build-the-reviewer`        | 20      | `.claude/agents/reviewer.md`                             | read-only tools; the JSON reply contract (`verdict`, `findings[]` with `file`, `line`, `evidence`); three recorded `claude -p` runs of the reviewer pass the clean diff                   |
-| `catch-the-planted-bug`     | 15      | a review of the planted off-by-one diff for issue 3      | in 2 of 3 runs `block` with a finding in `src/loans/reserve.ts` whose evidence names a date pair, and `pass` on the clean diff in the same runs                                           |
+| Step                        | Minutes | What you produce                                              | What its check reads                                                                                                                                                                                   |
+| --------------------------- | ------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `split-planner-and-builder` | 20      | `.claude/agents/planner.md`, `builder.md`, three planner runs | planner tools read only and a `model`; builder has Edit and Bash; three `claude -p --agent planner` runs on issue 3: run as the planner, no edits, the plan names `src/loans/reserve.ts` in at least 2 |
+| `isolate-the-builder`       | 10      | `isolation: worktree`, `.gitignore`, `.worktreeinclude`       | the frontmatter; `.claude/worktrees/` ignored; a real git dry run: no `.env` copied into the worktree, the checkout stays clean, the worktree is removed                                               |
+| `build-the-reviewer`        | 20      | `.claude/agents/reviewer.md`, three reviews of the clean fix  | read-only tools; the JSON reply contract; skip style; block only with evidence; three real runs, at least 2 pass the clean diff                                                                        |
+| `catch-the-planted-bug`     | 15      | three reviews of each diff in `diffs/`                        | in at least 2 run pairs: `block` on the planted diff in `src/loans/reserve.ts` with a date pair as evidence, and `pass` on the clean diff                                                              |
 
-A good review names a real input. For example, a finding on issue 3 points at `src/loans/reserve.ts`. Its
-evidence is a date pair: a loan due on the 13th and a booking that starts on the 13th. The reviewer's reply
-is JSON with a `verdict` of `pass` or `block`.
+A good review names a real input. For example, the reviewer's finding on the planted diff points at
+`src/loans/reserve.ts`. Its evidence is a date pair: a booking from 2026-03-13 to 2026-03-15 and one from
+2026-03-01 to 2026-03-13. The planted code says they do not clash.
+
+Claude Code writes every agent file. You type the prompt, read the plan, approve it, then record the runs
+with `claude -p`. Each step's `solution/prompts.md` shows the prompts, the plan and the replies from real
+runs.
 
 ## Walkthrough
 
-TODO(part session): write each step's walkthrough and replace these Expect lines with real output.
+Do each step's challenge in its `problem/` folder first. Then run its check from the repo root.
 
 ```bash
 bun run verify split-planner-and-builder
 ```
 
-Expect: TODO(part session)
+Expect: `Done. All 8 rules pass.`
 
 ```bash
 bun run verify isolate-the-builder
 ```
 
-Expect: TODO(part session)
+Expect: `Done. All 7 rules pass.`
 
 ```bash
 bun run verify build-the-reviewer
 ```
 
-Expect: TODO(part session)
+Expect: `Done. All 7 rules pass.`
 
 ```bash
 bun run verify catch-the-planted-bug
 ```
 
-Expect: TODO(part session)
+Expect: `Done. All 7 rules pass.`
+
+```bash
+bun run verify part split-the-roles
+```
+
+Expect: `Part split-the-roles is done: 4/4 steps pass.`
+
+To see a passing answer at any time, check the sample solution. For example:
+
+```bash
+bun run verify catch-the-planted-bug solution
+```
+
+Expect: `Done. All 7 rules pass.`
+
+## Assignment
+
+**The problem:** a builder that grades its own work passes its own bug.
+
+**What you hand in:** one commit on your own copy of the course. It holds `planner.md`, `builder.md` and
+`reviewer.md`. It also holds the recorded runs: the planner on issue 3, and the reviewer on both diffs.
+
+**How it is checked:** each line is yes or no.
+
+1. Does `bun run verify split-planner-and-builder` pass?
+2. Does `bun run verify isolate-the-builder` pass?
+3. Does `bun run verify build-the-reviewer` pass?
+4. Does `bun run verify catch-the-planted-bug` pass: block on the bug with a date pair, pass on the clean
+   diff, in 2 of 3 runs?
+
+**Extension:** record 20 reviews, 10 on each diff. Count how often the reviewer blocks the bug and how
+often it passes the clean fix. Change the prompt once, record 20 more, and compare the two counts.
+
+## Finished
+
+You now have three agents with one job each. The planner reads and plans. The builder edits, in its own
+worktree, with no secrets. The reviewer reads the change with fresh eyes and blocks only with an input that
+breaks the code. It caught the planted off-by-one that the builder's own tests passed.
+
+Next, in Part 4, you build the walls the agents cannot get around: deny rules, a hook that locks the
+tests, a Stop hook that demands a fresh gate, and a required check on the main branch.
