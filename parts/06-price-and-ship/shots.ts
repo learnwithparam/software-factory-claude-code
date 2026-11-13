@@ -16,6 +16,8 @@ type Shot = {
   cmd?: string[];
   cwd?: string;
   env?: Record<string, string>;
+  // A factory run sends its result to /dev/null in the picture, so only stderr shows.
+  hideStdout?: boolean;
   savedOutput?: string[];
 };
 
@@ -23,16 +25,23 @@ const SHOTS: Shot[] = [
   {
     out: `${PART}/01-route-models-by-stage/images/expected.png`,
     command: "bun run factory 2 --dry-run --json > /dev/null",
+    hideStdout: true,
     cmd: ["bun", "run", "factory", "2", "--dry-run", "--json"],
     cwd: `${PART}/01-route-models-by-stage/solution`,
   },
   {
     out: `${PART}/02-cap-the-spend/images/expected.png`,
     command: "FACTORY_CAP_USD=2.5 bun run factory 2 --dry-run --json > /dev/null",
+    hideStdout: true,
     cmd: ["bun", "run", "factory", "2", "--dry-run", "--json"],
     cwd: `${PART}/02-cap-the-spend/solution`,
     // biome-ignore lint/style/useNamingConvention: the factory contract names this variable.
     env: { FACTORY_CAP_USD: "2.5" },
+  },
+  {
+    out: `${PART}/03-ship-the-factory/images/expected.png`,
+    command: "bun run verify ship-the-factory",
+    cmd: ["bun", "run", "verify", "ship-the-factory", "solution"],
   },
 ];
 
@@ -72,9 +81,11 @@ function outputOf(shot: Shot): string {
     stderr: "pipe",
   });
   rmSync(runsFolder, { recursive: true, force: true });
-  // The factory prints its progress on stderr; with --json, stdout holds only the result.
+  // The factory prints its progress on stderr. A verify run prints on stdout.
   // Show the throwaway folder as runs/, where a learner's own run writes.
-  return finished.stderr.toString().replace(/\S*shots-\w+/g, "runs");
+  const shownStdout = shot.hideStdout ? "" : finished.stdout.toString();
+  const output = shownStdout + finished.stderr.toString();
+  return output.replace(/\S*shots-\w+/g, "runs");
 }
 
 function terminalPage(shot: Shot): string {

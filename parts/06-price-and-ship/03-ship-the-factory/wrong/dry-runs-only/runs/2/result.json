@@ -1,0 +1,26 @@
+{
+  "issue": 2,
+  "state": "draft_pr",
+  "branch": "factory/issue-2",
+  "worktree": "runs/2/repo",
+  "pr_url": null,
+  "gate": {
+    "command": "bun run gate",
+    "exit_code": 0,
+    "tree": "4999c772d74e",
+    "rounds": 1
+  },
+  "review": null,
+  "tests_edited": [],
+  "blocked_by_hooks": [],
+  "roles_by_stage": {
+    "triage": "fast",
+    "spec": "smart",
+    "plan": "smart",
+    "build": "smart",
+    "review": "judge"
+  },
+  "cost_usd": 0,
+  "replayed": false,
+  "claude_runs": []
+}

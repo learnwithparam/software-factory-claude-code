@@ -1,0 +1,17 @@
+{
+  "issue": 7,
+  "state": "stopped_at_plan",
+  "branch": "factory/issue-7",
+  "worktree": "runs/7/repo",
+  "pr_url": null,
+  "gate": null,
+  "review": null,
+  "tests_edited": [],
+  "blocked_by_hooks": [],
+  "roles_by_stage": {
+    "triage": "fast"
+  },
+  "cost_usd": 0,
+  "replayed": false,
+  "claude_runs": []
+}

@@ -6,7 +6,7 @@ You built every part of the factory one step at a time. Nobody has run it on the
 do, you cannot say what one issue costs, or which gate does the real work.
 
 For example, Anthropic's cost page gives an average of "$150-250 per developer per month" for Claude Code
-across enterprise teams (https://code.claude.com/docs/en/costs). That is someone else's number. This step
+(https://code.claude.com/docs/en/costs). That is across enterprise teams. That is someone else's number. This step
 gives you your own, per issue and per stage.
 
 ```mermaid
@@ -19,7 +19,7 @@ flowchart LR
 
 ## Your challenge
 
-Run the factory on every issue, one at a time. Together the seven runs cost about $1.30 of usage:
+Run the factory on every issue, one at a time. In the real run behind this step, the seven cost $1.53 of usage together:
 
 ```bash
 for issue in 1 2 3 4 5 6 7; do bun run factory $issue --json > /dev/null; done
@@ -63,11 +63,11 @@ Expect: `Done. All 7 rules pass.`
 
 ## If you get stuck
 
-| What you see | What to do |
-| --- | --- |
-| A run with no `result.json` | It was stopped before it ended. Run that issue again. |
+| What you see                                    | What to do                                                                                   |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| A run with no `result.json`                     | It was stopped before it ended. Run that issue again.                                        |
 | `FAIL the high-risk issues 2 and 4 planned ...` | Read the triage transcript. Ask Claude Code to make triage call money and privacy high risk. |
-| `FAIL notes/retro.md answers ...` | Write a few sentences under each heading, with a dollar amount under "What it cost". |
+| `FAIL notes/retro.md answers ...`               | Write a few sentences under each heading, with a dollar amount under "What it cost".         |
 
 The prompts from a real run are in `../solution/prompts.md`.
 
