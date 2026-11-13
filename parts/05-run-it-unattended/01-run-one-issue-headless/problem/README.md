@@ -71,11 +71,11 @@ Expect: `Done. All 10 rules pass.`
 
 ## If you get stuck
 
-| What you see | What to do |
-| --- | --- |
+| What you see                                                    | What to do                                                                                                                                           |
+| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Ignoring 5 permissions.allow entries ... has not been trusted` | Nothing. The copy is a new folder, so Claude Code skips its allow list. Each call names its own tools with `--allowedTools`, so the run still works. |
-| `FAIL ... 2 rounds` | Run `FACTORY_DRY_GATE=fail bun run factory 1 --dry-run --json` and count the build lines in `runs/1/commands.txt`. |
-| `FAIL a live run of issue 1 ...` | Run `claude auth status`. Then run issue 1 again without `--dry-run`. |
+| `FAIL ... 2 rounds`                                             | Run `FACTORY_DRY_GATE=fail bun run factory 1 --dry-run --json` and count the build lines in `runs/1/commands.txt`.                                   |
+| `FAIL a live run of issue 1 ...`                                | Run `claude auth status`. Then run issue 1 again without `--dry-run`.                                                                                |
 
 The prompts from a real run are in `../solution/prompts.md`.
 

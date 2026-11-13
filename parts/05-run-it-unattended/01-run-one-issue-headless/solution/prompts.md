@@ -22,7 +22,7 @@ Read CLAUDE.md, the stage prompts in factory/stages, the files in factory/app, a
 
 ## The plan Claude Code showed
 
-````text
+```text
 I've written the plan for `factory/run.ts` to `~/.claude/plans/read-claude-md-the-stage-zany-hartmanis.md`; nothing else has been written. Two things shape it: `world/finished/run.ts` already has a working version of this runner that I copied patterns from, and `config/claude-code.ts` already holds the shared headless flags and model names, which `run.ts` will reuse.
 
 ## Flags for each stage
@@ -64,7 +64,7 @@ Every call is `claude -p <prompt> --model <alias>` plus the shared headless flag
 I'd run dry runs on issues 6 (expect `refused`), 7 (`stopped_at_plan`) and 2 (`draft_pr`), then issue 2 with `FACTORY_DRY_GATE=fail` (`gate_failed`). Each `result.json` gets checked against `checks/lib/result.ts`, and `bun run readable` runs at the end. A live run costs money, so I'd only do one if you say so.
 
 Say the word and I'll write `factory/run.ts`.
-````
+```
 
 ## What you check in the plan
 
@@ -83,7 +83,7 @@ Good plan. Three changes before you write it. First, do not import anything from
 
 ## What Claude Code reported
 
-````text
+```text
 I've written `factory/run.ts` with your three changes. All three dry runs gave the expected result, and `bun run readable` now passes. No live run was started and nothing was spent.
 
 **Your three changes:**
@@ -115,7 +115,7 @@ I also split the claude call into three functions so each stays under 40 lines.
 **Not tested yet:**
 - The live path hasn't run. That covers starting `claude`, reading cost, turns and structured answers from the transcript, spotting tool calls a hook blocked, and the review verdict.
 - `.gitignore` only ignores `runs/*/repo/`, so the other files under `runs/<issue>/` (`commands.txt`, `result.json`, transcripts) show up in `git status`. Ignoring them is a one-line change if you want it.
-````
+```
 
 ## Prompt 3: run it for real, then fix what you see
 
