@@ -15,6 +15,7 @@ type Shot = {
   command: string;
   cmd?: string[];
   cwd?: string;
+  env?: Record<string, string>;
   savedOutput?: string[];
 };
 
@@ -24,6 +25,14 @@ const SHOTS: Shot[] = [
     command: "bun run factory 2 --dry-run --json > /dev/null",
     cmd: ["bun", "run", "factory", "2", "--dry-run", "--json"],
     cwd: `${PART}/01-route-models-by-stage/solution`,
+  },
+  {
+    out: `${PART}/02-cap-the-spend/images/expected.png`,
+    command: "FACTORY_CAP_USD=2.5 bun run factory 2 --dry-run --json > /dev/null",
+    cmd: ["bun", "run", "factory", "2", "--dry-run", "--json"],
+    cwd: `${PART}/02-cap-the-spend/solution`,
+    // biome-ignore lint/style/useNamingConvention: the factory contract names this variable.
+    env: { FACTORY_CAP_USD: "2.5" },
   },
 ];
 
@@ -58,7 +67,7 @@ function outputOf(shot: Shot): string {
   const finished = Bun.spawnSync(shot.cmd ?? [], {
     cwd: join(ROOT, shot.cwd ?? "."),
     // biome-ignore lint/style/useNamingConvention: the factory contract names this variable.
-    env: { ...process.env, FACTORY_RUNS: runsFolder },
+    env: { ...process.env, ...shot.env, FACTORY_RUNS: runsFolder },
     stdout: "pipe",
     stderr: "pipe",
   });
