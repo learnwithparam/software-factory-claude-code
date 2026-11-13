@@ -45,7 +45,7 @@ function envFileIsIgnored(folder: string): boolean {
 
 export default [
   {
-    says: "with FACTORY_CAP_USD=0.05, the dry run of issue 1 ends stopped_budget before triage starts",
+    says: "with FACTORY_CAP_USD=0.05, a dry run of issue 1 ends stopped_budget before triage",
     test: tinyCapStopsBeforeTriage,
     tryNext:
       "a dry run spends nothing, so a check of spent money never fires; ask Claude Code to add " +
