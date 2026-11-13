@@ -1,5 +1,7 @@
 # Part 4: Gate the agent
 
+Moves the **Outcome**: the gate the agent cannot skip, as four walls you can test.
+
 Answers the question: **who has the last word?**
 
 ## The problem
@@ -52,37 +54,87 @@ flowchart LR
   PR --> Q{required check gate, pinned to the CI app}
 ```
 
-| Step                       | Minutes | What you produce                                                                         | What its check reads                                                                                                                                                                                                                       |
-| -------------------------- | ------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `deny-the-shortcuts`       | 10      | `permissions.deny` in `.claude/settings.json`                                            | recorded tool calls (force push, `--no-verify`, read `.env`) matched with the rule grammar in `checks/lib/permissions.ts`, each expected `deny`                                                                                            |
-| `lock-the-tests`           | 20      | a PreToolUse hook and its entry in settings                                              | the planted bad command and a test edit, replayed into the hook with `FACTORY_STAGE=build`: blocked with a reason; the same edit in `spec` and an edit to `src/` allowed                                                                   |
-| `demand-proof-before-stop` | 15      | a Stop hook                                                                              | replayed Stop events: blocks with no gate record, blocks on a record for an older tree, allows a fresh pass, never loops when `stop_hook_active` is true                                                                                   |
-| `protect-the-main-branch`  | 15      | `.github/workflows/gate.yml`, `CODEOWNERS` and `factory/ruleset.json` in the step folder | offline: the workflow runs `bun run gate` as a job named `gate`; CODEOWNERS covers `.claude/`, `.github/`, `factory/`; the ruleset requires a PR and the `gate` check from a named app, blocks force pushes, has no bypass for the factory |
+| Step                       | Minutes | What you produce                                                                               | What its check reads                                                                                                                                                                                           |
+| -------------------------- | ------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `deny-the-shortcuts`       | 10      | `permissions.deny` in `.claude/settings.json`                                                  | force push, `--no-verify` and reading `.env` decided with the rule grammar in `checks/lib/permissions.ts`: each `deny`; everyday work not denied                                                               |
+| `lock-the-tests`           | 20      | a PreToolUse hook and its entry in settings                                                    | the real recorded test edit and the planted `sed -i` command, replayed into the hook with `FACTORY_STAGE=build`: blocked with a reason; spec stage and `src/` edits allowed                                    |
+| `demand-proof-before-stop` | 15      | a Stop hook                                                                                    | the real Stop event in a copy of the app: blocks with no gate record, an older tree or a failed gate; allows a fresh pass and `stop_hook_active`                                                               |
+| `protect-the-main-branch`  | 15      | `github/workflows/gate.yml`, `github/CODEOWNERS` and `factory/ruleset.json` in the step folder | offline: the `gate` job runs `bun run gate` with a read-only token; CODEOWNERS covers `.claude/`, `.github/`, `factory/`; the ruleset requires a PR, the `gate` check from app 15368, no force push, no bypass |
+
+Claude Code writes every file in this table. You give it the job, read its plan, and approve the writes. Each
+step's `problem/` folder is where you start `claude`. Each step's `solution/prompts.md` shows the prompts, the
+plan and the reply from a real run.
+
+In the last step the workflow and CODEOWNERS sit in a folder named `github/`. In your own repo that folder is
+`.github/`. Here it keeps its plain name, so this course repo never runs your workflow.
 
 ## Walkthrough
 
-TODO(part session): write each step's walkthrough and replace these Expect lines with real output.
+Do each step's challenge in its `problem/` folder first. Then run its check from the repo root.
 
 ```bash
 bun run verify deny-the-shortcuts
 ```
 
-Expect: TODO(part session)
+Expect: `Done. All 5 rules pass.`
 
 ```bash
 bun run verify lock-the-tests
 ```
 
-Expect: TODO(part session)
+Expect: `Done. All 7 rules pass.`
 
 ```bash
 bun run verify demand-proof-before-stop
 ```
 
-Expect: TODO(part session)
+Expect: `Done. All 7 rules pass.`
 
 ```bash
 bun run verify protect-the-main-branch
 ```
 
-Expect: TODO(part session)
+Expect: `Done. All 8 rules pass.`
+
+```bash
+bun run verify part gate-the-agent
+```
+
+Expect: `Part gate-the-agent is done: 4/4 steps pass.`
+
+To see a passing answer at any time, check the sample solution. For example:
+
+```bash
+bun run verify lock-the-tests solution
+```
+
+Expect: `Done. All 7 rules pass.`
+
+## Assignment
+
+**The problem:** a rule in a Markdown file is a request, not a wall.
+
+**What you hand in:** one commit on your own copy of the course. It holds the deny rules, `lock-tests.ts`
+and the Stop hook in `.claude/`. It also holds `gate.yml`, `CODEOWNERS` and `factory/ruleset.json`.
+
+**How it is checked:** each line is yes or no.
+
+1. Does `bun run verify deny-the-shortcuts` pass?
+2. Does `bun run verify lock-the-tests` pass, with the `sed -i` edit blocked in the build stage?
+3. Does `bun run verify demand-proof-before-stop` pass, with a stale gate record blocked?
+4. Does `bun run verify protect-the-main-branch` pass, with the `gate` check pinned to app 15368?
+
+**Extension:** apply the ruleset to your own repo with
+`gh api -X POST repos/OWNER/REPO/rulesets --input factory/ruleset.json`. Then try three bypasses: post a
+status named `gate` with your own token, commit with `--no-verify`, and change a test through Bash. Write
+down which wall stopped each one.
+
+## Finished
+
+You now have four walls, each tested on real events. Deny rules refuse the shortcuts before a tool runs.
+The lock-tests hook stops the builder changing a test. The Stop hook keeps it working until the gate passed
+on the code as it is now. On GitHub, only a real workflow run can turn the `gate` check green, and a person
+must approve.
+
+Next, in Part 5, you run the factory with nobody at the keyboard: `claude -p` for one issue, then a GitHub
+label that starts a run.
