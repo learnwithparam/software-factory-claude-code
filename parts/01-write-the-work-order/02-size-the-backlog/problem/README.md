@@ -2,14 +2,13 @@
 
 ## The problem
 
-A factory that starts every issue wastes money on the ones it should never touch.
+A factory that starts every issue wastes money.
 
 For example, issue 6 would change who may waive fees. That code lives in `src/auth/`, and only a
 coordinator may change it. Issue 7 is an upgrade, and nobody knows yet what it breaks.
 
-More than half of Anthropic's own engineers can hand over fully only 0 to 20% of their work
-(https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic). Choosing that work is the
-skill.
+Most Anthropic engineers can hand over fully only 0 to 20% of their work
+(https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic). Choosing it is the skill.
 
 ```mermaid
 flowchart LR
@@ -22,9 +21,9 @@ flowchart LR
 ## Your challenge
 
 Get Claude Code to give each of the seven issues one decision in `factory/backlog.json` (in this folder):
-`ready`, `split` or `refuse`, with a `reason`. A `ready` issue also gets an `outcome` and its `files`.
+`ready`, `split` or `refuse`, with a `reason`. A `ready` issue also gets an `outcome` and `files`.
 
-For example, issue 1 is already in the file:
+Issue 1 is already in the file:
 
 ```text
 { "issue": 1, "decision": "ready", "reason": "One docs change ...", "outcome": "...", "files": ["README.md"] }
@@ -45,16 +44,22 @@ Type this prompt:
 Read every issue in ../../../../world/backlog and the app in ../../../../world/app. Then propose one decision for each issue in factory/backlog.json: ready, split or refuse, with a reason. A ready issue also gets an outcome (one sentence a person can check) and files (the 1 to 5 app paths it will change, written as they appear inside world/app). src/auth/ is protected: only a coordinator may change it. Issue 1 is already in the file; follow its shape. Show me your plan before you write the file.
 ```
 
-Argue with any call you disagree with. Then read the file: does it match the plan?
+Argue with any call you disagree with. Then read the file.
 
 ## Done when
 
 - `factory/backlog.json` is a list with exactly one entry for each issue, 1 to 7.
 - Each decision is `ready`, `split` or `refuse`, with a reason of five words or more.
-- Issue 6 is refused, and the reason names the protected path.
+- Issue 6 is refused, naming the protected path.
 - Issue 7 is not ready as one piece.
-- Every ready issue has an outcome and 1 to 5 files that exist in the app (or a new test under `tests/`).
+- Every ready issue has an outcome and 1 to 5 files that exist in the app.
 - No ready issue touches a protected path.
+
+Ask Claude Code:
+
+```text
+Run `bun run verify size-the-backlog` and tell me what it printed. Do not change anything to make it pass.
+```
 
 ```bash
 bun run verify size-the-backlog

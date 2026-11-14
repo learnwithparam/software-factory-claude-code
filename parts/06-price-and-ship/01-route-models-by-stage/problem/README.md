@@ -2,13 +2,13 @@
 
 ## The problem
 
-Every stage of the factory runs on the same model. Triage only reads one issue and a few files, but it runs on
-the same smart model as the builder. That costs more than it needs to.
+Every stage runs on the same model. Triage only reads one issue, but it runs on
+the same smart model as the builder.
 
 For example, run a dry run of issue 1 in this folder and read `runs/1/commands.txt`. The triage line says
 `--model sonnet`, the same as the build line.
 
-The other way round is risky too. Issue 2 moves money, but no stage stops to plan before the builder starts.
+The other way round is risky too. Issue 2 moves money, but nothing plans before the builder starts.
 
 ```mermaid
 flowchart LR
@@ -33,7 +33,7 @@ claude --add-dir ../../../../world --add-dir ../../../../checks
 
 Expect: Claude Code opens and waits for your prompt.
 
-Press Shift+Tab until you see plan mode (Claude Code plans but changes no file), then type:
+Press Shift+Tab until you see plan mode ([ways of working](../../../../00-orientation/ways-of-working.md)), then type:
 
 ```text
 Every stage in factory/run.ts runs on the smart role, even triage, which only reads. Plan a change so each stage gets a model by its role. Each file in factory/stages starts with a frontmatter block that names its role: triage fast, spec smart, build smart, review judge. Add a plan stage, factory/stages/plan.md, on the smart role. It writes specs/<issue>/PLAN.md before the build, and runs only for high-risk issues. In a dry run, an issue labelled money, privacy or safety is high risk. run.ts maps roles to aliases in one place: fast haiku, smart sonnet, judge sonnet. Never a full model id. Show me the plan. Write nothing yet.
@@ -45,7 +45,7 @@ When the plan is right, press Shift+Tab until plan mode is off, then type:
 Go ahead. Make the changes in factory/run.ts and factory/stages now.
 ```
 
-Then type `/exit` and check the routing with a free dry run:
+Then type `/exit` and run a free dry run:
 
 ```bash
 bun run factory 2 --dry-run --json > /dev/null
@@ -57,10 +57,16 @@ Expect: triage says `(fast: haiku)`, and a `plan` line says `(smart: sonnet)`.
 
 ## Done when
 
-- Every file in `factory/stages` names its role in a frontmatter block.
+- Every file in `factory/stages` names its role in frontmatter.
 - Triage is fast. Spec, plan and build are smart. Review is judge.
 - Issue 2 runs a plan stage. Issue 1 never does.
-- Every `claude -p` call uses the alias of its stage's role, never a full model id.
+- Every `claude -p` call uses its role's alias, never a full model id.
+
+Ask Claude Code:
+
+```text
+Run `bun run verify route-models-by-stage` and tell me what it printed. Do not change anything to make it pass.
+```
 
 ```bash
 bun run verify route-models-by-stage

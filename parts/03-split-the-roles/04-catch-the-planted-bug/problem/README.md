@@ -41,6 +41,12 @@ for a reviewer that names the two date ranges that break the code. Then run the 
 - In at least two runs, it blocks the planted diff in `src/loans/reserve.ts` with a date pair.
 - In those same runs, it passes the clean fix.
 
+Ask Claude Code:
+
+```text
+Run `bun run verify catch-the-planted-bug` and tell me what it printed. Do not change anything to make it pass.
+```
+
 ```bash
 bun run verify catch-the-planted-bug
 ```

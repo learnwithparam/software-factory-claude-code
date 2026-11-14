@@ -49,6 +49,12 @@ Claude Code asks before it writes anything under `.claude/`. Approve that write.
 - The rule says amounts are integer cents, and names `tests/fees/split.test.ts`.
 - The rule is short: under 30 lines.
 
+Ask Claude Code:
+
+```text
+Run `bun run verify add-a-path-rule` and tell me what it printed. Do not change anything to make it pass.
+```
+
 ```bash
 bun run verify add-a-path-rule
 ```

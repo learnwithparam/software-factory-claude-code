@@ -70,6 +70,14 @@ In the last step the workflow and CODEOWNERS sit in a folder named `github/`. In
 
 ## Walkthrough
 
+You can ask Claude Code to run any check below. Type:
+
+```text
+Run this command and tell me what it printed. Do not change anything to make it pass.
+```
+
+The raw commands are:
+
 Do each step's challenge in its `problem/` folder first. Then run its check from the repo root.
 
 ```bash

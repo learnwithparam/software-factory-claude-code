@@ -2,12 +2,12 @@
 
 ## The problem
 
-One agent that reads, plans, edits and runs commands can change anything while it is still thinking.
-For example, issue 3 is about one function, `overlaps` in `src/loans/reserve.ts`. An agent with every tool may
-start editing before it has found that function.
+One agent with every tool can change anything while it is still thinking.
+For example, issue 3 is about one function, `overlaps` in `src/loans/reserve.ts`. An agent may
+edit before it finds that function.
 
-So the factory splits the work. A **planner** may only read, and it writes a plan. A **builder** may edit
-files and run commands, and it carries out the plan.
+So the factory splits the work. A **planner** only reads and writes a plan. A **builder** edits
+files, runs commands, and carries out the plan.
 
 ```mermaid
 flowchart LR
@@ -18,7 +18,7 @@ flowchart LR
 ## Your challenge
 
 Get Claude Code to write two subagents in `.claude/agents/` in this folder. A subagent is a Markdown file
-with a `tools` list, a `model` and a prompt. Then run the planner three times on issue 3.
+with `tools`, a `model` and a prompt. Then run the planner on issue 3.
 
 Start Claude Code from the repo root:
 
@@ -36,7 +36,7 @@ Make two subagents in .claude/agents/. The first is planner.md. It plans one iss
 ```
 
 Read the plan. The planner's `tools` line must have no Edit, Write or Bash. Approve it, then type `/exit`.
-Now run the whole session as the planner, three times:
+Now run the planner three times:
 
 ```bash
 mkdir -p runs/planner-3 && for run in 1 2 3; do claude -p "Plan issue 3." --agent planner --add-dir ../../../../world --output-format stream-json --verbose --setting-sources project,local --no-session-persistence > runs/planner-3/run-$run.jsonl; done
@@ -50,7 +50,13 @@ Expect: no output. `runs/planner-3/` then holds three `.jsonl` files.
 - `planner.md` asks for `## Files` and `## Steps`.
 - `builder.md` has Edit and Bash.
 - Three real runs ran as the planner and changed nothing.
-- In at least two, the plan names `src/loans/reserve.ts`, and every file exists or says `(new)`.
+- In two, the plan names `src/loans/reserve.ts`, and every file exists or says `(new)`.
+
+Ask Claude Code:
+
+```text
+Run `bun run verify split-planner-and-builder` and tell me what it printed. Do not change anything to make it pass.
+```
 
 ```bash
 bun run verify split-planner-and-builder
@@ -66,7 +72,7 @@ Expect: `Done. All 8 rules pass.`
 | `FAIL  runs/planner-3/ holds 3 real ...`  | Run the `claude -p --agent planner` command above.             |
 | `FAIL  ... every planned file exists ...` | Tell Claude Code: "The planner checks each path with Glob."    |
 
-The prompts, the plan and a real planner reply are in `../solution/prompts.md`.
+The prompts and a real planner reply are in `../solution/prompts.md`.
 
 ## Words you will use
 

@@ -4,8 +4,8 @@
 
 Claude Code reads `CLAUDE.md` at the start of every session. Every line in it costs tokens on every turn.
 
-The library's `AGENTS.md` in this folder is 120 lines long. Most of it tells Claude Code what it can see for
-itself. For example, it lists the folder tree and says `src/fees/` holds fees. `CLAUDE.md` then copies half
+The library's `AGENTS.md` in this folder is 120 lines long. Most of it tells Claude Code what it can see.
+For example, it lists the folder tree. `CLAUDE.md` then copies half
 of it again, so the same rule lives in two places.
 
 Anthropic's best-practice page says: "Claude reads the repo itself. Only write down what isn't in there."
@@ -24,7 +24,7 @@ flowchart LR
 Get Claude Code to cut `AGENTS.md` down to what only you know. Then make `CLAUDE.md` import it.
 
 An import is a line that starts with `@` and names a file. Claude Code reads that file in its place. So the
-rules live in one file, and both names point at it.
+rules live in one file.
 
 Start Claude Code from the repo root:
 
@@ -52,6 +52,12 @@ run the check.
 - Protected paths names `src/auth/`.
 - No line only says where a folder is.
 - `CLAUDE.md` holds the line `@AGENTS.md` and nothing it copies.
+
+Ask Claude Code:
+
+```text
+Run `bun run verify trim-the-agents-file` and tell me what it printed. Do not change anything to make it pass.
+```
 
 ```bash
 bun run verify trim-the-agents-file

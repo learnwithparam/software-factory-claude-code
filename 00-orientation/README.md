@@ -134,7 +134,13 @@ The [ways of working](ways-of-working.md) page lists the Claude Code techniques 
 
 Open [the first step](../parts/00-meet-the-library/01-meet-the-library/problem/README.md). Follow its
 prompts: Claude Code reads the issues, you choose one, and Claude Code saves your line in its
-`notes/goal.md`. Then run:
+`notes/goal.md`. Then ask Claude Code to check your work. Type:
+
+```text
+Run `bun run verify meet-the-library` and tell me what it printed. Do not change anything to make it pass.
+```
+
+The raw command is:
 
 ```bash
 bun run verify meet-the-library

@@ -63,6 +63,12 @@ Expect: `Done. All 5 lines pass.` and a new `assignment/result.json`.
 - A request after the budget was spent was refused.
 - No key appears in the repo.
 
+Ask Claude Code:
+
+```text
+Run `bun run verify track-agent-cost` and tell me what it printed. Do not change anything to make it pass.
+```
+
 ```bash
 bun run verify track-agent-cost
 ```

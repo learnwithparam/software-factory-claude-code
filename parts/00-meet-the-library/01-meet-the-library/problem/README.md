@@ -2,10 +2,10 @@
 
 ## The problem
 
-Northside Tool Library has one volunteer engineer and seven open issues. You want an agent to take an issue
-and hand back a pull request while you are away.
+Northside Tool Library has one volunteer engineer and seven open issues. You want an agent to turn an issue
+into a pull request while you are away.
 
-First, see a finished one. For example, issue 2 says a £33.33 charge split two ways bills only £33.32. Can an agent fix that alone?
+For example, issue 2 says a £33.33 charge split two ways bills only £33.32. Can an agent fix that alone?
 
 ```mermaid
 flowchart LR
@@ -29,9 +29,9 @@ cd parts/00-meet-the-library/01-meet-the-library/problem
 bun run finished 2
 ```
 
-Expect: `finished: issue 2 ended in draft_pr.` The first line says whether Claude Code runs live or a recorded run is replayed.
+Expect: `finished: issue 2 ended in draft_pr.` The first line says live or replayed.
 
-`--add-dir` lets Claude Code read one more folder. Start it here with the world folder added:
+`--add-dir` adds a folder Claude Code may read:
 
 ```bash
 claude --add-dir ../../../../world
@@ -45,7 +45,7 @@ Type this prompt:
 Read the seven issues in ../../../../world/backlog and the code they touch in ../../../../world/app. Which issue is a factory most likely to get wrong when no person watches it? Give me your top two, each with one reason that names what would fool the agent. Do not change any file.
 ```
 
-Open the files it names. The pick is yours. Then type:
+Open the files it names. Pick your own. Then type:
 
 ```text
 Add one line to notes/goal.md, below the comment. Write my pick, not yours: Issue <number>, because <your reason>. Change nothing else.
@@ -56,9 +56,15 @@ Add one line to notes/goal.md, below the comment. Write my pick, not yours: Issu
 ## Done when
 
 - `bun run doctor` passes its required checks.
-- `runs/finished-2/result.json` exists, matches the factory contract, and lists the Claude Code runs.
+- `runs/finished-2/result.json` exists, matches the factory contract.
 - `notes/goal.md` has one line of your own that names an issue from 1 to 7.
 - That line says why, in at least eight words.
+
+Ask Claude Code:
+
+```text
+Run `bun run verify meet-the-library` and tell me what it printed. Do not change anything to make it pass.
+```
 
 ```bash
 bun run verify meet-the-library

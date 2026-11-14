@@ -51,6 +51,14 @@ bun run finished 2
 
 Expect: `finished: issue 2 ended in draft_pr.`
 
+Ask Claude Code to check your work. Type:
+
+```text
+Run `bun run verify meet-the-library` and tell me what it printed. Do not change anything to make it pass.
+```
+
+The raw command is:
+
 ```bash
 bun run verify meet-the-library
 ```

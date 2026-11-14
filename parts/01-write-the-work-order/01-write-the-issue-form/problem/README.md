@@ -5,7 +5,7 @@
 Issue 5 says, in full: "Only people who did the induction should get the chainsaw."
 
 A person at the desk knows what that means. A factory does not. Which tools? Which members? Today's
-template has one free text box, so every order arrives this thin.
+template has one free text box.
 
 ```mermaid
 flowchart LR
@@ -45,7 +45,7 @@ Rewrite .github/ISSUE_TEMPLATE/change.yml as a GitHub issue form for this tool l
 ```
 
 Read the plan before you say yes. Check each id in the answers file. Check that each field says
-`required: true`. If the plan has a part you do not want, say so, then let it write the file.
+`required: true`. Then let it write the file.
 
 ## Done when
 
@@ -54,6 +54,12 @@ Read the plan before you say yes. Check each id in the answers file. Check that 
 - The four textareas exist with those ids and are required.
 - `risk` is a required dropdown offering low, medium and high.
 - Issue 5's answers fill every required field.
+
+Ask Claude Code:
+
+```text
+Run `bun run verify write-the-issue-form` and tell me what it printed. Do not change anything to make it pass.
+```
 
 ```bash
 bun run verify write-the-issue-form
@@ -73,8 +79,6 @@ Expect: `Done. All 7 rules pass.`
 | `FAIL issue 5's answers fill ...`           | "Compare every id with the keys in answers/5.json and fix the spelling."  |
 
 The prompts and plan from a real run are in `../solution/prompts.md`.
-
-GitHub explains every field type in its [issue form syntax page](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms).
 
 ## Words you will use
 

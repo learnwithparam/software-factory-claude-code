@@ -61,6 +61,14 @@ plan, and check what it wrote. Each step's `solution/prompts.md` shows the promp
 
 ## Walkthrough
 
+You can ask Claude Code to run any check below. Type:
+
+```text
+Run this command and tell me what it printed. Do not change anything to make it pass.
+```
+
+The raw commands are:
+
 Inside `parts/06-price-and-ship/01-route-models-by-stage/problem/`, after Claude Code made the change:
 
 ```bash

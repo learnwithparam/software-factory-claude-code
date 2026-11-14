@@ -23,6 +23,14 @@ flowchart LR
 
 ## Walkthrough
 
+You can ask Claude Code to run any check below. Type:
+
+```text
+Run this command and tell me what it printed. Do not change anything to make it pass.
+```
+
+The raw commands are:
+
 At the repo root, after Claude Code did the work in `assignment/`:
 
 ```bash

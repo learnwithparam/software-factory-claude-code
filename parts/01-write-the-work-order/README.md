@@ -44,6 +44,14 @@ Asking for a plan first is one of the [ways of working](../../00-orientation/way
 
 ## Walkthrough
 
+You can ask Claude Code to run any check below. Type:
+
+```text
+Run this command and tell me what it printed. Do not change anything to make it pass.
+```
+
+The raw commands are:
+
 ```bash
 bun run verify write-the-issue-form
 ```

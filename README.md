@@ -135,9 +135,10 @@ flowchart LR
 Start in [00-orientation](00-orientation/README.md). The [ways of working](00-orientation/ways-of-working.md) page links each Claude Code technique to its step. Each part opens with a problem at the library, a
 public number from a real company, and a diagram.
 
-Each step has a challenge, a Done when list, and one command: `bun run verify <step-name>`. The challenge is
-a job you give Claude Code, with the prompt to type. The command reads the files Claude Code made and
-prints PASS or FAIL, with what to try next. The checks read your files, never your chat.
+Each step has a challenge, a Done when list, and a check. The challenge is a job you give Claude Code,
+with the prompt to type. To check your work, ask Claude Code to run `bun run verify <step-name>` and tell you
+what it printed. It reads the files Claude Code made and prints PASS or FAIL, with what to try next. The
+checks read your files, never your chat.
 
 | Part                                                                 | Answers                              | Steps                                                                                             | Minutes |
 | -------------------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------- | ------- |

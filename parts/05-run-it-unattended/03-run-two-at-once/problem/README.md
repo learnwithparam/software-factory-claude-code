@@ -57,6 +57,12 @@ Here are the two consoles from a real run, one under the other:
 - Each run changed at least one file.
 - No file was changed by both runs.
 
+Ask Claude Code:
+
+```text
+Run `bun run verify run-two-at-once` and tell me what it printed. Do not change anything to make it pass.
+```
+
 ```bash
 bun run verify run-two-at-once
 ```

@@ -56,6 +56,12 @@ Read the retro. Every number in it must match a result file.
 - The seven runs cost under $5 together.
 - `notes/retro.md` answers its three headings, and "What it cost" names a dollar amount.
 
+Ask Claude Code:
+
+```text
+Run `bun run verify ship-the-factory` and tell me what it printed. Do not change anything to make it pass.
+```
+
 ```bash
 bun run verify ship-the-factory
 ```
