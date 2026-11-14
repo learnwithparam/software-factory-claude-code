@@ -5,7 +5,7 @@ see the goal. Then you pass the first step, `meet-the-library`.
 
 You do the work of this course in the real Claude Code. You can use it in three places:
 
-- the `claude` CLI in a terminal (the commands below use this);
+- the `claude` CLI in a terminal, the window where you type commands (the commands below use this);
 - Claude Code in VS Code or a JetBrains editor;
 - the Code tab of Claude Desktop.
 
@@ -41,6 +41,22 @@ claude auth status
 ```
 
 Expect: JSON with `"loggedIn": true`.
+
+Get the course folder, if you do not have it yet, and open it in your terminal:
+
+```bash
+git clone https://github.com/learnwithparam/software-factory-claude-code && cd software-factory-claude-code
+```
+
+Expect: your prompt is now inside the `software-factory-claude-code` folder.
+
+Install Bun, which runs the course scripts, then open a new terminal in the same folder:
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+Expect: the installer ends with no error, and `bun --version` prints 1.4 or newer.
 
 ```bash
 bun install

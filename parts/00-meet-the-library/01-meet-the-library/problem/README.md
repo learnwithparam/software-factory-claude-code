@@ -31,7 +31,7 @@ bun run finished 2
 
 Expect: `finished: issue 2 ended in draft_pr.` The first line says whether Claude Code runs live or a recorded run is replayed.
 
-Start Claude Code in this folder, so it can also read the world:
+`--add-dir` lets Claude Code read one more folder. Start it here with the world folder added:
 
 ```bash
 claude --add-dir ../../../../world

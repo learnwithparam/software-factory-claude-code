@@ -6,6 +6,31 @@ This course is for tech leads, staff and senior engineers who already use Claude
 it to take an issue to a reviewed draft pull request while you are away. You want no edited tests and no
 surprise bill.
 
+## Start here
+
+You do every step in the real Claude Code, signed in with your own Claude account. You type prompts; Claude
+Code writes the files. No step asks for an API key.
+
+A terminal is the window where you type commands. On macOS, open Terminal. On Windows, open WSL2. Get the
+course folder and open it:
+
+```bash
+git clone https://github.com/learnwithparam/software-factory-claude-code && cd software-factory-claude-code
+```
+
+Expect: your prompt is now inside the `software-factory-claude-code` folder.
+
+Bun runs the course scripts. Install it, then open a new terminal in the same folder:
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+Expect: the installer ends with no error, and `bun --version` prints 1.4 or newer in the new terminal.
+
+[00-orientation](00-orientation/README.md) installs Claude Code and signs you in. The
+[ways of working](00-orientation/ways-of-working.md) page lists the Claude Code techniques you will use.
+
 - **Objective:** you can set up Claude Code so it turns one issue into one draft pull request with no
   person at the keyboard. It stays inside the walls you set.
 - **Outcome:** you leave with a factory in a repo. A typed issue goes in. Out comes a spec, a plan, a build
@@ -20,13 +45,9 @@ surprise bill.
 For example, issue 2 says a damage charge of £33.33 split two ways loses a penny. The finished factory
 reads it, writes a failing test, fixes `src/fees/split.ts`, passes the gate, and opens a draft pull request.
 
-You do every step in the real Claude Code, signed in with your own Claude account. You type prompts; Claude
-Code writes the files. A script you run checks each step. No step asks for an API key.
-
 ## Run the finished system first
 
-You need Bun 1.4 or newer and Claude Code (the `claude` CLI, signed in with a Pro, Max or Console account;
-see [00-orientation](00-orientation/README.md) to install it).
+Open the folder in a terminal. Run each command here from the repo root.
 
 ```bash
 bun install
