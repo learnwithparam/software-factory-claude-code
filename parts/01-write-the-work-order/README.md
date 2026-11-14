@@ -42,6 +42,16 @@ plan, and check what it wrote. Each step's `solution/prompts.md` shows the promp
 
 Asking for a plan first is one of the [ways of working](../../00-orientation/ways-of-working.md) you will reuse.
 
+## Watch and read
+
+| Kind  | Title                          | Made by                | Why                                                                   | Link                                                            |
+| ----- | ------------------------------ | ---------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------- |
+| video | Claude Code best practices     | Cal Rueb, Anthropic    | An Anthropic engineer shows how the team uses Claude Code day to day. | https://www.youtube.com/watch?v=gv0WHhKelSE                     |
+| video | How We Build Effective Agents  | Barry Zhang, Anthropic | Says when to use an agent and when a simpler flow is enough.          | https://www.youtube.com/watch?v=D7_ipDqhtwk                     |
+| read  | Best practices for Claude Code | Anthropic docs         | Explains why a clear goal and a way to check it come first.           | https://code.claude.com/docs/en/best-practices                  |
+| read  | Common workflows               | Anthropic docs         | Shows plan mode and how to point Claude Code at files.                | https://code.claude.com/docs/en/common-workflows                |
+| read  | Building effective agents      | Anthropic engineering  | Why a clear task beats a clever agent.                                | https://www.anthropic.com/engineering/building-effective-agents |
+
 ## Walkthrough
 
 You can ask Claude Code to run any check below. Type:

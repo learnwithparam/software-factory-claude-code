@@ -65,6 +65,16 @@ plan, and check what it wrote. Each step's `solution/prompts.md` shows the promp
 A live run costs real usage on your Claude plan. In the real runs behind this part, issue 1 cost $0.24, and
 issues 3 and 5 cost $0.28 and $0.26. The dry run is free: `bun run factory 1 --dry-run --json`.
 
+## Watch and read
+
+| Kind  | Title                                       | Made by                | Why                                                                   | Link                                                                              |
+| ----- | ------------------------------------------- | ---------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| video | Claude Code best practices                  | Cal Rueb, Anthropic    | An Anthropic engineer shows how the team uses Claude Code day to day. | https://www.youtube.com/watch?v=gv0WHhKelSE                                       |
+| video | How We Build Effective Agents               | Barry Zhang, Anthropic | Says when to use an agent and when a simpler flow is enough.          | https://www.youtube.com/watch?v=D7_ipDqhtwk                                       |
+| read  | Run Claude Code programmatically            | Anthropic docs         | Every flag for a headless run.                                        | https://code.claude.com/docs/en/headless                                          |
+| read  | Claude Code GitHub Actions                  | Anthropic docs         | The official action the label trigger uses.                           | https://code.claude.com/docs/en/github-actions                                    |
+| read  | Effective harnesses for long-running agents | Anthropic engineering  | What breaks when an agent runs for a long time alone.                 | https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents |
+
 ## Walkthrough
 
 You can ask Claude Code to run any check below. Type:

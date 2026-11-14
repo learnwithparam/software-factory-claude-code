@@ -37,6 +37,16 @@ flowchart LR
 | ------------------ | ------- | ---------------------------------------------------------------- |
 | `meet-the-library` | 15      | a passing doctor, a run of the finished factory, `notes/goal.md` |
 
+## Watch and read
+
+| Kind  | Title                          | Made by                | Why                                                                   | Link                                                            |
+| ----- | ------------------------------ | ---------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------- |
+| video | Claude Code best practices     | Cal Rueb, Anthropic    | An Anthropic engineer shows how the team uses Claude Code day to day. | https://www.youtube.com/watch?v=gv0WHhKelSE                     |
+| video | How We Build Effective Agents  | Barry Zhang, Anthropic | Says when to use an agent and when a simpler flow is enough.          | https://www.youtube.com/watch?v=D7_ipDqhtwk                     |
+| read  | Best practices for Claude Code | Anthropic docs         | The five questions this course is built on.                           | https://code.claude.com/docs/en/best-practices                  |
+| read  | Building effective agents      | Anthropic engineering  | The plain patterns behind the factory line.                           | https://www.anthropic.com/engineering/building-effective-agents |
+| read  | Common workflows               | Anthropic docs         | Short recipes for the first things you will ask Claude Code.          | https://code.claude.com/docs/en/common-workflows                |
+
 ## Walkthrough
 
 ```bash

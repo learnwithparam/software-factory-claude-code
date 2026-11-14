@@ -89,16 +89,36 @@ function dollarAmounts(text: string): number[] {
   return [...text.matchAll(/\$(\d+(?:\.\d+)?)/g)].map((found) => Number(found[1]));
 }
 
-// The "before" figure must be the real total of the seven runs. The "after" figure must differ,
-// and the section must name the setting that changed, so a made-up pair cannot pass.
+// The rerun is a second set of seven live runs in rerun/runs/. Its transcripts must add up
+// to its costs, exactly like the first set.
+function rerunTotal(folder: string): number {
+  const costs = ISSUES.map((issue) => {
+    const live = liveRun(join(folder, "rerun"), issue);
+    return live.result !== null && live.costMatches ? live.result.cost_usd : Number.NaN;
+  });
+  return costs.reduce((sum, cost) => sum + cost, 0);
+}
+
+function rerunIsNotACopy(folder: string): boolean {
+  return ISSUES.some((issue) => {
+    const first = resultFor(folder, issue)?.cost_usd;
+    const second = liveRun(join(folder, "rerun"), issue).result?.cost_usd;
+    return first !== undefined && second !== undefined && first !== second;
+  });
+}
+
+// The "before" figure is the real total of the first seven runs. The "after" figure is the real
+// total of the rerun, which has its own transcripts. The section names the setting you changed.
 function beforeAndAfterAreHonest(folder: string): boolean {
   const section = retroSection(folder, "before and after");
   const amounts = dollarAmounts(section);
-  const total = totalCost(folder);
-  const beforeIsReal = amounts.some((amount) => Math.abs(amount - total) < 0.01);
-  const afterDiffers = amounts.some((amount) => Math.abs(amount - total) >= 0.01 && amount > 0);
+  const before = totalCost(folder);
+  const after = rerunTotal(folder);
+  const hasBefore = amounts.some((amount) => Math.abs(amount - before) < 0.01);
+  const hasAfter = amounts.some((amount) => Math.abs(amount - after) < 0.01);
   const namesChange = /(--max-|max-turns|budget|model|prompt|setting|role)/i.test(section);
-  return Number.isFinite(total) && beforeIsReal && afterDiffers && namesChange;
+  const real = Number.isFinite(before) && Number.isFinite(after) && rerunIsNotACopy(folder);
+  return real && hasBefore && hasAfter && namesChange;
 }
 
 export default [
@@ -155,10 +175,10 @@ export default [
       "to factory/ci.env, and to keep any header token out of the file",
   },
   {
-    says: "the retro names one changed setting and two costs, the first the real total",
+    says: "the retro names one changed setting, the real total before and the real total of the rerun",
     test: beforeAndAfterAreHonest,
     tryNext:
-      "change one setting, run the seven issues again, then write the old total, the new total " +
-      "and the setting you changed under Before and after; the old total must match the runs",
+      "change one setting, run the seven issues again with FACTORY_RUNS=rerun/runs, then write " +
+      "the old total, the rerun total and the setting you changed under Before and after",
   },
 ] satisfies Rule[];

@@ -2,9 +2,7 @@
 
 ## The problem
 
-Nobody has run the factory on the whole backlog yet, so you cannot say what one issue costs. For example, Anthropic's cost
-page gives a team average of "$150-250 per developer per month". That is not your number. This step gives
-you your own, per issue and per stage.
+Nobody has run the factory on the whole backlog, so you cannot say what one issue costs. For example, issue 4 cost $0.41 in the real run. This step gives you your own numbers.
 
 ```mermaid
 flowchart LR
@@ -45,7 +43,13 @@ Every number in the retro must match a result file. Now make cost visible and pr
 Add CLAUDE_CODE_ENABLE_TELEMETRY=1 and OTEL_METRICS_EXPORTER=console to factory/ci.env, with no token in it. Then change one setting of the stage that cost the most, such as its --max-turns. Touch nothing else.
 ```
 
-Run all seven issues again. Under "Before and after" in the retro, write the old total, the new total and the one setting you changed.
+Run all seven issues again, and keep the new runs apart from the first ones:
+
+```bash
+for issue in 1 2 3 4 5 6 7; do FACTORY_RUNS=rerun/runs bun run factory $issue --json > /dev/null; done
+```
+
+Expect: seven last lines again, and a new `rerun/runs/` folder. Under "Before and after" in the retro, write the old total, the rerun total and the one setting you changed.
 
 ![The scorecard of a real run of the whole backlog](../images/expected.png)
 
@@ -85,4 +89,3 @@ Expect: `Done. All 9 rules pass.`
 - **Scorecard**: the targets your factory must meet.
 - **Retro**: a note on what went well, what it cost, and what you change next.
 - **OTel**: short for OpenTelemetry, an open standard for reporting what a program did. Claude Code uses it to report cost and tokens.
-- **Cost per issue**: `cost_usd` in one result file, the sum of what Claude Code reported for each stage.

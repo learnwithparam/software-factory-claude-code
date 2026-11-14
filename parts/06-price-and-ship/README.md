@@ -61,6 +61,16 @@ flowchart LR
 Each step's files go in that step's `problem/` folder. You start Claude Code there, give it the job, read its
 plan, and check what it wrote. Each step's `solution/prompts.md` shows the prompts from a real run.
 
+## Watch and read
+
+| Kind  | Title                                | Made by                | Why                                                                   | Link                                                                   |
+| ----- | ------------------------------------ | ---------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| video | Claude Code best practices           | Cal Rueb, Anthropic    | An Anthropic engineer shows how the team uses Claude Code day to day. | https://www.youtube.com/watch?v=gv0WHhKelSE                            |
+| video | How We Build Effective Agents        | Barry Zhang, Anthropic | Says when to use an agent and when a simpler flow is enough.          | https://www.youtube.com/watch?v=D7_ipDqhtwk                            |
+| read  | Manage costs effectively             | Anthropic docs         | Where Claude Code spend comes from and how to cut it.                 | https://code.claude.com/docs/en/costs                                  |
+| read  | Monitoring usage                     | Anthropic docs         | How to turn on OpenTelemetry for cost and tokens.                     | https://code.claude.com/docs/en/monitoring-usage                       |
+| read  | Harness design for long-running apps | Anthropic engineering  | How a harness is judged and tuned over many runs.                     | https://www.anthropic.com/engineering/harness-design-long-running-apps |
+
 ## Walkthrough
 
 You can ask Claude Code to run any check below. Type:

@@ -80,7 +80,6 @@ Expect: `Done. All 8 rules pass.`
 | `FAIL every requirement opens with an EARS keyword` | "Rewrite each requirement as: When ..., the system shall ..."             |
 | `FAIL every pass entry starts with passes: false`   | "Nothing is built yet. Set passes to false in every entry."               |
 
-
 ## Words you will use
 
 - **Spec**: one page that says what done means for one issue, written before any code.

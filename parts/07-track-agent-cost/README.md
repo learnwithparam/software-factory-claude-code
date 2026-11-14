@@ -21,6 +21,16 @@ flowchart LR
 | ------------------ | ------- | -------------------------------------------------------- |
 | `track-agent-cost` | 15      | `prompts.md`, and the proxy's key info and refusal saved |
 
+## Watch and read
+
+| Kind  | Title                          | Made by                | Why                                                                   | Link                                             |
+| ----- | ------------------------------ | ---------------------- | --------------------------------------------------------------------- | ------------------------------------------------ |
+| video | Claude Code best practices     | Cal Rueb, Anthropic    | An Anthropic engineer shows how the team uses Claude Code day to day. | https://www.youtube.com/watch?v=gv0WHhKelSE      |
+| video | How We Build Effective Agents  | Barry Zhang, Anthropic | Says when to use an agent and when a simpler flow is enough.          | https://www.youtube.com/watch?v=D7_ipDqhtwk      |
+| read  | Manage costs effectively       | Anthropic docs         | Where spend comes from and how to cap it.                             | https://code.claude.com/docs/en/costs            |
+| read  | Monitoring usage               | Anthropic docs         | Cost and token counts straight from Claude Code.                      | https://code.claude.com/docs/en/monitoring-usage |
+| read  | Best practices for Claude Code | Anthropic docs         | Why watching cost belongs in the plan from day one.                   | https://code.claude.com/docs/en/best-practices   |
+
 ## Walkthrough
 
 You can ask Claude Code to run any check below. Type:
