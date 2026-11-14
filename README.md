@@ -152,7 +152,6 @@ checks read your files, never your chat.
 | [Track agent cost with LiteLLM](parts/07-track-agent-cost/README.md) | can anything go around my cap        | `track-agent-cost` (optional, homework)                                                           | 15      |
 
 The same parts run as one long session, four shorter sessions, or a six-session cohort: see `schedules.toml`.
-The build map for every part is in [PARTS.md](PARTS.md).
 
 ## The project
 
