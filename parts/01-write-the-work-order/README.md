@@ -40,6 +40,8 @@ flowchart LR
 Each step's files go in that step's `problem/` folder. You start Claude Code there, give it the job, read its
 plan, and check what it wrote. Each step's `solution/prompts.md` shows the prompts from a real run.
 
+Asking for a plan first is one of the [ways of working](../../00-orientation/ways-of-working.md) you will reuse.
+
 ## Walkthrough
 
 ```bash

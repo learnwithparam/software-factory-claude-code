@@ -132,7 +132,7 @@ flowchart LR
 
 ## How the course works
 
-Start in [00-orientation](00-orientation/README.md). Each part opens with a problem at the library, a
+Start in [00-orientation](00-orientation/README.md). The [ways of working](00-orientation/ways-of-working.md) page links each Claude Code technique to its step. Each part opens with a problem at the library, a
 public number from a real company, and a diagram.
 
 Each step has a challenge, a Done when list, and one command: `bun run verify <step-name>`. The challenge is

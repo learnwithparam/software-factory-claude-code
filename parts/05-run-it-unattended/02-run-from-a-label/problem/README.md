@@ -34,7 +34,7 @@ claude --add-dir ../../../../world
 
 Expect: Claude Code opens and waits for your prompt.
 
-Press Shift+Tab until you see plan mode (Claude Code plans but changes no file), then type:
+Press Shift+Tab until you see plan mode ([ways of working](../../../../00-orientation/ways-of-working.md)), then type:
 
 ```text
 Read CLAUDE.md, factory/run.ts and workflow/claude.yml. Plan workflow/factory.yml: it runs the factory when a person adds the label factory:ready to an issue, and only then. It uses anthropics/claude-code-action@v1 and the CLAUDE_CODE_OAUTH_TOKEN secret, never a key in the file. It sets --max-turns and --max-budget-usd in claude_args, has one concurrency group per issue and a timeout, names its permissions, and opens the pull request as a draft. It never merges. Show me the plan and the YAML. Write nothing yet.

@@ -130,6 +130,8 @@ These are the targets your own factory must meet at the end of the course.
 
 ## 5. Pass the first step
 
+The [ways of working](ways-of-working.md) page lists the Claude Code techniques the course teaches.
+
 Open [the first step](../parts/00-meet-the-library/01-meet-the-library/problem/README.md). Follow its
 prompts: Claude Code reads the issues, you choose one, and Claude Code saves your line in its
 `notes/goal.md`. Then run:
