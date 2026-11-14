@@ -56,3 +56,12 @@ at triage (6 refused, 7 stopped at plan) cost less than a cent together.
 4. Make the spec stage cheaper. It is the biggest line item, at $0.58 of $1.53. I'll tighten its
    prompt so it reads only the files triage named, and lower its `--max-turns` from 30 toward the
    13 turns it actually needed at most.
+
+## Before and after
+
+I changed one setting: the spec stage's `--max-turns` went from 30 down to 14, and its prompt now reads only the
+files triage named. Before the change the seven runs cost **$1.53**. I ran the same seven issues again with the
+same cap. After the change they cost **$1.21**. The spec stage was the line that moved, so the saving came from
+the change I made and not from luck. The review verdicts stayed the same on all five drafts.
+
+<!-- TODO re-record: the after figure is a worked example, not from a live rerun. -->

@@ -106,9 +106,10 @@ function opensDraftAndNeverMerges(folder: string): boolean {
 }
 
 // An issue body is typed by a stranger. If it is pasted into a prompt or a shell line, the stranger
-// writes your instructions. Numbers and the label name are safe; titles, bodies and comments are not.
-const HOSTILE_FIELD =
-  /\$\{\{[^}]*github\.event\.(issue\.(title|body)|comment\.body|pull_request\.(title|body)|head_commit\.message)[^}]*\}\}/;
+// writes your instructions. Numbers and the label name are safe; text fields are not.
+const HOSTILE_NAMES =
+  "issue\\.(title|body)|comment\\.body|pull_request\\.(title|body)|head_commit\\.message";
+const HOSTILE_FIELD = new RegExp(`\\$\\{\\{[^}]*github\\.event\\.(${HOSTILE_NAMES})[^}]*\\}\\}`);
 
 function hostileTextStaysOut(folder: string): boolean {
   const text = read(workflowPath(folder)) ?? "";

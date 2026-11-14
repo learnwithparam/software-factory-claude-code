@@ -2,13 +2,10 @@
 
 ## The problem
 
-The factory runs on your laptop. The library wants it to start from GitHub: a coordinator labels an
-issue, and the factory runs there.
+The factory runs on your laptop. The library wants it to start from GitHub when a coordinator labels an issue.
 
-The library already has one workflow, `workflow/claude.yml`. It starts Claude on any comment that says
-`@claude`. It has no cap on turns or spend, no timeout, and no run limit.
-
-For example, two volunteers who comment `@claude fix this` on issue 3 start two runs. Both spend and push.
+The old workflow, `workflow/claude.yml`, starts Claude on any `@claude` comment. It has no caps and no timeout.
+For example, two volunteers who comment on issue 3 start two runs. Both spend and push.
 
 ```mermaid
 flowchart LR
@@ -22,10 +19,9 @@ flowchart LR
 
 ## Your challenge
 
-Get Claude Code to write `workflow/factory.yml`. In your own repo the file goes in `.github/workflows/`.
-Here it stays in this folder.
+Get Claude Code to write `workflow/factory.yml`. In your own repo it goes in `.github/workflows/`.
 
-Start Claude Code from the repo root:
+Start Claude Code:
 
 ```bash
 cd parts/05-run-it-unattended/02-run-from-a-label/problem
@@ -37,10 +33,10 @@ Expect: Claude Code opens and waits for your prompt.
 Press Shift+Tab until you see plan mode ([ways of working](../../../../00-orientation/ways-of-working.md)), then type:
 
 ```text
-Read CLAUDE.md, factory/run.ts and workflow/claude.yml. Plan workflow/factory.yml: it runs the factory when a person adds the label factory:ready to an issue, and only then. It uses anthropics/claude-code-action@v1 and the CLAUDE_CODE_OAUTH_TOKEN secret, never a key in the file. It sets --max-turns and --max-budget-usd in claude_args, has one concurrency group per issue and a timeout, names its permissions, and opens the pull request as a draft. It never merges. Show me the plan and the YAML. Write nothing yet.
+Read CLAUDE.md, factory/run.ts and workflow/claude.yml. Plan workflow/factory.yml: it runs the factory when a person adds the label factory:ready to an issue, and only then. It uses anthropics/claude-code-action@v1 and the CLAUDE_CODE_OAUTH_TOKEN secret, never a key in the file. It sets --max-turns and --max-budget-usd in claude_args, has one concurrency group per issue and a timeout, names its permissions, and opens the pull request as a draft. It never merges. It never puts an issue title or body in the prompt or a shell line. Show me the plan and the YAML. Write nothing yet.
 ```
 
-Check the YAML against Done when. Then press Shift+Tab until plan mode is off, then type:
+Check the YAML. Then press Shift+Tab until plan mode is off, then type:
 
 ```text
 Go ahead. Write workflow/factory.yml now. Leave workflow/claude.yml as it is.
@@ -55,7 +51,7 @@ Go ahead. Write workflow/factory.yml now. Leave workflow/claude.yml as it is.
 - Each issue has its own concurrency group, and each job has `timeout-minutes`.
 - Every job names its permissions.
 - The pull request opens as a draft, and nothing merges it.
-- The issue title and body never go into the prompt or a shell line. A stranger can write them.
+- No issue title or body goes into the prompt or a shell line.
 
 Ask Claude Code:
 
@@ -75,10 +71,7 @@ Expect: `Done. All 9 rules pass.`
 | ------------------------------------------------------ | ---------------------------------------------------------------------------------- |
 | `FAIL every job runs only for the label factory:ready` | "A labeled trigger fires for every label. Add an if on the job for factory:ready." |
 | `FAIL ... signs in with a secret`                      | "Pass the token from secrets. Delete the key from the file."                       |
-| `FAIL the issue title and body never go into ...` | "Use only the issue number. Remove the title and body from the file." |
 | `FAIL ... draft and never merges`                      | "Open the PR with gh pr create --draft, and remove any merge step."                |
-
-The prompts from a real run are in `../solution/prompts.md`.
 
 ## Words you will use
 
@@ -86,5 +79,4 @@ The prompts from a real run are in `../solution/prompts.md`.
 - **Trigger**: the event that starts a workflow, here a label added to an issue.
 - **Secret**: a value GitHub stores for you and hands to the workflow. It never sits in a file.
 - **Concurrency group**: GitHub runs one job per group at a time. One group per issue means one run per issue.
-- **Hostile text**: words a stranger can write, such as an issue body, that try to give Claude new orders. Keep them out of the prompt.
 - **Draft pull request**: a pull request that cannot be merged until a person marks it ready.

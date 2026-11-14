@@ -28,7 +28,7 @@ function bothChangesKept(folder: string): boolean {
   if (resolvedFile(folder) === null) return false;
   const probe = `
     const { overlaps } = await import(${JSON.stringify(path)});
-    const day = (from: string, to: string) => ({ from, to });
+    const day = (from: string, until: string) => ({ from, to: until });
     const touching = overlaps(day("2026-03-01", "2026-03-13"), day("2026-03-13", "2026-03-15"));
     const noStart = overlaps(day("", "2026-03-13"), day("2026-03-01", "2026-03-15"));
     const apart = overlaps(day("2026-03-01", "2026-03-05"), day("2026-03-07", "2026-03-09"));
