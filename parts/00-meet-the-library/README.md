@@ -56,3 +56,7 @@ bun run verify meet-the-library
 ```
 
 Expect: `Done. All 5 rules pass.` once `notes/goal.md` names an issue and says why.
+
+## Go further
+
+Pick a second issue from the seven. Write three lines in `notes/goal.md` on how you think the factory should handle it, then run `bun run finished` on it and compare. The check does not grade this.

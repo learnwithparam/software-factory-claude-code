@@ -117,6 +117,10 @@ Expect: `Part price-and-ship is done: 3/3 steps pass.`
 
 Compare with the sample answers at any time, for example `bun run verify ship-the-factory solution`.
 
+## Go further
+
+Pick the issue that cost the most. Write one change to its prompt or flags that you think would cut the cost, then run it again and compare the two costs. The check does not grade this.
+
 ## Finished
 
 You now have the whole factory. A typed issue goes in. Out comes a branch whose gate is green, a review that
