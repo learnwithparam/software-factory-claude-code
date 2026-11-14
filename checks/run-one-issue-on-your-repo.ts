@@ -1,6 +1,7 @@
-// run-one-issue-on-your-repo: the capstone. The learner runs the factory once on their own repo and
-// brings evidence. This check reads only the learner's own files, never the course world. It proves the
-// shape of the record and that the evidence files exist. It cannot prove the pull request is real.
+// run-one-issue-on-your-repo: the capstone. The learner runs the factory once on their own repo
+// and brings evidence. This check reads only the learner's own files, never the course world.
+// It proves the shape of the record and that the evidence files exist.
+// It cannot prove the pull request is real.
 import { join } from "node:path";
 import type { Rule } from "../scripts/verify";
 import { json, read, sections } from "./lib/files";
