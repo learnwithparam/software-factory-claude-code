@@ -18,6 +18,7 @@
     "plain-english": "bun scripts/plain-english.ts",
     "format": "biome check --write .",
     "verify": "bun scripts/verify.ts",
+    "save-session": "bun scripts/save-session.ts",
     "text-audit": "bun scripts/text-audit.ts",
     "doctor": "bun scripts/doctor.ts",
     "world": "bun world/world.ts",

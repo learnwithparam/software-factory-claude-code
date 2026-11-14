@@ -1,0 +1,3 @@
+{"type": "user", "message": {"role": "user", "content": "Add a Why this matters textarea to .github/ISSUE_TEMPLATE/change.yml. Do not touch any other file. Show me the diff, then stop."}}
+{"type": "user", "message": {"role": "user", "content": "<command-name>/clear</command-name>\n<command-message>clear</command-message>"}}
+{"type": "user", "message": {"role": "user", "content": "Now check the form against issue 5. Change nothing, and stop after you list what is missing."}}

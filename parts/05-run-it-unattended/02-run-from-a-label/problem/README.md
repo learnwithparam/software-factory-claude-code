@@ -42,6 +42,8 @@ Check the YAML. Then press Shift+Tab until plan mode is off, then type:
 Go ahead. Write workflow/factory.yml now. Leave workflow/claude.yml as it is.
 ```
 
+Then do the [session moves](SESSION-MOVES.md).
+
 ## Done when
 
 - The workflow triggers only on `issues` with type `labeled`.
@@ -52,6 +54,7 @@ Go ahead. Write workflow/factory.yml now. Leave workflow/claude.yml as it is.
 - Every job names its permissions.
 - The pull request opens as a draft, and nothing merges it.
 - No issue title or body goes into the prompt or a shell line.
+- Your saved session shows the session moves.
 
 Ask Claude Code:
 
@@ -63,7 +66,7 @@ Run `bun run verify run-from-a-label` and tell me what it printed. Do not change
 bun run verify run-from-a-label
 ```
 
-Expect: `Done. All 9 rules pass.`
+Expect: `Done. All 10 rules pass.`
 
 ## If you get stuck
 

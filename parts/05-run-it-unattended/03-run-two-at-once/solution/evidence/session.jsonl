@@ -1,0 +1,2 @@
+{"type": "user", "message": {"role": "user", "content": "<command-name>/batch</command-name>\n<command-message>batch</command-message>"}}
+{"type": "user", "message": {"role": "user", "content": "/batch run issue 3 and issue 5 in separate worktrees"}}

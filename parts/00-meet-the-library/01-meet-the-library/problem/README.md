@@ -53,12 +53,15 @@ Add one line to notes/goal.md, below the comment. Write my pick, not yours: Issu
 
 ![The finished factory on issue 2: four Claude Code runs, the gate passes](../images/expected.png)
 
+Then do the [session moves](SESSION-MOVES.md).
+
 ## Done when
 
 - `bun run doctor` passes its required checks.
 - `runs/finished-2/result.json` exists, matches the factory contract.
 - `notes/goal.md` has one line of your own that names an issue from 1 to 7.
 - That line says why, in at least eight words.
+- Your saved session shows the session moves.
 
 Ask Claude Code:
 
@@ -70,7 +73,7 @@ Run `bun run verify meet-the-library` and tell me what it printed. Do not change
 bun run verify meet-the-library
 ```
 
-Expect: `Done. All 5 rules pass.`
+Expect: `Done. All 8 rules pass.`
 
 ## If you get stuck
 
@@ -87,4 +90,3 @@ Expect: `Done. All 5 rules pass.`
 - **Replay**: a recorded real Claude Code run, shown again on a fresh copy. Hooks and the gate still run for real.
 - **Hook**: a command Claude Code runs before or after a tool call. Exit code 2 blocks the call.
 - **Gate**: the one command that must pass before work counts as done. Here, `bun run gate` runs the app's tests.
-- **Draft pull request**: a change offered for review. Nobody can merge it until a person marks it ready.

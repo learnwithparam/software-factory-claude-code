@@ -7,6 +7,7 @@ import { filesChangedInRun, liveRun } from "../parts/05-run-it-unattended/factor
 import type { Rule } from "../scripts/verify";
 import { read, sections } from "./lib/files";
 import { runCommand } from "./lib/run";
+import { ranCommand, readSession } from "./lib/session";
 
 const ISSUES = [3, 5];
 const MARKERS = /^(<<<<<<<|=======|>>>>>>>)/m;
@@ -121,5 +122,10 @@ export default [
     test: rebaseNotesAreWritten,
     tryNext:
       "write a few sentences under each of the three headings, and say you ran the gate again",
+  },
+  {
+    says: "your saved session shows you used /batch to split work across agents",
+    test: (folder) => ranCommand(readSession(folder), "batch"),
+    tryNext: "type /batch with the two issues, then save the session",
   },
 ] satisfies Rule[];

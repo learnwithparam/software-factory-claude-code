@@ -13,5 +13,8 @@
       "Read(**/.env)",
       "Read(**/.env.*)"
     ]
+  },
+  "sandbox": {
+    "enabled": true
   }
 }

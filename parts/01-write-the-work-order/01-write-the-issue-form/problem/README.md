@@ -47,6 +47,8 @@ Rewrite .github/ISSUE_TEMPLATE/change.yml as a GitHub issue form for this tool l
 Read the plan before you say yes. Check each id in the answers file. Check that each field says
 `required: true`. Then let it write the file.
 
+Then do the [session moves](SESSION-MOVES.md).
+
 ## Done when
 
 - The file exists and is valid YAML with `name`, `description` and `body`.
@@ -54,6 +56,7 @@ Read the plan before you say yes. Check each id in the answers file. Check that 
 - The four textareas exist with those ids and are required.
 - `risk` is a required dropdown offering low, medium and high.
 - Issue 5's answers fill every required field.
+- Your saved session shows the session moves.
 
 Ask Claude Code:
 
@@ -65,7 +68,7 @@ Run `bun run verify write-the-issue-form` and tell me what it printed. Do not ch
 bun run verify write-the-issue-form
 ```
 
-Expect: `Done. All 7 rules pass.`
+Expect: `Done. All 9 rules pass.`
 
 ![The check passing on a finished form](../images/expected.png)
 

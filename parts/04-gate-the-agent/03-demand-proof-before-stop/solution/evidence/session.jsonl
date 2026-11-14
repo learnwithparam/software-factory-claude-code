@@ -1,0 +1,2 @@
+{"type": "user", "message": {"role": "user", "content": "<command-name>/goal</command-name>\n<command-message>goal</command-message>"}}
+{"type": "user", "message": {"role": "user", "content": "/goal bun run gate passes on the code as it is, with a fresh gate record"}}

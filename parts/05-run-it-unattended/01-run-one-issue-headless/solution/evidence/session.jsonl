@@ -1,0 +1,2 @@
+{"type": "user", "message": {"role": "user", "content": "<command-name>/loop</command-name>\n<command-message>loop</command-message>"}}
+{"type": "user", "message": {"role": "user", "content": "/loop 5m bun run factory 1 --dry-run --json"}}

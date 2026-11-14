@@ -72,4 +72,11 @@ export default [
       "a deny rule like Bash(*) or Bash(git *) also stops the builder's own work; " +
       "ask Claude Code to deny only the shortcuts",
   },
+  {
+    says: "settings.json turns the sandbox on",
+    test: (folder) =>
+      json<{ sandbox?: { enabled?: boolean } }>(join(folder, ".claude", "settings.json"))?.sandbox
+        ?.enabled === true,
+    tryNext: "add a sandbox key with enabled true to .claude/settings.json, next to the deny list",
+  },
 ] satisfies Rule[];

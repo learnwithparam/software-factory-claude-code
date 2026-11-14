@@ -4,6 +4,7 @@
 import { join } from "node:path";
 import type { Rule } from "../scripts/verify";
 import { json } from "./lib/files";
+import { pressedEsc, ranCommand, readSession } from "./lib/session";
 import { appFiles, issues, PROTECTED } from "./lib/world";
 
 type Entry = {
@@ -121,5 +122,16 @@ export default [
     tryNext:
       "an issue that changes src/auth/ cannot be ready for the factory; " +
       "ask Claude Code to refuse it and say who must review it",
+  },
+  {
+    says: "your saved session shows you pressed Esc to stop Claude Code mid-answer",
+    test: (folder) => pressedEsc(readSession(folder)),
+    tryNext:
+      "press Esc while Claude Code is working, then give a shorter instruction and save the session",
+  },
+  {
+    says: "your saved session shows you ran /rewind to undo a step",
+    test: (folder) => ranCommand(readSession(folder), "rewind"),
+    tryNext: "type /rewind, pick an earlier point, then save the session again",
   },
 ] satisfies Rule[];

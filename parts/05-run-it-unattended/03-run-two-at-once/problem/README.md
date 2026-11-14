@@ -54,6 +54,8 @@ Run 3 made the dates inclusive. Run 5 skips a range with no start date. Both tou
 
 Expect: `conflict/clash.ts` has one `overlaps` function and no line that starts with `<<<<<<<`.
 
+Then do the [session moves](SESSION-MOVES.md).
+
 ## Done when
 
 - Issues 3 and 5 each have a live run, and each cost matches its transcripts.
@@ -62,6 +64,7 @@ Expect: `conflict/clash.ts` has one `overlaps` function and no line that starts 
 - No file was changed by both runs.
 - `conflict/clash.ts` has no markers left, and it keeps both runs' changes.
 - `conflict/NOTES.md` names the file, the fix, and the gate run after the rebase.
+- Your saved session shows the session moves.
 
 Ask Claude Code:
 
@@ -73,7 +76,7 @@ Run `bun run verify run-two-at-once` and tell me what it printed. Do not change 
 bun run verify run-two-at-once
 ```
 
-Expect: `Done. All 7 rules pass.`
+Expect: `Done. All 8 rules pass.`
 
 ## If you get stuck
 

@@ -4,6 +4,7 @@
 import { join } from "node:path";
 import type { Rule } from "../scripts/verify";
 import { read, yaml } from "./lib/files";
+import { ranCommand, readSession } from "./lib/session";
 
 type Step = { uses?: string; run?: string; with?: Record<string, unknown> };
 type Job = {
@@ -174,5 +175,10 @@ export default [
     tryNext:
       "a stranger can write the issue body, so use only github.event.issue.number; " +
       "let the factory read the issue itself, and remove any title or body from the file",
+  },
+  {
+    says: "your saved session shows you ran /schedule",
+    test: (folder) => ranCommand(readSession(folder), "schedule"),
+    tryNext: "type /schedule and set a routine that runs the factory, then save the session",
   },
 ] satisfies Rule[];
