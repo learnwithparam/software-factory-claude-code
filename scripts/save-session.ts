@@ -21,7 +21,7 @@ if (!existsSync(sessions)) {
 const files = readdirSync(sessions).filter((name) => name.endsWith(".jsonl"));
 const newest = files
   .map((name) => ({ name, time: statSync(join(sessions, name)).mtimeMs }))
-  .sort((a, b) => b.time - a.time)[0];
+  .sort((first, second) => second.time - first.time)[0];
 if (!newest) {
   console.error("That folder has no saved sessions yet.");
   process.exit(1);

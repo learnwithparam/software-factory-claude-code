@@ -99,7 +99,7 @@ function rerunTotal(folder: string): number {
   return costs.reduce((sum, cost) => sum + cost, 0);
 }
 
-function rerunIsNotACopy(folder: string): boolean {
+function rerunDiffers(folder: string): boolean {
   return ISSUES.some((issue) => {
     const first = resultFor(folder, issue)?.cost_usd;
     const second = liveRun(join(folder, "rerun"), issue).result?.cost_usd;
@@ -117,7 +117,7 @@ function beforeAndAfterAreHonest(folder: string): boolean {
   const hasBefore = amounts.some((amount) => Math.abs(amount - before) < 0.01);
   const hasAfter = amounts.some((amount) => Math.abs(amount - after) < 0.01);
   const namesChange = /(--max-|max-turns|budget|model|prompt|setting|role)/i.test(section);
-  const real = Number.isFinite(before) && Number.isFinite(after) && rerunIsNotACopy(folder);
+  const real = Number.isFinite(before) && Number.isFinite(after) && rerunDiffers(folder);
   return real && hasBefore && hasAfter && namesChange;
 }
 
@@ -175,7 +175,7 @@ export default [
       "to factory/ci.env, and to keep any header token out of the file",
   },
   {
-    says: "the retro names one changed setting, the real total before and the real total of the rerun",
+    says: "the retro names one changed setting, the real total before and the rerun total",
     test: beforeAndAfterAreHonest,
     tryNext:
       "change one setting, run the seven issues again with FACTORY_RUNS=rerun/runs, then write " +

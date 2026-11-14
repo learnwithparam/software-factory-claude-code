@@ -10,7 +10,7 @@ Issue {{number}}: {{title}}
 
 {{body}}
 
-Do two things, and change nothing under src/:
+Read only the files the triage stage named. Do two things, and change nothing under src/:
 
 1. Write specs/{{number}}/SPEC.md with these sections: Outcome, Requirements, Must not change, Out of scope,
    Done when. Write each requirement as one line that starts with "When", "While", "If", "Where" or

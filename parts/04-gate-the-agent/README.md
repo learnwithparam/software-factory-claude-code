@@ -70,12 +70,12 @@ In the last step the workflow and CODEOWNERS sit in a folder named `github/`. In
 
 ## Watch and read
 
-| Kind  | Title                                                         | Made by                | Why                                                                   | Link                                                         |
-| ----- | ------------------------------------------------------------- | ---------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------ |
-| video | Claude Code best practices                                    | Cal Rueb, Anthropic    | An Anthropic engineer shows how the team uses Claude Code day to day. | https://www.youtube.com/watch?v=gv0WHhKelSE                  |
-| video | How We Build Effective Agents                                 | Barry Zhang, Anthropic | Says when to use an agent and when a simpler flow is enough.          | https://www.youtube.com/watch?v=D7_ipDqhtwk                  |
-| read  | Hooks reference                                               | Anthropic docs         | Every hook event and what exit code 2 does.                           | https://code.claude.com/docs/en/hooks                        |
-| read  | Claude Code settings                                          | Anthropic docs         | How deny rules and the sandbox key are written.                       | https://code.claude.com/docs/en/settings                     |
+| Kind  | Title                                    | Made by                | Why                                                                   | Link                                                         |
+| ----- | ---------------------------------------- | ---------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------ |
+| video | Claude Code best practices               | Cal Rueb, Anthropic    | An Anthropic engineer shows how the team uses Claude Code day to day. | https://www.youtube.com/watch?v=gv0WHhKelSE                  |
+| video | How We Build Effective Agents            | Barry Zhang, Anthropic | Says when to use an agent and when a simpler flow is enough.          | https://www.youtube.com/watch?v=D7_ipDqhtwk                  |
+| read  | Hooks reference                          | Anthropic docs         | Every hook event and what exit code 2 does.                           | https://code.claude.com/docs/en/hooks                        |
+| read  | Claude Code settings                     | Anthropic docs         | How deny rules and the sandbox key are written.                       | https://code.claude.com/docs/en/settings                     |
 | read  | Making Claude Code safer with sandboxing | Anthropic engineering  | Why a wall around the shell lets you ask for fewer clicks.            | https://www.anthropic.com/engineering/claude-code-sandboxing |
 
 ## Walkthrough

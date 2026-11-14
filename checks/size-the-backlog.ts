@@ -127,7 +127,7 @@ export default [
     says: "your saved session shows you pressed Esc to stop Claude Code mid-answer",
     test: (folder) => pressedEsc(readSession(folder)),
     tryNext:
-      "press Esc while Claude Code is working, then give a shorter instruction and save the session",
+      "press Esc while Claude Code works, then give a shorter instruction and save the session",
   },
   {
     says: "your saved session shows you ran /rewind to undo a step",

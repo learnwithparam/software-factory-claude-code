@@ -116,9 +116,8 @@ export default [
       "the sentence the test will be called",
   },
   {
-    says: "your saved session shows Claude Code interviewing you with questions before it wrote the spec",
+    says: "your saved session shows Claude Code asking you questions before it wrote the spec",
     test: (folder) => calledTool(readSession(folder), "AskUserQuestion").length > 0,
-    tryNext:
-      "ask Claude Code to interview you about issue 5 before it writes SPEC.md, then save the session",
+    tryNext: "ask Claude Code to interview you about issue 5 before it writes SPEC.md, then save",
   },
 ] satisfies Rule[];

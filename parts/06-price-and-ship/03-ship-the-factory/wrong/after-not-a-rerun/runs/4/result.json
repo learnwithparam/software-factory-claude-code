@@ -1,0 +1,60 @@
+{
+  "issue": 4,
+  "state": "draft_pr",
+  "branch": "factory/issue-4",
+  "worktree": "runs/4/repo",
+  "pr_url": null,
+  "gate": {
+    "command": "bun run gate",
+    "exit_code": 0,
+    "tree": "69d118444ee4",
+    "rounds": 1
+  },
+  "review": {
+    "verdict": "pass",
+    "findings": []
+  },
+  "tests_edited": [],
+  "blocked_by_hooks": [],
+  "roles_by_stage": {
+    "triage": "fast",
+    "spec": "smart",
+    "plan": "smart",
+    "build": "smart",
+    "review": "judge"
+  },
+  "cost_usd": 0.413969,
+  "replayed": false,
+  "claude_runs": [
+    {
+      "stage": "triage",
+      "transcript": "transcripts/triage.jsonl",
+      "turns": 9,
+      "cost_usd": 0.0052563
+    },
+    {
+      "stage": "spec",
+      "transcript": "transcripts/spec.jsonl",
+      "turns": 13,
+      "cost_usd": 0.15072770000000002
+    },
+    {
+      "stage": "plan",
+      "transcript": "transcripts/plan.jsonl",
+      "turns": 10,
+      "cost_usd": 0.10990710000000001
+    },
+    {
+      "stage": "build",
+      "transcript": "transcripts/build.jsonl",
+      "turns": 8,
+      "cost_usd": 0.0754145
+    },
+    {
+      "stage": "review",
+      "transcript": "transcripts/review.jsonl",
+      "turns": 6,
+      "cost_usd": 0.0726636
+    }
+  ]
+}
