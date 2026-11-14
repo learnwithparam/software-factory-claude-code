@@ -30,8 +30,8 @@ Expect: the installer ends with no error. Open a new terminal so `claude` is on 
 claude --version
 ```
 
-Expect: a version number such as `2.1.322 (Claude Code)`. This course is tested on 2.1.311 and newer; run
-`claude update` if yours is older.
+Expect: a version number, then the words Claude Code. Run
+`claude update` if the doctor says yours is too old.
 
 Sign in once. Start `claude`, type `/login`, and follow the browser prompts with your Claude account. Then
 type `/exit`.

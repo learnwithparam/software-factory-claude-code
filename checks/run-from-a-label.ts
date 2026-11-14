@@ -4,6 +4,7 @@
 import { join } from "node:path";
 import type { Rule } from "../scripts/verify";
 import { read, yaml } from "./lib/files";
+import { ranCommand, readSession } from "./lib/session";
 
 type Step = { uses?: string; run?: string; with?: Record<string, unknown> };
 type Job = {
@@ -105,6 +106,17 @@ function opensDraftAndNeverMerges(folder: string): boolean {
   );
 }
 
+// An issue body is typed by a stranger. If it is pasted into a prompt or a shell line, the stranger
+// writes your instructions. Numbers and the label name are safe; text fields are not.
+const HOSTILE_NAMES =
+  "issue\\.(title|body)|comment\\.body|pull_request\\.(title|body)|head_commit\\.message";
+const HOSTILE_FIELD = new RegExp(`\\$\\{\\{[^}]*github\\.event\\.(${HOSTILE_NAMES})[^}]*\\}\\}`);
+
+function hostileTextStaysOut(folder: string): boolean {
+  const text = read(workflowPath(folder)) ?? "";
+  return text.length > 0 && !HOSTILE_FIELD.test(text);
+}
+
 export default [
   {
     says: "workflow/factory.yml is a YAML workflow",
@@ -156,5 +168,17 @@ export default [
     tryNext:
       "ask Claude Code to open the PR with gh pr create --draft, " +
       "and to remove any merge, auto-merge or ready step",
+  },
+  {
+    says: "the issue title and body never go into the prompt or a shell line",
+    test: hostileTextStaysOut,
+    tryNext:
+      "a stranger can write the issue body, so use only github.event.issue.number; " +
+      "let the factory read the issue itself, and remove any title or body from the file",
+  },
+  {
+    says: "your saved session shows you ran /schedule",
+    test: (folder) => ranCommand(readSession(folder), "schedule"),
+    tryNext: "type /schedule and set a routine that runs the factory, then save the session",
   },
 ] satisfies Rule[];

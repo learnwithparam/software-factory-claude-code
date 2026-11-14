@@ -1,0 +1,2 @@
+{"type": "user", "message": {"role": "user", "content": "Interview me about issue 5, one question at a time, before you write SPEC.md."}}
+{"type": "assistant", "message": {"role": "assistant", "content": [{"type": "tool_use", "name": "AskUserQuestion", "input": {"questions": [{"question": "Who counts as trained?", "options": [{"label": "Passed the induction"}]}]}}]}}

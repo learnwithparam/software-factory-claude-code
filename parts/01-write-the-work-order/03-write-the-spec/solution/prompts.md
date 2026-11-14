@@ -20,7 +20,7 @@ You can also ask it to interview you, one question at a time. Then you answer fr
 
 ## The plan Claude Code showed
 
-This is the real plan from a run with Claude Code 2.1.323 in plan mode.
+This is the real plan from a run with Claude Code in plan mode.
 
 ```text
 I've read everything and written the plan, but I haven't changed either spec file yet.

@@ -19,7 +19,7 @@ Write a skill at .claude/skills/triage/SKILL.md that decides if one backlog issu
 
 ## The plan Claude Code showed
 
-This is the real plan from a run with Claude Code 2.1.323 in plan mode.
+This is the real plan from a run with Claude Code in plan mode.
 
 ````text
 I haven't written anything yet. The plan is below. I can't find the tool that formally ends plan mode, so I'm showing it here and waiting for your go-ahead.

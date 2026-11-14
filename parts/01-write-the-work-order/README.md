@@ -7,7 +7,7 @@ Answers the question: **does it know what done looks like?**
 ## The problem
 
 A vague issue makes a vague pull request. For example, issue 5 at Northside is one line: "Only people who
-did the induction should get the chainsaw."
+passed the induction may use the chainsaw."
 
 An agent working alone will guess. Which tools? Which members? What is the refused member told? Then the
 reviewer fixes the spec in review comments, one round at a time.
@@ -41,6 +41,16 @@ Each step's files go in that step's `problem/` folder. You start Claude Code the
 plan, and check what it wrote. Each step's `solution/prompts.md` shows the prompts from a real run.
 
 Asking for a plan first is one of the [ways of working](../../00-orientation/ways-of-working.md) you will reuse.
+
+## Watch and read
+
+| Kind  | Title                          | Made by                | Why                                                                   | Link                                                            |
+| ----- | ------------------------------ | ---------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------- |
+| video | Claude Code best practices     | Cal Rueb, Anthropic    | An Anthropic engineer shows how the team uses Claude Code day to day. | https://www.youtube.com/watch?v=gv0WHhKelSE                     |
+| video | How We Build Effective Agents  | Barry Zhang, Anthropic | Says when to use an agent and when a simpler flow is enough.          | https://www.youtube.com/watch?v=D7_ipDqhtwk                     |
+| read  | Best practices for Claude Code | Anthropic docs         | Explains why a clear goal and a way to check it come first.           | https://code.claude.com/docs/en/best-practices                  |
+| read  | Common workflows               | Anthropic docs         | Shows plan mode and how to point Claude Code at files.                | https://code.claude.com/docs/en/common-workflows                |
+| read  | Building effective agents      | Anthropic engineering  | Why a clear task beats a clever agent.                                | https://www.anthropic.com/engineering/building-effective-agents |
 
 ## Walkthrough
 

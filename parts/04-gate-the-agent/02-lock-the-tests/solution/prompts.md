@@ -19,7 +19,7 @@ Write a PreToolUse hook at .claude/hooks/lock-tests.ts and register it in .claud
 
 ## The plan Claude Code showed
 
-This is the real plan from a run with Claude Code 2.1.323 in plan mode.
+This is the real plan from a run with Claude Code in plan mode.
 
 ````text
 Nothing is written yet; this is the plan. The project currently holds only a README, CLAUDE.md and `.claude/settings.json`. The plan is also saved at `/root/.claude/plans/write-a-pretooluse-hook-hazy-sun.md`.

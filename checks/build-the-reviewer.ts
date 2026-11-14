@@ -11,6 +11,7 @@ import {
 } from "../parts/03-split-the-roles/reviews";
 import { enoughRuns } from "../parts/03-split-the-roles/transcripts";
 import type { Rule } from "../scripts/verify";
+import { ranCommand, readSession, subagentCalls } from "./lib/session";
 
 const RUNS_NEEDED = 3;
 const PASSING_RUNS_NEEDED = 2;
@@ -67,5 +68,16 @@ export default [
     tryNext:
       "read a run that blocked the clean fix; if its evidence is a doubt, not an input, " +
       "tell Claude Code that a guess is not a finding",
+  },
+  {
+    says: "your saved session shows /code-review run, and a reviewer subagent doing the review",
+    test: (folder) => {
+      const session = readSession(folder);
+      const reviewers = subagentCalls(session).filter(
+        (call) => String(call.input?.subagent_type ?? "") === "reviewer",
+      );
+      return ranCommand(session, "code-review") && reviewers.length > 0;
+    },
+    tryNext: "run /code-review and ask it to use your reviewer subagent, then save the session",
   },
 ] satisfies Rule[];

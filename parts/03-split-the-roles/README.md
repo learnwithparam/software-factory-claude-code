@@ -60,6 +60,16 @@ Claude Code writes every agent file. You type the prompt, read the plan, approve
 with `claude -p`. Each step's `solution/prompts.md` shows the prompts, the plan and the replies from real
 runs.
 
+## Watch and read
+
+| Kind  | Title                                        | Made by                | Why                                                                   | Link                                                              |
+| ----- | -------------------------------------------- | ---------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| video | Claude Code best practices                   | Cal Rueb, Anthropic    | An Anthropic engineer shows how the team uses Claude Code day to day. | https://www.youtube.com/watch?v=gv0WHhKelSE                       |
+| video | How We Build Effective Agents                | Barry Zhang, Anthropic | Says when to use an agent and when a simpler flow is enough.          | https://www.youtube.com/watch?v=D7_ipDqhtwk                       |
+| read  | Create custom subagents                      | Anthropic docs         | The file format for a subagent and its tool list.                     | https://code.claude.com/docs/en/sub-agents                        |
+| read  | How we built our multi-agent research system | Anthropic engineering  | What went right and wrong when many agents share work.                | https://www.anthropic.com/engineering/multi-agent-research-system |
+| read  | Building effective agents                    | Anthropic engineering  | Covers the worker and judge pattern the reviewer uses.                | https://www.anthropic.com/engineering/building-effective-agents   |
+
 ## Walkthrough
 
 You can ask Claude Code to run any check below. Type:

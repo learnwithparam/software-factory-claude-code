@@ -1,7 +1,7 @@
 # How Claude Code got here: run from a label
 
 Claude Code wrote `workflow/factory.yml`. You read the YAML it planned and fix one thing before it writes.
-The files in this folder are what it wrote in a real run with Claude Code 2.1.323.
+The files in this folder are what it wrote in a real run with Claude Code.
 
 Start Claude Code in this step's `problem/` folder:
 

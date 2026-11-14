@@ -20,7 +20,7 @@ Write three files that protect main on GitHub. We keep them in a folder named gi
 
 ## The plan Claude Code showed
 
-This is the real plan from a run with Claude Code 2.1.323 in plan mode.
+This is the real plan from a run with Claude Code in plan mode.
 
 ````text
 I haven't written anything yet. All three files go in the problem folder, which right now holds only `README.md` and `CLAUDE.md`. The plan is saved at `/root/.claude/plans/write-three-files-that-functional-pancake.md`.

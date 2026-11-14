@@ -1,0 +1,41 @@
+# Maps each Claude Code feature a learner must use to the step that teaches it.
+# Levels come from standard section 7. Each step's check reads the evidence for its features.
+[features]
+# L0 Ask
+plan-mode = "meet-the-library"
+at-files = "meet-the-library"
+screenshots = "meet-the-library"
+specific-prompt = "write-the-issue-form"
+# L1 Supervise
+permission-modes = "run-one-issue-headless"
+diff-review = "catch-the-planted-bug"
+esc = "size-the-backlog"
+rewind = "size-the-backlog"
+clear = "write-the-issue-form"
+# L2 Teach the repo
+init = "trim-the-agents-file"
+claude-md = "trim-the-agents-file"
+rules = "add-a-path-rule"
+check-to-run = "trim-the-agents-file"
+# L3 Fence it
+hooks = "lock-the-tests"
+deny-rules = "deny-the-shortcuts"
+sandbox = "deny-the-shortcuts"
+skills = "package-the-triage-skill"
+mcp-or-cli-tools = "track-agent-cost"
+# L4 Spec and verify
+spec-interview = "write-the-spec"
+goal = "demand-proof-before-stop"
+stop-hook-gate = "demand-proof-before-stop"
+code-review-subagent = "build-the-reviewer"
+# L5 Parallel
+subagents = "split-planner-and-builder"
+worktrees = "isolate-the-builder"
+batch = "run-two-at-once"
+reviewer-agent = "build-the-reviewer"
+# L6 Unattended
+headless = "run-one-issue-headless"
+loop = "run-one-issue-headless"
+schedule = "run-from-a-label"
+github-action = "run-from-a-label"
+run-contract-and-metrics = "ship-the-factory"

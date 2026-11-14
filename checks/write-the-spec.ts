@@ -2,6 +2,7 @@
 // and a pass list where every line starts false.
 import type { Rule } from "../scripts/verify";
 import { sections } from "./lib/files";
+import { calledTool, readSession } from "./lib/session";
 import { EARS, type PassEntry, readSpec, requirementLines, SPEC_SECTIONS } from "./lib/spec";
 
 const ISSUE_NUMBER = 5;
@@ -113,5 +114,10 @@ export default [
     tryNext:
       "ask Claude Code for a test_file such as tests/items/borrow.test.ts and a test_name, " +
       "the sentence the test will be called",
+  },
+  {
+    says: "your saved session shows Claude Code asking you questions before it wrote the spec",
+    test: (folder) => calledTool(readSession(folder), "AskUserQuestion").length > 0,
+    tryNext: "ask Claude Code to interview you about issue 5 before it writes SPEC.md, then save",
   },
 ] satisfies Rule[];

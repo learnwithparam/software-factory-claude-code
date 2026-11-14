@@ -4,6 +4,7 @@
 import { join } from "node:path";
 import type { Rule } from "../scripts/verify";
 import { yaml } from "./lib/files";
+import { ranCommand, readSession, userPrompts } from "./lib/session";
 import { answers } from "./lib/world";
 
 type Field = {
@@ -60,6 +61,16 @@ function issueFiveFillsRequiredFields(folder: string): boolean {
   return required.length >= 5 && required.every(isAnswered);
 }
 
+// A specific prompt names a file, sets a limit, and says when to stop.
+const FILE_PATH = /[\w-]+\/[\w./-]+|[\w-]+\.(?:ts|md|yml|json)/;
+const LIMIT = /\b(?:do not|don't|never|only|must not)\b/i;
+const STOP = /\b(?:stop|then wait|ask me|change nothing)\b/i;
+const isSpecific = (prompt: string) =>
+  prompt.split(/\s+/).length >= 15 &&
+  FILE_PATH.test(prompt) &&
+  LIMIT.test(prompt) &&
+  STOP.test(prompt);
+
 export default [
   {
     says: ".github/ISSUE_TEMPLATE/change.yml exists and is valid YAML",
@@ -110,5 +121,15 @@ export default [
     tryNext:
       "ask Claude Code to compare the field ids with the keys in world/backlog/answers/5.json; " +
       "every required id needs an answer there",
+  },
+  {
+    says: "your saved session has one specific prompt: a file, a limit and a stop rule",
+    test: (folder) => userPrompts(readSession(folder)).some(isSpecific),
+    tryNext: "write one prompt that names a file path, says what must not change, and says to stop",
+  },
+  {
+    says: "your saved session shows you ran /clear between two tasks",
+    test: (folder) => ranCommand(readSession(folder), "clear"),
+    tryNext: "type /clear when you finish one task and start the next, then save the session again",
   },
 ] satisfies Rule[];

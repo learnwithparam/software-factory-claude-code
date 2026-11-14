@@ -51,7 +51,8 @@ page tells you where you first saw it.
 
 ## Run without you
 
-- **Headless `claude -p`, with `--max-turns`, `--max-budget-usd`, `--allowedTools` and `--bare`.** A run
+- **Headless `claude -p`.** Cap it with `--max-turns` and `--max-budget-usd`, and list tools with
+  `--allowedTools`. A run
   with no permission mode starts in Manual mode and denies anything that would ask you. See
   [run-one-issue-headless](../parts/05-run-it-unattended/01-run-one-issue-headless/problem/README.md).
 - **Claude Code in GitHub Actions.** See
