@@ -16,7 +16,7 @@ So the factory needs four things:
 - a gate retry loop that gives up after 2 rounds,
 - one result file per issue that says what happened.
 
-Two flags can cause trouble. Since Claude Code 2.1.302, a `claude -p` call with no permission mode starts in
+Two flags can cause trouble. A `claude -p` call with no permission mode starts in
 Manual mode, and it denies anything that would ask you first. And `--bare` skips the project's hooks
 (https://code.claude.com/docs/en/headless). So the walls from the "Gate the agent" part vanish, and nothing tells you.
 
@@ -118,6 +118,10 @@ bun run verify part run-it-unattended
 Expect: `Part run-it-unattended is done: 3/3 steps pass.`
 
 Compare with the sample answers at any time, for example `bun run verify run-one-issue-headless solution`.
+
+## Go further
+
+Run the finished factory on one issue with a lower `--max-turns`, such as 3. Read the result file and write down what stopped the run and what was lost. The check does not grade this.
 
 ## Finished
 

@@ -67,3 +67,7 @@ bun run verify part write-the-work-order
 Expect: `Part write-the-work-order is done: 3/3 steps pass.`
 
 Compare with the sample answers at any time, for example `bun run verify write-the-spec solution`.
+
+## Go further
+
+Take an issue you wrote for your own project. Turn it into a typed issue and a spec in the same shape. Ask a friend to say what done looks like from the spec alone. The check does not grade this.

@@ -45,6 +45,10 @@ bun run verify track-agent-cost solution
 
 Expect: `Done. All 5 rules pass.`
 
+## Go further
+
+Set the key's budget to half of what one run costs. Run the factory and read what the proxy says when the budget is spent. The check does not grade this.
+
 ## Finished
 
 You moved one hand-built idea onto a real tool. The cap is now a key with a budget, and the proxy says no
