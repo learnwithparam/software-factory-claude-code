@@ -30,7 +30,7 @@ You ask Claude Code to build each wall. You read its plan, approve it, and run t
 
 ## Why it matters
 
-Google Cloud's DORA 2025 report surveyed "nearly 5,000 technology professionals". It found that "90% of survey
+Google Cloud's DORA report on AI-assisted software development surveyed "nearly 5,000 technology professionals". It found that "90% of survey
 respondents report using AI at work". Yet "AI adoption does continue to have a negative relationship with
 software delivery stability". In plain words, more AI use went with less stable software.
 

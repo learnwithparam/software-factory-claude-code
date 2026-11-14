@@ -19,7 +19,7 @@ Make two subagents in .claude/agents/. The first is planner.md. It plans one iss
 
 ## The plan Claude Code showed
 
-This is the real plan from a run with Claude Code 2.1.323 in plan mode.
+This is the real plan from a run with Claude Code in plan mode.
 
 ````text
 Here's my plan. I haven't written either agent file yet. The only thing I've saved is this plan, at `/root/.claude/plans/make-two-subagents-in-warm-leaf.md`.
@@ -115,7 +115,7 @@ Tell me to go ahead, or what to change, and I'll write the two files.
 
 ## What you check in the plan
 
-- The planner has `tools: Read, Grep, Glob`. For example, if Claude Code had left the line out, the planner
+- The planner has a tools line with Read, Grep and Glob. For example, if Claude Code had left the line out, the planner
   would get every tool, Edit and Bash too.
 - Claude Code asks if the builder may edit `tests/`. Keep it for now. The "Gate the agent" part locks the tests with a hook,
   because a line in a prompt is only a request.

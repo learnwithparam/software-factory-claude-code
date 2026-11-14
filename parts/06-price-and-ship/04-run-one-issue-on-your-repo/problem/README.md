@@ -18,7 +18,7 @@ flowchart LR
 
 ## Your challenge
 
-Work in your own repo, not in this course folder. Copy the `evidence/` and `notes/` folders from `problem/` into
+Work in your own repo, not in this course folder. Copy the `evidence/` and `notes/` folders from `capstone/template/` into
 it. Start Claude Code in your own repo:
 
 ```bash
@@ -45,7 +45,7 @@ Last, ask for the evidence:
 Fill in evidence/run.json with the repo, issue, branch, pull request link, whether it is a draft, whether the gate passed, the files changed, the cost and the cap. Save the gate output to evidence/gate.txt and a copy of .claude/settings.json to evidence/claude-settings.json. Then fill in notes/own-repo.md. Use only what really happened.
 ```
 
-Copy `evidence/` and `notes/` back into this step's `problem/` folder, then run the check on it.
+Then run the capstone check on your own repo. It reads only your folder.
 
 ## Done when
 
@@ -59,14 +59,14 @@ Copy `evidence/` and `notes/` back into this step's `problem/` folder, then run 
 Ask Claude Code:
 
 ```text
-Run `bun run verify run-one-issue-on-your-repo` and tell me what it printed. Do not change anything to make it pass.
+Run `bun capstone/check.ts <path to my repo>` and tell me what it printed. Do not change anything to make it pass.
 ```
 
 ```bash
-bun run verify run-one-issue-on-your-repo
+bun capstone/check.ts ../my-repo
 ```
 
-Expect: `Done. All 7 rules pass.`
+Expect: `Done. All 7 capstone rules pass.`
 
 ## If you get stuck
 

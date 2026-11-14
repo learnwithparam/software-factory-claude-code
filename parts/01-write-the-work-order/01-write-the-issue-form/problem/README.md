@@ -2,7 +2,7 @@
 
 ## The problem
 
-Issue 5 says, in full: "Only people who did the induction should get the chainsaw."
+Issue 5 says, in full: "Only people who passed the induction may use the chainsaw."
 
 A person at the desk knows what that means. A factory does not. Which tools? Which members? Today's
 template has one free text box.

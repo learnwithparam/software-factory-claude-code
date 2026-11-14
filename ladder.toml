@@ -1,189 +1,41 @@
-# The Claude Code ladder, L0 to L6. Each feature names the step that uses it.
-# checks/ladder.ts fails when a step is missing, a step has no check, or the step's page never names the feature.
-# This course walks L2 to L4 in full. L0, L1, L5 and L6 are touched by one step each, see the GO-FURTHER.md pages.
-
-[[feature]]
-level = "L0"
-feature = "plan mode"
-step = "route-models-by-stage"
-needle = "plan mode"
-
-[[feature]]
-level = "L0"
-feature = "@ files"
-step = "meet-the-library"
-needle = "`@` and a file"
-
-[[feature]]
-level = "L0"
-feature = "screenshots"
-step = "meet-the-library"
-needle = "screenshot"
-
-[[feature]]
-level = "L0"
-feature = "a specific prompt"
-step = "write-the-issue-form"
-needle = "specific prompt"
-
-[[feature]]
-level = "L1"
-feature = "permission modes"
-step = "run-one-issue-headless"
-needle = "permission mode"
-
-[[feature]]
-level = "L1"
-feature = "diff review"
-step = "catch-the-planted-bug"
-needle = "diff"
-
-[[feature]]
-level = "L1"
-feature = "Esc"
-step = "size-the-backlog"
-needle = "Esc"
-
-[[feature]]
-level = "L1"
-feature = "/rewind"
-step = "size-the-backlog"
-needle = "/rewind"
-
-[[feature]]
-level = "L1"
-feature = "/clear"
-step = "write-the-issue-form"
-needle = "/clear"
-
-[[feature]]
-level = "L2"
-feature = "/init"
-step = "trim-the-agents-file"
-needle = "/init"
-
-[[feature]]
-level = "L2"
-feature = "CLAUDE.md under 200 lines"
-step = "trim-the-agents-file"
-needle = "200 lines"
-
-[[feature]]
-level = "L2"
-feature = "a path rule in .claude/rules"
-step = "add-a-path-rule"
-needle = ".claude/rules"
-
-[[feature]]
-level = "L2"
-feature = "a check to run"
-step = "trim-the-agents-file"
-needle = "bun run gate"
-
-[[feature]]
-level = "L3"
-feature = "hooks"
-step = "lock-the-tests"
-needle = "hook"
-
-[[feature]]
-level = "L3"
-feature = "deny rules"
-step = "deny-the-shortcuts"
-needle = "deny"
-
-[[feature]]
-level = "L3"
-feature = "sandbox"
-step = "deny-the-shortcuts"
-needle = "sandbox"
-
-[[feature]]
-level = "L3"
-feature = "skills"
-step = "package-the-triage-skill"
-needle = "skill"
-
-[[feature]]
-level = "L3"
-feature = "MCP or CLI tools"
-step = "track-agent-cost"
-needle = "MCP"
-
-[[feature]]
-level = "L4"
-feature = "interview to SPEC.md"
-step = "write-the-spec"
-needle = "interview"
-
-[[feature]]
-level = "L4"
-feature = "/goal"
-step = "demand-proof-before-stop"
-needle = "/goal"
-
-[[feature]]
-level = "L4"
-feature = "Stop hook gate"
-step = "demand-proof-before-stop"
-needle = "Stop hook"
-
-[[feature]]
-level = "L4"
-feature = "/code-review in a subagent"
-step = "build-the-reviewer"
-needle = "/code-review"
-
-[[feature]]
-level = "L5"
-feature = "subagents"
-step = "split-planner-and-builder"
-needle = "subagent"
-
-[[feature]]
-level = "L5"
-feature = "worktrees with claude -w"
-step = "isolate-the-builder"
-needle = "claude -w"
-
-[[feature]]
-level = "L5"
-feature = "/batch"
-step = "run-two-at-once"
-needle = "/batch"
-
-[[feature]]
-level = "L5"
-feature = "a reviewer agent"
-step = "build-the-reviewer"
-needle = "reviewer"
-
-[[feature]]
-level = "L6"
-feature = "claude -p"
-step = "run-one-issue-headless"
-needle = "claude -p"
-
-[[feature]]
-level = "L6"
-feature = "/loop"
-step = "run-one-issue-headless"
-needle = "/loop"
-
-[[feature]]
-level = "L6"
-feature = "/schedule"
-step = "run-from-a-label"
-needle = "/schedule"
-
-[[feature]]
-level = "L6"
-feature = "a GitHub Action"
-step = "run-from-a-label"
-needle = "workflow"
-
-[[feature]]
-level = "L6"
-feature = "a run contract and metrics"
-step = "ship-the-factory"
-needle = "scorecard"
+# Maps each Claude Code feature a learner must use to the step that teaches it.
+# Levels come from standard section 7. Each step's check reads the evidence for its features.
+[features]
+# L0 Ask
+plan-mode = "meet-the-library"
+at-files = "meet-the-library"
+screenshots = "meet-the-library"
+specific-prompt = "write-the-issue-form"
+# L1 Supervise
+permission-modes = "run-one-issue-headless"
+diff-review = "catch-the-planted-bug"
+esc = "size-the-backlog"
+rewind = "size-the-backlog"
+clear = "write-the-issue-form"
+# L2 Teach the repo
+init = "trim-the-agents-file"
+claude-md = "trim-the-agents-file"
+rules = "add-a-path-rule"
+check-to-run = "trim-the-agents-file"
+# L3 Fence it
+hooks = "lock-the-tests"
+deny-rules = "deny-the-shortcuts"
+sandbox = "deny-the-shortcuts"
+skills = "package-the-triage-skill"
+mcp-or-cli-tools = "track-agent-cost"
+# L4 Spec and verify
+spec-interview = "write-the-spec"
+goal = "demand-proof-before-stop"
+stop-hook-gate = "demand-proof-before-stop"
+code-review-subagent = "build-the-reviewer"
+# L5 Parallel
+subagents = "split-planner-and-builder"
+worktrees = "isolate-the-builder"
+batch = "run-two-at-once"
+reviewer-agent = "build-the-reviewer"
+# L6 Unattended
+headless = "run-one-issue-headless"
+loop = "run-one-issue-headless"
+schedule = "run-from-a-label"
+github-action = "run-from-a-label"
+run-contract-and-metrics = "ship-the-factory"

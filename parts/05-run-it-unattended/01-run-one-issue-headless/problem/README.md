@@ -8,7 +8,7 @@ prompt, works, prints its result and exits.
 A `claude -p` call with no limits can loop and spend. And `--bare` skips
 the project's hooks, so the test lock and Stop gate vanish silently.
 
-For example, `factory/run.ts` in this folder only prints `factory: not built yet` and exits 1.
+For example, `factory/run.ts` in this folder only prints a not built yet note and exits 1.
 
 ```mermaid
 flowchart LR

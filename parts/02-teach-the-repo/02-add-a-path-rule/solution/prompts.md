@@ -19,7 +19,7 @@ Read the money code in ../../../../world/app/src/fees and its tests. Then add a 
 
 ## The plan Claude Code showed
 
-This is the real plan from a run with Claude Code 2.1.323 in plan mode.
+This is the real plan from a run with Claude Code in plan mode.
 
 ````text
 I read the fee code and its tests. I haven't written anything yet. Here is the plan.

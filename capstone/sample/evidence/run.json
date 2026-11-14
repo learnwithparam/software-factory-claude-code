@@ -1,0 +1,12 @@
+{
+  "repo": "example-org/recipe-box",
+  "issue": 12,
+  "branch": "factory/issue-12",
+  "pull_request_url": "https://github.com/example-org/recipe-box/pull/14",
+  "draft": true,
+  "gate_passed": true,
+  "tests_edited": [],
+  "files_changed": ["src/scale.ts", "README.md"],
+  "cost_usd": 0.34,
+  "cap_usd": 2
+}

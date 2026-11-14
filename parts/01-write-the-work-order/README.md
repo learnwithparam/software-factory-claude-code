@@ -7,7 +7,7 @@ Answers the question: **does it know what done looks like?**
 ## The problem
 
 A vague issue makes a vague pull request. For example, issue 5 at Northside is one line: "Only people who
-did the induction should get the chainsaw."
+passed the induction may use the chainsaw."
 
 An agent working alone will guess. Which tools? Which members? What is the refused member told? Then the
 reviewer fixes the spec in review comments, one round at a time.

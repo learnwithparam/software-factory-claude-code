@@ -19,7 +19,7 @@ Write a Stop hook at .claude/hooks/stop-gate.ts and register it under hooks.Stop
 
 ## The plan Claude Code showed
 
-This is the real plan from a run with Claude Code 2.1.323 in plan mode.
+This is the real plan from a run with Claude Code in plan mode.
 
 ```text
 Here's my plan. I haven't written anything yet. It's also saved at `/root/.claude/plans/write-a-stop-hook-gentle-locket.md`.

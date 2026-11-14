@@ -2,10 +2,19 @@
   "name": "software-factory-claude-code",
   "private": true,
   "type": "module",
+  "ladder": true,
+  "capstone": true,
+  "picks": true,
+  "plainEnglish": {
+    "grade": 6
+  },
   "packageManager": "bun@1.4.4",
   "scripts": {
-    "check": "bun checks/ladder.ts && bun scripts/readable.ts && bun scripts/plain-english.ts && bun scripts/check.ts && bun scripts/verify.ts --all && bun scripts/text-audit.ts",
+    "check": "bun scripts/readable.ts && bun scripts/plain-english.ts && bun scripts/check.ts && bun scripts/verify.ts --all && bun scripts/text-audit.ts && bun scripts/capstone.ts && bun scripts/picks.ts && bun scripts/ladder.ts",
     "readable": "bun scripts/readable.ts",
+    "picks": "bun scripts/picks.ts",
+    "ladder": "bun scripts/ladder.ts",
+    "capstone": "bun scripts/capstone.ts",
     "plain-english": "bun scripts/plain-english.ts",
     "format": "biome check --write .",
     "verify": "bun scripts/verify.ts",

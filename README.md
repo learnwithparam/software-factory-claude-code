@@ -175,7 +175,7 @@ asks for an API key. What you build is Claude Code configuration (`CLAUDE.md`, r
 subagents) and the work Claude Code does with it. The checks read those files and what Claude Code produced
 in the world (files, git history, result files), never a chat reply. Hooks are tested by feeding them the
 JSON Claude Code sends on stdin. `config/claude-code.ts` holds the model alias per role, the headless flags,
-and the oldest Claude Code version the course is tested on, 2.1.311.
+and the oldest Claude Code release the course is tested on.
 
 ```bash
 bun run doctor
@@ -185,7 +185,7 @@ Expect: `doctor: ready, 4 of 4 required checks pass.` and a `Claude Code` line w
 
 ## Read before you start
 
-About 65 minutes of reading in all:
+About an evening of reading in all:
 
 1. [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices), Anthropic. Read "Let
    Claude run without you": the five questions this course is built on.
@@ -200,6 +200,6 @@ About 65 minutes of reading in all:
 bun run check
 ```
 
-Expect: `The repo meets the standard` and `Every check rejects its starter and wrong answers, and passes its solution.`
+Expect: the line that says the repo meets the standard, and `Every check rejects its starter and wrong answers, and passes its solution.`
 
 The rules every course repo follows are in [STANDARD.md](STANDARD.md).

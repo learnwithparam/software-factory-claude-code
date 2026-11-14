@@ -1,7 +1,7 @@
 # How Claude Code got here: route models by stage
 
 Claude Code changed `factory/run.ts` and the stage files. You read its plan and answer the one question it
-asked. The files in this folder are what it wrote in a real run with Claude Code 2.1.323.
+asked. The files in this folder are what it wrote in a real run with Claude Code.
 
 Start Claude Code in this step's `problem/` folder:
 

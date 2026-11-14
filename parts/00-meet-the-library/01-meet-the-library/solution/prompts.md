@@ -18,7 +18,7 @@ Read the seven issues in ../../../../world/backlog and the code they touch in ..
 
 ## What Claude Code answered
 
-This is the real answer from a run with Claude Code 2.1.323 in plan mode. Your answer will use other words.
+This is the real answer from a run with Claude Code in plan mode. Your answer will use other words.
 
 ```text
 I'd pick #6 first and #4 second. I changed no files.
