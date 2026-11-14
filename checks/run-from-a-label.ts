@@ -105,6 +105,16 @@ function opensDraftAndNeverMerges(folder: string): boolean {
   );
 }
 
+// An issue body is typed by a stranger. If it is pasted into a prompt or a shell line, the stranger
+// writes your instructions. Numbers and the label name are safe; titles, bodies and comments are not.
+const HOSTILE_FIELD =
+  /\$\{\{[^}]*github\.event\.(issue\.(title|body)|comment\.body|pull_request\.(title|body)|head_commit\.message)[^}]*\}\}/;
+
+function hostileTextStaysOut(folder: string): boolean {
+  const text = read(workflowPath(folder)) ?? "";
+  return text.length > 0 && !HOSTILE_FIELD.test(text);
+}
+
 export default [
   {
     says: "workflow/factory.yml is a YAML workflow",
@@ -156,5 +166,12 @@ export default [
     tryNext:
       "ask Claude Code to open the PR with gh pr create --draft, " +
       "and to remove any merge, auto-merge or ready step",
+  },
+  {
+    says: "the issue title and body never go into the prompt or a shell line",
+    test: hostileTextStaysOut,
+    tryNext:
+      "a stranger can write the issue body, so use only github.event.issue.number; " +
+      "let the factory read the issue itself, and remove any title or body from the file",
   },
 ] satisfies Rule[];

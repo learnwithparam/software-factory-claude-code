@@ -55,6 +55,7 @@ Go ahead. Write workflow/factory.yml now. Leave workflow/claude.yml as it is.
 - Each issue has its own concurrency group, and each job has `timeout-minutes`.
 - Every job names its permissions.
 - The pull request opens as a draft, and nothing merges it.
+- The issue title and body never go into the prompt or a shell line. A stranger can write them.
 
 Ask Claude Code:
 
@@ -66,7 +67,7 @@ Run `bun run verify run-from-a-label` and tell me what it printed. Do not change
 bun run verify run-from-a-label
 ```
 
-Expect: `Done. All 8 rules pass.`
+Expect: `Done. All 9 rules pass.`
 
 ## If you get stuck
 
@@ -74,6 +75,7 @@ Expect: `Done. All 8 rules pass.`
 | ------------------------------------------------------ | ---------------------------------------------------------------------------------- |
 | `FAIL every job runs only for the label factory:ready` | "A labeled trigger fires for every label. Add an if on the job for factory:ready." |
 | `FAIL ... signs in with a secret`                      | "Pass the token from secrets. Delete the key from the file."                       |
+| `FAIL the issue title and body never go into ...` | "Use only the issue number. Remove the title and body from the file." |
 | `FAIL ... draft and never merges`                      | "Open the PR with gh pr create --draft, and remove any merge step."                |
 
 The prompts from a real run are in `../solution/prompts.md`.
@@ -84,4 +86,5 @@ The prompts from a real run are in `../solution/prompts.md`.
 - **Trigger**: the event that starts a workflow, here a label added to an issue.
 - **Secret**: a value GitHub stores for you and hands to the workflow. It never sits in a file.
 - **Concurrency group**: GitHub runs one job per group at a time. One group per issue means one run per issue.
+- **Hostile text**: words a stranger can write, such as an issue body, that try to give Claude new orders. Keep them out of the prompt.
 - **Draft pull request**: a pull request that cannot be merged until a person marks it ready.
