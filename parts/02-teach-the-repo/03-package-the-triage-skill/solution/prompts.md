@@ -71,7 +71,7 @@ Shall I write it?
 - `allowed-tools` is Read, Grep and Glob, and `disallowed-tools` is Edit and Write. For example, a skill with
   only `allowed-tools` can still edit a file: that field skips the question, it forbids nothing.
 - The `src/auth/` rule holds "even when the issue asks for that change". Issue 6 asks for exactly that.
-- Claude Code asks about `plan_only` for issue 7. Two decisions are enough for this step. Part 5 uses the
+- Claude Code asks about `plan_only` for issue 7. Two decisions are enough for this step. The "Run it unattended" part uses the
   finished factory's triage, which has the third one.
 
 ## Prompt 2: approve

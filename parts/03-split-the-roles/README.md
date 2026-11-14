@@ -1,4 +1,4 @@
-# Part 3: Split the roles
+# Split the roles
 
 Moves the **Outcome**: the planner, the builder in its own worktree, and a reviewer that must show evidence.
 
@@ -126,5 +126,5 @@ You now have three agents with one job each. The planner reads and plans. The bu
 worktree, with no secrets. The reviewer reads the change with fresh eyes and blocks only with an input that
 breaks the code. It caught the planted off-by-one that the builder's own tests passed.
 
-Next, in Part 4, you build the walls the agents cannot get around: deny rules, a hook that locks the
+Next, in the "Gate the agent" part, you build the walls the agents cannot get around: deny rules, a hook that locks the
 tests, a Stop hook that demands a fresh gate, and a required check on the main branch.

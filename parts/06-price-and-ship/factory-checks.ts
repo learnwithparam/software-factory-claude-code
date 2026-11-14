@@ -1,4 +1,4 @@
-// Helpers the Part 6 checks share, the same file as Part 5 has: dry runs and live runs.
+// Helpers the "Price and ship" checks share, the same as "Run it unattended" has.
 // A dry run writes into a throwaway runs folder (FACTORY_RUNS), so the learner's own runs stay.
 // The supervisor may move this file to checks/lib/.
 import { existsSync, mkdtempSync, rmSync } from "node:fs";

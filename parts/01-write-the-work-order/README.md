@@ -1,4 +1,4 @@
-# Part 1: Write the work order
+# Write the work order
 
 Moves the **Outcome**: the typed issue and the spec that go into your factory.
 
@@ -28,7 +28,7 @@ flowchart LR
   B -- ready --> S[SPEC.md + passes.json]
   B -- refuse --> P[A person decides]
   B -- split --> N[Smaller issues]
-  S --> FA[The factory, from Part 5 on]
+  S --> FA[The factory, from Run it unattended on]
 ```
 
 | Step                   | Minutes | What you produce                                                    |

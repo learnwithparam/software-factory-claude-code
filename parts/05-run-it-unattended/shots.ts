@@ -1,4 +1,4 @@
-// bun parts/05-run-it-unattended/shots.ts: capture the pictures of Part 5.
+// bun parts/05-run-it-unattended/shots.ts: capture the pictures of the "Run it unattended" part.
 // Terminal output is rendered as HTML in a dark terminal style, 800 pixels wide, and screenshotted
 // with Playwright's Chromium, the same way images/capture.ts does it.
 // A live run cannot run again without spending, so its picture comes from the console it saved.

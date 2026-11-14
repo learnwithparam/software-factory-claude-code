@@ -2,7 +2,7 @@
 // The checks for this part read what Claude Code did and replied, never a model's reply alone:
 // the init event says which Claude Code ran and which skills it loaded,
 // the tool calls say what it touched, and the result event holds its final answer.
-// Kept in this part folder for now, as a copy of the one in Part 2.
+// Kept in this part folder for now, as a copy of the one in the "Teach the repo" part.
 // The course's checks/lib is the place it belongs.
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";

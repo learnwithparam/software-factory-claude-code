@@ -6,7 +6,7 @@ The factory must run with nobody at the keyboard. For that it uses `claude -p`: 
 prompt, works, prints its result and exits.
 
 A `claude -p` call with no limits can loop and spend. And one flag, `--bare`, skips
-the project's hooks. Then the test lock and Stop gate from Part 4 vanish silently.
+the project's hooks. Then the test lock and Stop gate from "Gate the agent" vanish silently.
 
 For example, `factory/run.ts` in this folder only prints `factory: not built yet` and exits 1.
 

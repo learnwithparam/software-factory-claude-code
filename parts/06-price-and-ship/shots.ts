@@ -1,4 +1,4 @@
-// bun parts/06-price-and-ship/shots.ts: capture the pictures of Part 6.
+// bun parts/06-price-and-ship/shots.ts: capture the pictures of the "Price and ship" part.
 // Terminal output is rendered as HTML in a dark terminal style, 800 pixels wide, and screenshotted
 // with Playwright's Chromium, the same way images/capture.ts does it.
 // A live run cannot run again without spending, so its picture comes from the console it saved.

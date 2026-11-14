@@ -1,4 +1,4 @@
-# Part 6: Price and ship
+# Price and ship
 
 Moves the **Goal**: your factory runs all seven Northside issues and meets the scorecard.
 

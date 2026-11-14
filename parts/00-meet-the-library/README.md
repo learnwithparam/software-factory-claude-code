@@ -1,4 +1,4 @@
-# Part 0: Meet the library
+# Meet the library
 
 Moves the **Goal**: you see the finished factory you will build, and the scorecard it must meet.
 
@@ -22,7 +22,7 @@ Anthropic's best-practice page asks five questions before a run goes unattended
 4. What stops it?
 5. Where does the result go, and who signs off?
 
-Each part answers one of them with a file a script can check. For example, Part 1 answers the first
+Each part answers one of them with a file a script can check. For example, the "Write the work order" part answers the first
 question with `specs/5/SPEC.md`, a page that says what done means for issue 5.
 
 ```mermaid

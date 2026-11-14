@@ -1,4 +1,4 @@
-// Helpers the Part 5 checks share: run the learner's factory in a dry run, and read a live run.
+// Helpers the "Run it unattended" checks share: dry runs of the factory and live runs.
 // A dry run writes into a throwaway runs folder (FACTORY_RUNS), so the learner's own runs stay.
 // The supervisor may move this file to checks/lib/.
 import { existsSync, mkdtempSync, rmSync } from "node:fs";

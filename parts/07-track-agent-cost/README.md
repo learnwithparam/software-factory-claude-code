@@ -1,4 +1,4 @@
-# Part 7: Track agent cost with LiteLLM
+# Track agent cost with LiteLLM
 
 Moves the **Goal**: the spend cap you built by hand now lives in the open-source gateway teams run.
 

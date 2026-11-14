@@ -60,7 +60,7 @@ The plan is saved at `/root/.claude/plans/claude-md-asks-you-never-tender-clarke
 
 - Both forms of a force push are caught. For example, `git push origin main -f` puts the flag at the end.
 - Claude Code adds `git commit -n`, the short form of `--no-verify`. That is a good catch. Keep it.
-- Claude Code names a gap: `cat .env` in Bash is not a Read call. Part 4's next walls and the sandbox cover
+- Claude Code names a gap: `cat .env` in Bash is not a Read call. The "Gate the agent" part's next walls and the sandbox cover
   more. Here you only need the deny list.
 - The allow list stays as it was.
 
