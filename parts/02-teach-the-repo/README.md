@@ -1,4 +1,4 @@
-# Part 2: Teach the repo
+# Teach the repo
 
 Moves the **Outcome**: the factory's instructions, short enough to load every time and exact where they matter.
 
@@ -117,5 +117,5 @@ what Claude Code cannot read for itself. The money rule loads only when Claude C
 The triage skill loads only when the factory asks "may I start this issue?", and it refuses issue 6 every
 time.
 
-Next, in Part 3, you split the work between three agents: a planner that only reads, a builder in its own
+Next, in the "Split the roles" part, you split the work between three agents: a planner that only reads, a builder in its own
 worktree, and a reviewer that must show the input that breaks the code.

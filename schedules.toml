@@ -1,7 +1,8 @@
 # track-agent-cost is the optional closing part, listed last in each format.
 # Parts mapped onto formats. Minutes are step minutes plus the review time named in each note.
 # Part minutes: meet-the-library 15, write-the-work-order 50, teach-the-repo 45, split-the-roles 65,
-# gate-the-agent 60, run-it-unattended 65 (one 15 minute elective), price-and-ship 50. Total 350.
+# gate-the-agent 60, run-it-unattended 65 (one 15 minute elective), price-and-ship 50,
+# track-agent-cost 15 (optional). Total 365.
 
 # One day on site. Breaks and lunch (70 minutes) sit between sessions and are not counted here.
 [one-day]

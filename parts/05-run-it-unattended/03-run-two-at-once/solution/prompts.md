@@ -59,7 +59,7 @@ Both runs read the same inputs: `world/app`, `world/gate.ts`, `factory/app/`, `f
 
 - Every folder, branch and gate record is named after the issue number. So 3 and 5 never meet.
 - The files the two issues change do not overlap. Claude Code reads them from `factory/backlog.json`.
-- The cap is per run. Two runs can spend twice the cap together. Keep that in mind for Part 6.
+- The cap is per run. Two runs can spend twice the cap together. Keep that in mind for the "Price and ship" part.
 - The one real collision is the same issue twice. Do not start issue 3 in two terminals.
 
 ## Start both runs

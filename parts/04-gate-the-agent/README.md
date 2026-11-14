@@ -1,4 +1,4 @@
-# Part 4: Gate the agent
+# Gate the agent
 
 Moves the **Outcome**: the gate the agent cannot skip, as four walls you can test.
 
@@ -136,5 +136,5 @@ The lock-tests hook stops the builder changing a test. The Stop hook keeps it wo
 on the code as it is now. On GitHub, only a real workflow run can turn the `gate` check green, and a person
 must approve.
 
-Next, in Part 5, you run the factory with nobody at the keyboard: `claude -p` for one issue, then a GitHub
+Next, in the "Run it unattended" part, you run the factory with nobody at the keyboard: `claude -p` for one issue, then a GitHub
 label that starts a run.

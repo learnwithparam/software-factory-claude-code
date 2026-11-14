@@ -2,8 +2,8 @@
 
 Every part, its steps, minutes, and what each step's check reads. A part session starts from this file alone.
 Parts 0 and 1 are built. Parts 2 to 6 are skeletons: a README with the problem, a cited number, a diagram,
-the step table and a Walkthrough marked `TODO(part session)`. Total: 350 minutes (335 core plus one 15 minute
-elective).
+the step table and a Walkthrough marked `TODO(part session)`. Total: 365 minutes (335 core, one 15 minute
+elective and the optional 15 minute closing part).
 
 | Part folder                     | Question it answers                     | Steps (minutes)                                                                                                       | Part minutes | State    |
 | ------------------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------ | -------- |

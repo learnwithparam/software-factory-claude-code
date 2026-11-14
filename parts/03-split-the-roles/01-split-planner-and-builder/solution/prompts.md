@@ -117,7 +117,7 @@ Tell me to go ahead, or what to change, and I'll write the two files.
 
 - The planner has `tools: Read, Grep, Glob`. For example, if Claude Code had left the line out, the planner
   would get every tool, Edit and Bash too.
-- Claude Code asks if the builder may edit `tests/`. Keep it for now. Part 4 locks the tests with a hook,
+- Claude Code asks if the builder may edit `tests/`. Keep it for now. The "Gate the agent" part locks the tests with a hook,
   because a line in a prompt is only a request.
 - The money rule in the builder repeats `.claude/rules/money.md`. It is short, so you can keep it.
 

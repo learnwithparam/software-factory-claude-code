@@ -424,7 +424,7 @@ function feedbackFor(run: Run): string {
 
 type Decision = "proceed" | "refuse" | "plan_only" | null;
 
-// A dry run takes triage's answer from factory/backlog.json, the decisions from Part 1.
+// A dry run takes triage answers from factory/backlog.json, from "Write the work order".
 function dryDecision(issue: number): Decision {
   const backlog = JSON.parse(readFileSync(join(FACTORY, "backlog.json"), "utf8"));
   const entries = backlog as { issue: number; decision: string }[];

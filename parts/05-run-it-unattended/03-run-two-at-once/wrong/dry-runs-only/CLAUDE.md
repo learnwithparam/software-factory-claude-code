@@ -5,11 +5,11 @@ This folder is the factory for the Northside Tool Library's lending app. The fac
 
 ## What is here
 
-- `factory/backlog.json`: the decision for each issue (ready, split or refuse), from Part 1.
+- `factory/backlog.json`: the decision for each issue (ready, split or refuse), from the "Write the work order" part.
 - `factory/stages/<stage>.md`: the prompt for each stage: triage, spec, build, review.
   `{{number}}`, `{{title}}`, `{{body}}` and `{{feedback}}` are filled in from the issue.
 - `factory/app/`: the files every run adds to its copy of the app: `CLAUDE.md`, `.claude/settings.json`,
-  the hooks from Part 4 and a `package.json` whose `gate` script runs `.factory/gate.ts`.
+  the hooks from the "Gate the agent" part and a `package.json` whose `gate` script runs `.factory/gate.ts`.
 - `factory/run.ts`: the runner. `bun run factory <issue>` starts it.
 
 The repo root is the first folder above this one that holds `world/backlog/`. The app is `world/app/` there,

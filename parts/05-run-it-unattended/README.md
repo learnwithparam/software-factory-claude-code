@@ -1,4 +1,4 @@
-# Part 5: Run it unattended
+# Run it unattended
 
 Moves the **Objective**: Claude Code turns one issue into one draft pull request with nobody watching.
 
@@ -18,7 +18,7 @@ So the factory needs four things:
 
 Two flags can cause trouble. Since Claude Code 2.1.302, a `claude -p` call with no permission mode starts in
 Manual mode, and it denies anything that would ask you first. And `--bare` skips the project's hooks
-(https://code.claude.com/docs/en/headless). So the walls from Part 4 vanish, and nothing tells you.
+(https://code.claude.com/docs/en/headless). So the walls from the "Gate the agent" part vanish, and nothing tells you.
 
 For example, the finished factory runs triage on issue 2 with these flags, among others.
 
@@ -125,5 +125,6 @@ You now have a factory that runs with nobody at the keyboard. `bun run factory <
 branch whose gate is green and a review that passed. Every `claude -p` call names its tools and caps its turns
 and spend. A GitHub label can start it, and two issues can run side by side.
 
-What you do not know yet is what each run costs per stage, or how to stop a run that spends too much. Part 6
-gives each stage a model by its role, puts a cap on a whole run, and runs the factory over all seven issues.
+What you do not know yet is what each run costs per stage, or how to stop a run that spends too much.
+The "Price and ship" part gives each stage a model by its role. It caps a whole run. Then it runs the factory
+over all seven issues.

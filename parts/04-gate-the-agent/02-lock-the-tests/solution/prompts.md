@@ -69,7 +69,7 @@ Say go and I'll write it.
   edit still happens.
 - It checks `FACTORY_STAGE` first, so the spec stage can still write tests.
 - `bun test` and `cat` on a test file stay allowed. Reading a test is not changing it.
-- Claude Code names the limit itself: a pattern match can be dodged. That is why Part 4 has a Stop hook and
+- Claude Code names the limit itself: a pattern match can be dodged. That is why the "Gate the agent" part has a Stop hook and
   a required check after this wall.
 
 ## Prompt 2: approve

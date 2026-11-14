@@ -118,15 +118,16 @@ Each step has a challenge, a Done when list, and one command: `bun run verify <s
 a job you give Claude Code, with the prompt to type. The command reads the files Claude Code made and
 prints PASS or FAIL, with what to try next. The checks read your files, never your chat.
 
-| Part                                                               | Answers                              | Steps                                                                                             | Minutes |
-| ------------------------------------------------------------------ | ------------------------------------ | ------------------------------------------------------------------------------------------------- | ------- |
-| [0. Meet the library](parts/00-meet-the-library/README.md)         | what are we building                 | `meet-the-library`                                                                                | 15      |
-| [1. Write the work order](parts/01-write-the-work-order/README.md) | does it know what done looks like    | `write-the-issue-form`, `size-the-backlog`, `write-the-spec`                                      | 50      |
-| [2. Teach the repo](parts/02-teach-the-repo/README.md)             | what must it know, what may it touch | `trim-the-agents-file`, `add-a-path-rule`, `package-the-triage-skill`                             | 45      |
-| [3. Split the roles](parts/03-split-the-roles/README.md)           | can it check its own work            | `split-planner-and-builder`, `isolate-the-builder`, `build-the-reviewer`, `catch-the-planted-bug` | 65      |
-| [4. Gate the agent](parts/04-gate-the-agent/README.md)             | who has the last word                | `deny-the-shortcuts`, `lock-the-tests`, `demand-proof-before-stop`, `protect-the-main-branch`     | 60      |
-| [5. Run it unattended](parts/05-run-it-unattended/README.md)       | what stops it, where the result goes | `run-one-issue-headless`, `run-from-a-label`, `run-two-at-once` (elective)                        | 65      |
-| [6. Price and ship](parts/06-price-and-ship/README.md)             | what it cost, was it worth it        | `route-models-by-stage`, `cap-the-spend`, `ship-the-factory`                                      | 50      |
+| Part                                                                 | Answers                              | Steps                                                                                             | Minutes |
+| -------------------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------- | ------- |
+| [Meet the library](parts/00-meet-the-library/README.md)              | what are we building                 | `meet-the-library`                                                                                | 15      |
+| [Write the work order](parts/01-write-the-work-order/README.md)      | does it know what done looks like    | `write-the-issue-form`, `size-the-backlog`, `write-the-spec`                                      | 50      |
+| [Teach the repo](parts/02-teach-the-repo/README.md)                  | what must it know, what may it touch | `trim-the-agents-file`, `add-a-path-rule`, `package-the-triage-skill`                             | 45      |
+| [Split the roles](parts/03-split-the-roles/README.md)                | can it check its own work            | `split-planner-and-builder`, `isolate-the-builder`, `build-the-reviewer`, `catch-the-planted-bug` | 65      |
+| [Gate the agent](parts/04-gate-the-agent/README.md)                  | who has the last word                | `deny-the-shortcuts`, `lock-the-tests`, `demand-proof-before-stop`, `protect-the-main-branch`     | 60      |
+| [Run it unattended](parts/05-run-it-unattended/README.md)            | what stops it, where the result goes | `run-one-issue-headless`, `run-from-a-label`, `run-two-at-once` (elective)                        | 65      |
+| [Price and ship](parts/06-price-and-ship/README.md)                  | what it cost, was it worth it        | `route-models-by-stage`, `cap-the-spend`, `ship-the-factory`                                      | 50      |
+| [Track agent cost with LiteLLM](parts/07-track-agent-cost/README.md) | can anything go around my cap        | `track-agent-cost` (optional, homework)                                                           | 15      |
 
 The same parts run as one long session, four shorter sessions, or a six-session cohort: see `schedules.toml`.
 The build map for every part is in [PARTS.md](PARTS.md).
@@ -167,7 +168,7 @@ About 65 minutes of reading in all:
 1. [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices), Anthropic. Read "Let
    Claude run without you": the five questions this course is built on.
 2. [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents),
-   Anthropic. The pass list Claude Code writes for you in Part 1.
+   Anthropic. The pass list Claude Code writes for you in the "Write the work order" part.
 3. [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps),
    Anthropic. Why the reviewer is a separate agent that must show evidence.
 
