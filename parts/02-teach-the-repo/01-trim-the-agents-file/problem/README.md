@@ -44,6 +44,8 @@ Read AGENTS.md and CLAUDE.md. The app they describe is in ../../../../world/app.
 Read the plan. Check that it keeps `bun run gate` and `src/auth/`. Then tell it to go ahead, and to
 run the check.
 
+Then do the [session moves](SESSION-MOVES.md).
+
 ## Done when
 
 - `AGENTS.md` is under 80 lines.
@@ -52,6 +54,7 @@ run the check.
 - Protected paths names `src/auth/`.
 - No line only says where a folder is.
 - `CLAUDE.md` holds the line `@AGENTS.md` and nothing it copies.
+- Your saved session shows the session moves.
 
 Ask Claude Code:
 
@@ -63,7 +66,7 @@ Run `bun run verify trim-the-agents-file` and tell me what it printed. Do not ch
 bun run verify trim-the-agents-file
 ```
 
-Expect: `Done. All 8 rules pass.`
+Expect: `Done. All 9 rules pass.`
 
 ![The check passing on the trimmed files](../images/expected.png)
 
@@ -74,8 +77,6 @@ Expect: `Done. All 8 rules pass.`
 | `FAIL  no line in AGENTS.md only says where ...` | "Delete every line that says what a folder holds."         |
 | `FAIL  Protected paths names src/auth/`          | "Keep a Protected paths heading. src/auth/ goes under it." |
 | `FAIL  CLAUDE.md imports AGENTS.md ...`          | "Make CLAUDE.md one line: @AGENTS.md."                     |
-
-The prompts and the plan from a real run are in `../solution/prompts.md`.
 
 ## Words you will use
 

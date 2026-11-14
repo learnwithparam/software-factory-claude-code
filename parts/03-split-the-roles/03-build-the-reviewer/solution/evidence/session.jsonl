@@ -1,0 +1,2 @@
+{"type": "user", "message": {"role": "user", "content": "<command-name>/code-review</command-name>\n<command-message>code-review</command-message>"}}
+{"type": "assistant", "message": {"role": "assistant", "content": [{"type": "tool_use", "name": "Agent", "input": {"subagent_type": "reviewer", "prompt": "Review the diff for issue 3."}}]}}

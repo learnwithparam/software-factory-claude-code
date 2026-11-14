@@ -1,0 +1,4 @@
+{"type": "user", "message": {"role": "user", "content": "Size every issue in the backlog and write factory/backlog.json."}}
+{"type": "user", "message": {"role": "user", "content": "[Request interrupted by user]"}}
+{"type": "user", "message": {"role": "user", "content": "Only size issues 1 to 3 first."}}
+{"type": "user", "message": {"role": "user", "content": "<command-name>/rewind</command-name>\n<command-message>rewind</command-message>"}}

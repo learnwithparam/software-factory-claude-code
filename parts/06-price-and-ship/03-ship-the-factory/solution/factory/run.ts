@@ -94,7 +94,7 @@ const PLAN_TOOLS = `${READ_TOOLS},Write(specs/**)`;
 
 const STAGES: Record<StageName, Stage> = {
   triage: { name: "triage", tools: READ_TOOLS, maxTurns: 12, budget: 0.5, schema: TRIAGE_SCHEMA },
-  spec: { name: "spec", tools: WORK_TOOLS, maxTurns: 30, budget: 2 },
+  spec: { name: "spec", tools: WORK_TOOLS, maxTurns: 14, budget: 2 },
   plan: { name: "plan", tools: PLAN_TOOLS, maxTurns: 20, budget: 1.5 },
   build: { name: "build", tools: WORK_TOOLS, maxTurns: 40, budget: 3 },
   review: {

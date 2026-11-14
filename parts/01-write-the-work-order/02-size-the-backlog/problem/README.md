@@ -46,6 +46,8 @@ Read every issue in ../../../../world/backlog and the app in ../../../../world/a
 
 Argue with any call you disagree with. Then read the file.
 
+Then do the [session moves](SESSION-MOVES.md).
+
 ## Done when
 
 - `factory/backlog.json` is a list with exactly one entry for each issue, 1 to 7.
@@ -54,6 +56,7 @@ Argue with any call you disagree with. Then read the file.
 - Issue 7 is not ready as one piece.
 - Every ready issue has an outcome and 1 to 5 files that exist in the app.
 - No ready issue touches a protected path.
+- Your saved session shows the session moves.
 
 Ask Claude Code:
 
@@ -65,7 +68,7 @@ Run `bun run verify size-the-backlog` and tell me what it printed. Do not change
 bun run verify size-the-backlog
 ```
 
-Expect: `Done. All 8 rules pass.`
+Expect: `Done. All 10 rules pass.`
 
 ![The check passing on a sized backlog](../images/expected.png)
 
@@ -77,8 +80,6 @@ Expect: `Done. All 8 rules pass.`
 | `FAIL every issue ... has exactly one entry`        | "Give each issue from 1 to 7 exactly one entry."               |
 | `FAIL every file a ready issue names is in the app` | "Write paths as src/fees/split.ts, not world/app/src/..."      |
 | `FAIL issue 6 is refused ...`                       | "Refuse issue 6, and name the protected folder in the reason." |
-
-The prompts and plan from a real run are in `../solution/prompts.md`.
 
 ## Words you will use
 

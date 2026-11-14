@@ -56,6 +56,16 @@ Claude Code writes every file in this table. You tell it what you want in plain 
 approve it. Each step's `problem/` folder is where you start `claude`. Each step's `solution/prompts.md` shows
 the prompts, the plan and the reply from a real run.
 
+## Watch and read
+
+| Kind  | Title                             | Made by                | Why                                                                   | Link                                           |
+| ----- | --------------------------------- | ---------------------- | --------------------------------------------------------------------- | ---------------------------------------------- |
+| video | Claude Code best practices        | Cal Rueb, Anthropic    | An Anthropic engineer shows how the team uses Claude Code day to day. | https://www.youtube.com/watch?v=gv0WHhKelSE    |
+| video | How We Build Effective Agents     | Barry Zhang, Anthropic | Says when to use an agent and when a simpler flow is enough.          | https://www.youtube.com/watch?v=D7_ipDqhtwk    |
+| read  | How Claude remembers your project | Anthropic docs         | The official rules for memory files and imports.                      | https://code.claude.com/docs/en/memory         |
+| read  | Extend Claude with skills         | Anthropic docs         | How a skill is packaged and when it loads.                            | https://code.claude.com/docs/en/skills         |
+| read  | Best practices for Claude Code    | Anthropic docs         | Why a short memory file works better than a long one.                 | https://code.claude.com/docs/en/best-practices |
+
 ## Walkthrough
 
 You can ask Claude Code to run any check below. Type:

@@ -19,7 +19,7 @@ CLAUDE.md asks you never to force push, never to skip git hooks with --no-verify
 
 ## The plan Claude Code showed
 
-This is the real plan from a run with Claude Code 2.1.323 in plan mode.
+This is the real plan from a run with Claude Code in plan mode.
 
 ````text
 Here's my plan. I haven't changed anything yet. The only file I'll edit is `.claude/settings.json`. The `allow` list stays exactly as it is, and I'll add this `deny` list next to it:

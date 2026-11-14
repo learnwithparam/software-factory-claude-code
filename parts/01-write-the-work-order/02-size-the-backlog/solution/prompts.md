@@ -18,7 +18,7 @@ Read every issue in ../../../../world/backlog and the app in ../../../../world/a
 
 ## The plan Claude Code showed
 
-This is the real plan from a run with Claude Code 2.1.323 in plan mode.
+This is the real plan from a run with Claude Code in plan mode.
 
 ```text
 I've read all seven issues, the coordinator's answers for issue 5, and the app source. Here is the plan; I haven't written `factory/backlog.json` yet.

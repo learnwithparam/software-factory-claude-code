@@ -1,7 +1,7 @@
 # How Claude Code got here: run one issue headless
 
 Claude Code wrote `factory/run.ts`. You read its plan, steer it, and run the factory. The files in this folder
-are what it wrote in a real run with Claude Code 2.1.323. `runs/1/` holds the real live run of issue 1:
+are what it wrote in a real run with Claude Code. `runs/1/` holds the real live run of issue 1:
 its result, its commands, its transcripts and the console it printed.
 
 Start Claude Code in this step's `problem/` folder:

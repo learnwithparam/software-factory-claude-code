@@ -37,6 +37,8 @@ CLAUDE.md asks you never to force push, never to skip git hooks with --no-verify
 Read the plan. Check that `-f` after the branch name is caught too. Then tell it to go ahead. Claude Code asks
 before it edits its own settings. Approve that edit.
 
+Then do the [session moves](SESSION-MOVES.md).
+
 ## Done when
 
 - `.claude/settings.json` has a `permissions.deny` list.
@@ -44,6 +46,7 @@ before it edits its own settings. Approve that edit.
 - `--no-verify` is denied on `git commit` and on `git push`.
 - Reading `.env` and `.env.local` is denied.
 - `bun test`, `bun run gate`, `git diff`, a normal `git commit` and reading `src/` are not denied.
+- Your saved session shows the session moves.
 
 Ask Claude Code:
 
@@ -55,7 +58,7 @@ Run `bun run verify deny-the-shortcuts` and tell me what it printed. Do not chan
 bun run verify deny-the-shortcuts
 ```
 
-Expect: `Done. All 5 rules pass.`
+Expect: `Done. All 6 rules pass.`
 
 ## If you get stuck
 

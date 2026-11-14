@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": ["Bash(bun test *)", "Bash(bun run gate)", "Bash(git diff *)", "Bash(git status)"],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push * --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push * -f*)",
+      "Bash(git commit *--no-verify*)",
+      "Bash(git push *--no-verify*)",
+      "Bash(git commit -n*)",
+      "Bash(git commit * -n*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)"
+    ]
+  }
+}

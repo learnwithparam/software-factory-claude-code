@@ -1,0 +1,2 @@
+{"type": "user", "message": {"role": "user", "content": "<command-name>/schedule</command-name>\n<command-message>schedule</command-message>"}}
+{"type": "user", "message": {"role": "user", "content": "/schedule every weekday at 9, run the factory on issues labelled factory:ready"}}

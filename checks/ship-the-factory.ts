@@ -71,6 +71,56 @@ function retroNamesTheCost(folder: string): boolean {
   return /\$\d/.test(retroSection(folder, "what it cost"));
 }
 
+// OpenTelemetry (OTel) is the open standard Claude Code uses to report cost and tokens.
+function telemetryIsOn(folder: string): boolean {
+  const lines = (read(join(folder, "factory", "ci.env")) ?? "").split("\n");
+  const settings = new Map<string, string>();
+  for (const line of lines) {
+    const found = line.match(/^([A-Z_]+)=(.*)$/);
+    if (found) settings.set(found[1], found[2].trim());
+  }
+  const switchedOn = settings.get("CLAUDE_CODE_ENABLE_TELEMETRY") === "1";
+  const exporter = settings.get("OTEL_METRICS_EXPORTER") ?? "";
+  const secretInside = [...settings.keys()].some((name) => /HEADERS|TOKEN|KEY/.test(name));
+  return switchedOn && ["console", "otlp"].includes(exporter) && !secretInside;
+}
+
+function dollarAmounts(text: string): number[] {
+  return [...text.matchAll(/\$(\d+(?:\.\d+)?)/g)].map((found) => Number(found[1]));
+}
+
+// The rerun is a second set of seven live runs in rerun/runs/. Its transcripts must add up
+// to its costs, exactly like the first set.
+function rerunTotal(folder: string): number {
+  const costs = ISSUES.map((issue) => {
+    const live = liveRun(join(folder, "rerun"), issue);
+    return live.result !== null && live.costMatches ? live.result.cost_usd : Number.NaN;
+  });
+  return costs.reduce((sum, cost) => sum + cost, 0);
+}
+
+function rerunDiffers(folder: string): boolean {
+  return ISSUES.some((issue) => {
+    const first = resultFor(folder, issue)?.cost_usd;
+    const second = liveRun(join(folder, "rerun"), issue).result?.cost_usd;
+    return first !== undefined && second !== undefined && first !== second;
+  });
+}
+
+// The "before" figure is the real total of the first seven runs. The "after" figure is the real
+// total of the rerun, which has its own transcripts. The section names the setting you changed.
+function beforeAndAfterAreHonest(folder: string): boolean {
+  const section = retroSection(folder, "before and after");
+  const amounts = dollarAmounts(section);
+  const before = totalCost(folder);
+  const after = rerunTotal(folder);
+  const hasBefore = amounts.some((amount) => Math.abs(amount - before) < 0.01);
+  const hasAfter = amounts.some((amount) => Math.abs(amount - after) < 0.01);
+  const namesChange = /(--max-|max-turns|budget|model|prompt|setting|role)/i.test(section);
+  const real = Number.isFinite(before) && Number.isFinite(after) && rerunDiffers(folder);
+  return real && hasBefore && hasAfter && namesChange;
+}
+
 export default [
   {
     says: "issues 1 to 7 each have a live run, and each cost matches its transcripts",
@@ -116,5 +166,19 @@ export default [
     tryNext:
       "write a few sentences under each heading: a gate that fired, what it cost (with $), " +
       "and what you change next",
+  },
+  {
+    says: "factory/ci.env turns on telemetry (OTel) with no secret in it",
+    test: telemetryIsOn,
+    tryNext:
+      "ask Claude Code to add CLAUDE_CODE_ENABLE_TELEMETRY=1 and OTEL_METRICS_EXPORTER=console " +
+      "to factory/ci.env, and to keep any header token out of the file",
+  },
+  {
+    says: "the retro names one changed setting, the real total before and the rerun total",
+    test: beforeAndAfterAreHonest,
+    tryNext:
+      "change one setting, run the seven issues again with FACTORY_RUNS=rerun/runs, then write " +
+      "the old total, the rerun total and the setting you changed under Before and after",
   },
 ] satisfies Rule[];

@@ -19,7 +19,7 @@ Make a third subagent, .claude/agents/reviewer.md. It reviews one change with fr
 
 ## The plan Claude Code showed
 
-This is the real plan from a run with Claude Code 2.1.323 in plan mode.
+This is the real plan from a run with Claude Code in plan mode.
 
 ````text
 Here's my plan. I haven't written anything yet.

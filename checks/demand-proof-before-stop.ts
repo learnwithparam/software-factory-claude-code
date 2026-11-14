@@ -11,6 +11,7 @@ import type { Rule } from "../scripts/verify";
 import { treeHash } from "../world/gate";
 import { json } from "./lib/files";
 import { hooksFor, runHook } from "./lib/run";
+import { ranCommand, readSession } from "./lib/session";
 import { APP, ROOT, WORLD } from "./lib/world";
 
 const RECORDED_BUILD = join(
@@ -120,5 +121,10 @@ export default [
       stopHooks(folder).length > 0 &&
       !keepsWorking(folder, { record: null, stage: "review", alreadyContinued: false }),
     tryNext: "ask Claude Code to check only when FACTORY_STAGE is build",
+  },
+  {
+    says: "your saved session shows you set a goal with /goal",
+    test: (folder) => ranCommand(readSession(folder), "goal"),
+    tryNext: "type /goal with a stop condition, such as bun run gate passes, then save the session",
   },
 ] satisfies Rule[];

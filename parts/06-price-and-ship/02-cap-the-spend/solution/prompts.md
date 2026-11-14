@@ -1,7 +1,7 @@
 # How Claude Code got here: cap the spend
 
 Claude Code changed `factory/run.ts`, emptied the token out of `factory/ci.env`, and added `.env.example`.
-The files in this folder are what it wrote in a real run with Claude Code 2.1.323. The `.env` it made holds
+The files in this folder are what it wrote in a real run with Claude Code. The `.env` it made holds
 the token, so git ignores it and it is not here.
 
 Start Claude Code in this step's `problem/` folder:

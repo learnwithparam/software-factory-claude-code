@@ -1,3 +1,3 @@
 # Issue 5: Chainsaw rule
 
-Only people who did the induction should get the chainsaw.
+Only people who passed the induction may use the chainsaw.

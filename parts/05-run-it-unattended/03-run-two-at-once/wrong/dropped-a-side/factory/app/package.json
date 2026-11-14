@@ -1,0 +1,8 @@
+{
+  "name": "northside-lending-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "gate": "bun .factory/gate.ts . --record .factory/gate.json"
+  }
+}

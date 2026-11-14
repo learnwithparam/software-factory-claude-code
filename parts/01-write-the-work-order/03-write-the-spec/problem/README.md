@@ -47,6 +47,8 @@ Read specs/3/ as a worked example. Then read issue 5 in ../../../../world/backlo
 
 Read the plan. Steer it before it writes.
 
+Then do the [session moves](SESSION-MOVES.md).
+
 ## Done when
 
 - SPEC.md has the five sections, each with text.
@@ -55,6 +57,7 @@ Read the plan. Steer it before it writes.
 - The requirements cover class C tools, the induction, and the reason the member is told.
 - `passes.json` has exactly one entry per requirement id.
 - Every entry starts with `"passes": false` and names a test file under `tests/` and a test name.
+- Your saved session shows the session moves.
 
 Ask Claude Code:
 
@@ -66,7 +69,7 @@ Run `bun run verify write-the-spec` and tell me what it printed. Do not change a
 bun run verify write-the-spec
 ```
 
-Expect: `Done. All 7 rules pass.`
+Expect: `Done. All 8 rules pass.`
 
 ## If you get stuck
 
@@ -77,13 +80,9 @@ Expect: `Done. All 7 rules pass.`
 | `FAIL every requirement opens with an EARS keyword` | "Rewrite each requirement as: When ..., the system shall ..."             |
 | `FAIL every pass entry starts with passes: false`   | "Nothing is built yet. Set passes to false in every entry."               |
 
-The prompts and plan from a real run are in `../solution/prompts.md`.
-
-EARS comes from Rolls-Royce: https://alistairmavin.com/ears/
-
 ## Words you will use
 
 - **Spec**: one page that says what done means for one issue, written before any code.
-- **EARS**: Easy Approach to Requirements Syntax.
+- **EARS**: Easy Approach to Requirements Syntax, from Rolls-Royce.
 - **Pass list**: `passes.json`, one entry per requirement, each starting false. The factory may only flip `passes`.
 - **Must not change**: behaviour the change must leave exactly as it was. A reviewer checks it.

@@ -33,7 +33,7 @@ Run 3 on the planted diff replied:
 - The file is `src/loans/reserve.ts` and the line is inside the changed hunk.
 - The evidence is an input. For example, you can write it as a test: a booking from 2026-03-13 to
   2026-03-15 and one from 2026-03-01 to 2026-03-13 must clash.
-- All three clean runs replied `{"verdict": "pass", "findings": []}`.
+- All three clean runs replied with a pass verdict and no findings.
 
 ## When the reviewer misses it
 

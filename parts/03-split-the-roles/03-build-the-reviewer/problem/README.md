@@ -47,12 +47,15 @@ mkdir -p runs/review-clean && for run in 1 2 3; do claude -p "Review the change 
 
 Expect: no output. `runs/review-clean/` then holds three `.jsonl` files.
 
+Then do the [session moves](SESSION-MOVES.md).
+
 ## Done when
 
 - `reviewer.md` lists only reading tools and sets a `model`.
 - Its prompt sets the JSON reply, skips style, and blocks only with evidence.
 - Three real runs ran as the reviewer.
 - At least two reply with `"verdict": "pass"`.
+- Your saved session shows the session moves.
 
 Ask Claude Code:
 
@@ -64,7 +67,7 @@ Run `bun run verify build-the-reviewer` and tell me what it printed. Do not chan
 bun run verify build-the-reviewer
 ```
 
-Expect: `Done. All 7 rules pass.`
+Expect: `Done. All 8 rules pass.`
 
 ## If you get stuck
 
@@ -73,8 +76,6 @@ Expect: `Done. All 7 rules pass.`
 | `FAIL  reviewer.md lists its tools ...`     | Tell Claude Code: "Set tools: Read, Grep, Glob in reviewer.md."  |
 | `FAIL  the prompt allows a block only ...`  | Tell Claude Code: "Block only with the input that breaks it."    |
 | `FAIL  at least 2 runs reply with JSON ...` | Read a run that blocked. Tell Claude Code a guess is no finding. |
-
-The prompts and the plan from a real run are in `../solution/prompts.md`.
 
 ## Words you will use
 

@@ -11,6 +11,7 @@ import {
   readsLikeOneStage,
 } from "../parts/05-run-it-unattended/factory-checks";
 import type { Rule } from "../scripts/verify";
+import { ranCommand, readSession } from "./lib/session";
 
 const STAGES_FOR_A_READY_ISSUE = ["triage", "spec", "build", "review"];
 const PERMISSION = /--permission-mode\s+\S+|--allowedTools\s+\S+/;
@@ -139,5 +140,19 @@ export default [
     tryNext:
       "run bun run factory 1 --json with Claude Code signed in, then read runs/1/result.json; " +
       "cost_usd must be the sum of total_cost_usd in runs/1/transcripts",
+  },
+  {
+    says: "your saved session shows you set a repeat with /loop",
+    test: (folder) => ranCommand(readSession(folder), "loop"),
+    tryNext: "type /loop with a short interval and the dry-run command, then save the session",
+  },
+  {
+    says: "every claude -p call sets a permission mode, not only a tool list",
+    test: (folder) => {
+      const lines = claudeLines(issueOneDryRun(folder));
+      return lines.length > 0 && lines.every((line) => /--permission-mode\s+\S+/.test(line));
+    },
+    tryNext:
+      "add --permission-mode dontAsk or --permission-mode acceptEdits to each claude -p call",
   },
 ] satisfies Rule[];

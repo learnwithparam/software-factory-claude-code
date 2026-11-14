@@ -7,6 +7,7 @@ import type { Rule } from "../scripts/verify";
 import { json, nonEmptyLines, read } from "./lib/files";
 import { parseResult } from "./lib/result";
 import { runCommand } from "./lib/run";
+import { attachedImage, mentionedFile, readSession, usedPlanMode } from "./lib/session";
 import { ROOT } from "./lib/world";
 
 // bun run finished 2 writes runs/finished-2/ at the repo root, live or replayed.
@@ -69,5 +70,21 @@ export default [
     tryNext:
       "ask Claude Code to add your reason after the issue number: " +
       "what about that issue would fool an agent working alone",
+  },
+  {
+    says: "your saved session started in plan mode",
+    test: (folder) => usedPlanMode(readSession(folder)),
+    tryNext:
+      "start a session, press Shift+Tab until plan mode shows, ask your question, then save it",
+  },
+  {
+    says: "your saved session points Claude Code at a file with @",
+    test: (folder) => mentionedFile(readSession(folder)),
+    tryNext: "type @ and a file name in a prompt, such as @world/backlog/2-split-loses-a-cent.md",
+  },
+  {
+    says: "your saved session shows a screenshot you attached",
+    test: (folder) => attachedImage(readSession(folder)),
+    tryNext: "drag a screenshot into the prompt, ask what it shows, then save the session again",
   },
 ] satisfies Rule[];

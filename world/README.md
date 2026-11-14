@@ -44,7 +44,7 @@ Expect: `world: reset to the seed.` and the same counts. It also clears `runs/` 
 bun run gate
 ```
 
-Expect: `gate: pass, 10 tests` and a tree hash.
+Expect: a gate line that says pass with the test count, then a tree hash.
 
 ```bash
 bun run desk split D-301

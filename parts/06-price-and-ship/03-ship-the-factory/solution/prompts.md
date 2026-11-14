@@ -1,7 +1,7 @@
 # How Claude Code got here: ship the factory
 
 You run the factory on all seven issues. Then Claude Code reads the runs with you and writes the retro. The
-runs in `runs/` are real live runs made with Claude Code 2.1.323, and `notes/retro.md` is what Claude Code
+runs in `runs/` are real live runs made with Claude Code, and `notes/retro.md` is what Claude Code
 wrote from them.
 
 ## Run the whole backlog

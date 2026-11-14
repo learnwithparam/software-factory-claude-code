@@ -1,7 +1,7 @@
 # How Claude Code got here: run two at once
 
 You ask Claude Code what two runs could share before you start them. Then you start both yourself. The answer
-below is from a real run with Claude Code 2.1.323. `runs/3/` and `runs/5/` hold the two real live runs.
+below is from a real run with Claude Code. `runs/3/` and `runs/5/` hold the two real live runs.
 
 Start Claude Code in this step's `problem/` folder:
 

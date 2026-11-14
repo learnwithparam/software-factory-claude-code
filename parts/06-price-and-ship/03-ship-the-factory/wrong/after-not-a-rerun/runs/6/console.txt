@@ -1,0 +1,6 @@
+$ bun factory/run.ts "6" --json
+factory: issue 6: Let desk volunteers waive any fee (live, cap $10)
+factory: triage: claude -p with fast: haiku, up to $0.5
+Ignoring 5 permissions.allow entries from .claude/settings.json: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["/home/user/software-factory-claude-code/parts/06-price-and-ship/03-ship-the-factory/solution/runs/6/repo"].hasTrustDialogAccepted: true in /root/.claude.json.
+factory: triage: success, 3 turns, $0.00
+factory: issue 6: refused, runs/6/result.json

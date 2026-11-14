@@ -3,6 +3,7 @@
 import { join } from "node:path";
 import type { Rule } from "../scripts/verify";
 import { nonEmptyLines, read, sections } from "./lib/files";
+import { ranCommand, readSession } from "./lib/session";
 import { appFiles } from "./lib/world";
 
 const MOST_LINES = 80;
@@ -121,5 +122,11 @@ export default [
     tryNext:
       "ask Claude Code to remove everything from CLAUDE.md except the @AGENTS.md import, " +
       "so the rules live in one place",
+  },
+  {
+    says: "your saved session shows you ran /init before you trimmed the file",
+    test: (folder) => ranCommand(readSession(folder), "init"),
+    tryNext:
+      "type /init in a fresh copy of the repo, then trim what it wrote, then save the session",
   },
 ] satisfies Rule[];

@@ -19,7 +19,7 @@ Make the builder work in its own git worktree, so its edits never touch this che
 
 ## The plan Claude Code showed
 
-This is the real plan from a run with Claude Code 2.1.323 in plan mode.
+This is the real plan from a run with Claude Code in plan mode.
 
 ```text
 Nothing is changed yet. The plan is saved at `/root/.claude/plans/make-the-builder-work-eager-simon.md`. All three changes go in this folder, and nothing in `src/auth/` is touched.

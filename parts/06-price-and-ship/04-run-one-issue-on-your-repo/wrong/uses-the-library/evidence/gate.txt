@@ -1,0 +1,5 @@
+$ bun test
+12 pass
+0 fail
+$ bun run lint
+No problems found.

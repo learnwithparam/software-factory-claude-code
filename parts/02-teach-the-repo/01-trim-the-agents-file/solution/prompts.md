@@ -19,7 +19,7 @@ Read AGENTS.md and CLAUDE.md. The app they describe is in ../../../../world/app.
 
 ## The plan Claude Code showed
 
-This is the real plan from a run with Claude Code 2.1.323 in plan mode.
+This is the real plan from a run with Claude Code in plan mode.
 
 ````text
 I haven't changed anything yet. Here's the plan.

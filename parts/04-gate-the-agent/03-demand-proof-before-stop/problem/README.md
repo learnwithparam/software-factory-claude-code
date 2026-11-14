@@ -40,12 +40,15 @@ Write a Stop hook at .claude/hooks/stop-gate.ts and register it under hooks.Stop
 Read the plan. Check that it hashes like `world/gate.ts`. Then tell it to go ahead, and approve
 the two writes under `.claude/`.
 
+Then do the [session moves](SESSION-MOVES.md).
+
 ## Done when
 
 - `settings.json` registers a Stop hook.
 - In the build stage it blocks with a reason when the gate record is missing, failed, or for older code.
 - It allows the stop on a fresh pass, or when `stop_hook_active` is true.
 - Outside the build stage it allows the stop.
+- Your saved session shows the session moves.
 
 Ask Claude Code:
 
@@ -57,7 +60,7 @@ Run `bun run verify demand-proof-before-stop` and tell me what it printed. Do no
 bun run verify demand-proof-before-stop
 ```
 
-Expect: `Done. All 7 rules pass.`
+Expect: `Done. All 8 rules pass.`
 
 ## If you get stuck
 
@@ -67,11 +70,8 @@ Expect: `Done. All 7 rules pass.`
 | `FAIL  ... for an older version of the code ...` | "Compare the tree in gate.json with a fresh hash." |
 | `FAIL  when stop_hook_active is true ...`        | "Allow the stop when stop_hook_active is true."    |
 
-A real plan is in `../solution/prompts.md`.
-
 ## Words you will use
 
 - **Stop hook**: a command Claude Code runs when it is about to stop.
 - **Gate record**: `.factory/gate.json`, the result of the last `bun run gate`.
 - **Tree hash**: a short code made from every file in `src/` and `tests/`. Any edit changes it.
-- **stop_hook_active**: true when a Stop hook already sent Claude Code back once.

@@ -1,0 +1,2 @@
+{"type": "user", "message": {"role": "user", "content": "<command-name>/init</command-name>\n<command-message>init</command-message>"}}
+{"type": "user", "message": {"role": "user", "content": "Trim AGENTS.md to commands, protected paths and done when. Remove any line that only says where a folder is."}}

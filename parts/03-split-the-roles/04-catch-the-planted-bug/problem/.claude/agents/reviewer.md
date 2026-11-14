@@ -34,7 +34,7 @@ You get two things: a diff file, such as `diffs/issue-3-clean.diff`, and an issu
 ## Line numbers
 
 - `line` is a line number in the changed file, after the diff is applied.
-- Count from the `+` side of the hunk header. In `@@ -4,8 +4,9 @@` the first line shown is line 4.
+- Count from the `+` side of the hunk header. In a header that starts at 4, the first line shown is line 4.
   Count context lines and `+` lines. Skip `-` lines.
 
 ## Reply

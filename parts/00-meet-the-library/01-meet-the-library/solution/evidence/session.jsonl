@@ -1,0 +1,3 @@
+{"type": "user", "message": {"role": "user", "content": "Read the seven issues. Which one is a factory most likely to get wrong?"}, "permissionMode": "plan"}
+{"type": "user", "message": {"role": "user", "content": "Look at @world/backlog/2-split-loses-a-cent.md and tell me why it is hard. Change nothing."}, "permissionMode": "plan"}
+{"type": "user", "permissionMode": "plan", "message": {"role": "user", "content": [{"type": "text", "text": "What does this screenshot show?"}, {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": "iVBORw0KGgo="}}]}}
