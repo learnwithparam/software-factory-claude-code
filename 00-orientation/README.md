@@ -5,7 +5,7 @@ see the goal. Then you pass the first step, `meet-the-library`.
 
 You do the work of this course in the real Claude Code. You can use it in three places:
 
-- the `claude` CLI in a terminal (the commands below use this);
+- the `claude` CLI in a terminal, the window where you type commands (the commands below use this);
 - Claude Code in VS Code or a JetBrains editor;
 - the Code tab of Claude Desktop.
 
@@ -41,6 +41,22 @@ claude auth status
 ```
 
 Expect: JSON with `"loggedIn": true`.
+
+Get the course folder, if you do not have it yet, and open it in your terminal:
+
+```bash
+git clone https://github.com/learnwithparam/software-factory-claude-code && cd software-factory-claude-code
+```
+
+Expect: your prompt is now inside the `software-factory-claude-code` folder.
+
+Install Bun, which runs the course scripts, then open a new terminal in the same folder:
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+Expect: the installer ends with no error, and `bun --version` prints 1.4 or newer.
 
 ```bash
 bun install
@@ -114,9 +130,17 @@ These are the targets your own factory must meet at the end of the course.
 
 ## 5. Pass the first step
 
+The [ways of working](ways-of-working.md) page lists the Claude Code techniques the course teaches.
+
 Open [the first step](../parts/00-meet-the-library/01-meet-the-library/problem/README.md). Follow its
 prompts: Claude Code reads the issues, you choose one, and Claude Code saves your line in its
-`notes/goal.md`. Then run:
+`notes/goal.md`. Then ask Claude Code to check your work. Type:
+
+```text
+Run `bun run verify meet-the-library` and tell me what it printed. Do not change anything to make it pass.
+```
+
+The raw command is:
 
 ```bash
 bun run verify meet-the-library

@@ -44,6 +44,8 @@ elective and the optional 15 minute closing part).
 
 ## Rules for part sessions
 
+0. **New Claude Code techniques go on the page.** A step that teaches a technique adds it to
+   `00-orientation/ways-of-working.md` with a link to the step.
 1. **The step folder is the learner's workspace.** The learner opens `claude` inside `problem/` and writes
    `.claude/`, `factory/`, `specs/` and notes there. Checks take that folder as their only argument
    (`scripts/verify.ts` passes `problem/`, `solution/` or a `wrong/<mistake>/`).

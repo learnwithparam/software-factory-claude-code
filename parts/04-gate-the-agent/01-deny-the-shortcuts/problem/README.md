@@ -3,9 +3,9 @@
 ## The problem
 
 `CLAUDE.md` in this folder asks Claude Code never to force push, never to skip git hooks, and never to read
-`.env`. A request is followed nearly every time. A factory runs hundreds of times, so "nearly" is not enough.
+`.env`. A request is followed nearly every time. A factory runs hundreds of times.
 
-For example, when the gate fails late at night, `git commit --no-verify` skips the checks and the work looks
+For example, when the gate fails, `git commit --no-verify` skips the checks and the work looks
 done. A deny rule stops that call before the tool runs, every time, whatever the prompt says.
 
 ```mermaid
@@ -45,6 +45,12 @@ before it edits its own settings. Approve that edit.
 - Reading `.env` and `.env.local` is denied.
 - `bun test`, `bun run gate`, `git diff`, a normal `git commit` and reading `src/` are not denied.
 
+Ask Claude Code:
+
+```text
+Run `bun run verify deny-the-shortcuts` and tell me what it printed. Do not change anything to make it pass.
+```
+
 ```bash
 bun run verify deny-the-shortcuts
 ```
@@ -59,8 +65,7 @@ Expect: `Done. All 5 rules pass.`
 | `FAIL  --no-verify is denied ...`       | "Match --no-verify anywhere, with a * on each side."        |
 | `FAIL  everyday work is not denied ...` | "Deny only the shortcuts, not every git push or commit."    |
 
-The check decides each call the way Claude Code does: deny first, then ask, then allow. The rule syntax is on
-https://code.claude.com/docs/en/permissions. The prompts and the plan from a real run are in
+The rule syntax is on https://code.claude.com/docs/en/permissions. The prompts and the plan from a real run are in
 `../solution/prompts.md`.
 
 ## Words you will use

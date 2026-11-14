@@ -7,7 +7,7 @@ The research behind each rule is in the curriculum repo under `workshop-standard
 ## Shape
 
 ```
-README.md                run the finished system first, then how the course works
+README.md                a short Start here, then the finished system, then how the course works
 00-orientation/          setup, meet the world, see the goal; troubleshooting.md
 world/                   the business: its data, its system of record, its app
 parts/NN-<verb-thing>/   README.md: the problem, its cost, a Mermaid diagram

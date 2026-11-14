@@ -67,6 +67,14 @@ issues 3 and 5 cost $0.28 and $0.26. The dry run is free: `bun run factory 1 --d
 
 ## Walkthrough
 
+You can ask Claude Code to run any check below. Type:
+
+```text
+Run this command and tell me what it printed. Do not change anything to make it pass.
+```
+
+The raw commands are:
+
 Inside `parts/05-run-it-unattended/01-run-one-issue-headless/problem/`, after Claude Code wrote the runner:
 
 ```bash

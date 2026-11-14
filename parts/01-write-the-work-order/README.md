@@ -40,7 +40,17 @@ flowchart LR
 Each step's files go in that step's `problem/` folder. You start Claude Code there, give it the job, read its
 plan, and check what it wrote. Each step's `solution/prompts.md` shows the prompts from a real run.
 
+Asking for a plan first is one of the [ways of working](../../00-orientation/ways-of-working.md) you will reuse.
+
 ## Walkthrough
+
+You can ask Claude Code to run any check below. Type:
+
+```text
+Run this command and tell me what it printed. Do not change anything to make it pass.
+```
+
+The raw commands are:
 
 ```bash
 bun run verify write-the-issue-form

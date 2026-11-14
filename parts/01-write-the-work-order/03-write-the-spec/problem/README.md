@@ -5,7 +5,7 @@
 The factory has the coordinator's answers. It still needs lines a test can prove. Without them, the
 builder decides what done means.
 
-Anthropic's harness for long runs keeps a list where every feature starts as failing
+Anthropic's long-run harness keeps a list where every feature starts as failing
 (https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents). You make that list.
 
 ```mermaid
@@ -19,7 +19,7 @@ flowchart LR
 ## Your challenge
 
 Get Claude Code to write `specs/5/SPEC.md` and `specs/5/passes.json` (in this folder) for the chainsaw
-rule. A spec is one page that says what done means for one issue.
+rule. A spec says what done means for one issue.
 
 Each requirement is one EARS line. EARS is a fixed way to write a requirement: it opens with When, While,
 If, Where or "The system shall", and says `shall` once.
@@ -45,7 +45,7 @@ Type this prompt:
 Read specs/3/ as a worked example. Then read issue 5 in ../../../../world/backlog and the coordinator's answers in ../../../../world/backlog/answers/5.json. Write specs/5/SPEC.md in the same shape as specs/3/SPEC.md. Write each requirement as one EARS line that starts with When, While, If, Where or The system shall, numbered R1, R2 and on. Then write specs/5/passes.json with one entry per requirement: id, requirement, test_file, test_name and passes set to false. Show me your plan before you write anything.
 ```
 
-Read the plan. Does each test file sit next to the code it tests? Steer it before it writes.
+Read the plan. Steer it before it writes.
 
 ## Done when
 
@@ -55,6 +55,12 @@ Read the plan. Does each test file sit next to the code it tests? Steer it befor
 - The requirements cover class C tools, the induction, and the reason the member is told.
 - `passes.json` has exactly one entry per requirement id.
 - Every entry starts with `"passes": false` and names a test file under `tests/` and a test name.
+
+Ask Claude Code:
+
+```text
+Run `bun run verify write-the-spec` and tell me what it printed. Do not change anything to make it pass.
+```
 
 ```bash
 bun run verify write-the-spec
@@ -73,7 +79,7 @@ Expect: `Done. All 7 rules pass.`
 
 The prompts and plan from a real run are in `../solution/prompts.md`.
 
-EARS was first described by Alistair Mavin and colleagues at Rolls-Royce: https://alistairmavin.com/ears/
+EARS comes from Rolls-Royce: https://alistairmavin.com/ears/
 
 ## Words you will use
 

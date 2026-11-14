@@ -2,8 +2,8 @@
 
 ## The problem
 
-The factory has a run cap, `FACTORY_CAP_USD`. But it only looks at money already spent. So a run with $1 left
-can still start the build stage, which may spend up to $3.
+The factory has a run cap, `FACTORY_CAP_USD`. But it only counts money already spent. So a run with $1 left
+can start the build stage, which may spend $3.
 
 For example, from the repo root, a dry run in this folder with a cap of $0.05 still ends in `draft_pr`:
 
@@ -12,10 +12,9 @@ cd parts/06-price-and-ship/02-cap-the-spend/problem
 FACTORY_CAP_USD=0.05 bun run factory 1 --dry-run --json
 ```
 
-Expect: `"state": "draft_pr"`. Every stage started, though one stage alone may spend $0.50.
+Expect: `"state": "draft_pr"`. All started.
 
-There is a second problem. `factory/ci.env` is a tracked file, and someone pasted a token into it. The token
-here is fake, but anyone who can read the repo can read a real one.
+Also `factory/ci.env` is tracked, and someone pasted a token into it. This one is fake, but anyone who can read the repo can read a real one.
 
 ```mermaid
 flowchart LR
@@ -38,7 +37,7 @@ claude --add-dir ../../../../world --add-dir ../../../../checks
 
 Expect: Claude Code opens and waits for your prompt.
 
-Press Shift+Tab until you see plan mode (Claude Code plans but changes no file), then type:
+Press Shift+Tab until you see plan mode ([ways of working](../../../../00-orientation/ways-of-working.md)), then type:
 
 ```text
 The run cap FACTORY_CAP_USD only looks at money already spent. Plan a change so that before each stage starts, run.ts adds that stage's --max-budget-usd to the spend so far. If the total would go over the cap, the stage does not start and the run ends as stopped_budget. A dry run follows the same rule. Keep the default cap at 10. Also, factory/ci.env is a tracked file with a token in it. Plan how to move the token into a git-ignored .env, and say what the build server should use instead. Write nothing yet.
@@ -63,9 +62,15 @@ Expect: the build line says `not started`, and the last line ends `stopped_budge
 ## Done when
 
 - With `FACTORY_CAP_USD=0.05`, a dry run of issue 1 ends `stopped_budget` before triage.
-- With `FACTORY_CAP_USD=2.5`, issue 2 stops, and no stage it started could spend over $2.50.
+- With `FACTORY_CAP_USD=2.5`, issue 2 stops, and no started stage could spend over $2.50.
 - With the default cap, a dry run of issue 1 still ends in `draft_pr`.
 - No file in the folder holds a token, apart from `.env`, and `.gitignore` keeps `.env` out of git.
+
+Ask Claude Code:
+
+```text
+Run `bun run verify cap-the-spend` and tell me what it printed. Do not change anything to make it pass.
+```
 
 ```bash
 bun run verify cap-the-spend

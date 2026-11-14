@@ -50,6 +50,12 @@ Read the plan. Check that no line in `.worktreeinclude` matches `.env`. Then tel
 
 The check makes the dry run with real git, in a copy of this folder. It never touches your checkout.
 
+Ask Claude Code:
+
+```text
+Run `bun run verify isolate-the-builder` and tell me what it printed. Do not change anything to make it pass.
+```
+
 ```bash
 bun run verify isolate-the-builder
 ```

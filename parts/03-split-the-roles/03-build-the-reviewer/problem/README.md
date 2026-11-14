@@ -54,6 +54,12 @@ Expect: no output. `runs/review-clean/` then holds three `.jsonl` files.
 - Three real runs ran as the reviewer.
 - At least two reply with `"verdict": "pass"`.
 
+Ask Claude Code:
+
+```text
+Run `bun run verify build-the-reviewer` and tell me what it printed. Do not change anything to make it pass.
+```
+
 ```bash
 bun run verify build-the-reviewer
 ```
