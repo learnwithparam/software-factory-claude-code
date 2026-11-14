@@ -9,11 +9,12 @@ Answers the question: **what did it cost, and was it worth it?**
 Nobody at the library can say what one pull request from the factory costs. Every stage runs on the same
 large model. Nothing stops a run that loops. The only number anyone has is a monthly bill.
 
-You fix this in three moves, each one a prompt to Claude Code.
+You fix this in four moves, each one a prompt to Claude Code.
 
 - Give each stage a model by its role. A role is a name for a kind of model: fast, smart or judge.
 - Put a cap on what one run may spend.
 - Run the factory over the whole backlog and score it.
+- Run it once on a repo you own.
 
 For example, here is what the real run of the whole backlog in this part cost, stage by stage, across all
 seven issues.
@@ -50,11 +51,12 @@ flowchart LR
   B & R --> L["result.json: roles_by_stage, cost_usd"] --> SC[bun run scorecard]
 ```
 
-| Step                    | Minutes | What you produce                                         |
-| ----------------------- | ------- | -------------------------------------------------------- |
-| `route-models-by-stage` | 15      | a role in each stage file, and a plan stage on high risk |
-| `cap-the-spend`         | 10      | a cap checked before each stage, the token out of git    |
-| `ship-the-factory`      | 25      | live runs of issues 1 to 7, and `notes/retro.md`         |
+| Step                         | Minutes | What you produce                                         |
+| ---------------------------- | ------- | -------------------------------------------------------- |
+| `route-models-by-stage`      | 15      | a role in each stage file, and a plan stage on high risk |
+| `cap-the-spend`              | 10      | a cap checked before each stage, the token out of git    |
+| `ship-the-factory`           | 25      | live runs of issues 1 to 7, and `notes/retro.md`         |
+| `run-one-issue-on-your-repo` | 30      | one draft pull request on your own repo, with evidence   |
 
 Each step's files go in that step's `problem/` folder. You start Claude Code there, give it the job, read its
 plan, and check what it wrote. Each step's `solution/prompts.md` shows the prompts from a real run.
@@ -115,13 +117,21 @@ Back at the repo root, after Claude Code wrote `notes/retro.md`:
 bun run verify ship-the-factory
 ```
 
+Expect: `Done. All 9 rules pass.`
+
+In your own repo, run one small issue, then copy `evidence/` and `notes/` into `04-run-one-issue-on-your-repo/problem/`. Back at the repo root:
+
+```bash
+bun run verify run-one-issue-on-your-repo
+```
+
 Expect: `Done. All 7 rules pass.`
 
 ```bash
 bun run verify part price-and-ship
 ```
 
-Expect: `Part price-and-ship is done: 3/3 steps pass.`
+Expect: `Part price-and-ship is done: 4/4 steps pass.`
 
 Compare with the sample answers at any time, for example `bun run verify ship-the-factory solution`.
 
