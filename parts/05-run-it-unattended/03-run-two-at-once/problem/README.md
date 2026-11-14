@@ -50,12 +50,24 @@ Here are the two consoles from a real run, one under the other:
 
 ![Issues 3 and 5 running side by side](../images/expected.png)
 
+Next, the case where two runs do change the same lines. The first one merges. The second now has to rebase,
+which means replaying its work on top of the new main. Git stops and leaves markers in the file. The folder
+`conflict/` holds that file after run 5 hit run 3: `conflict/clash.ts`. Ask Claude Code to read it, then type:
+
+```text
+Run 3 made the dates inclusive. Run 5 skips a range with no start date. Both touched overlaps in conflict/clash.ts and Git left markers. Merge them so both changes stay, remove the markers, and run the gate again. Then fill in conflict/NOTES.md under its three headings.
+```
+
+Expect: `conflict/clash.ts` has one `overlaps` function and no line that starts with `<<<<<<<`.
+
 ## Done when
 
 - Issues 3 and 5 each have a live run, and each cost matches its transcripts.
 - The two runs worked in different copies of the app, on different branches.
 - Each run changed at least one file.
 - No file was changed by both runs.
+- `conflict/clash.ts` has no markers left, and it keeps both runs' changes.
+- `conflict/NOTES.md` names the file, the fix, and the gate run after the rebase.
 
 Ask Claude Code:
 
@@ -67,13 +79,14 @@ Run `bun run verify run-two-at-once` and tell me what it printed. Do not change 
 bun run verify run-two-at-once
 ```
 
-Expect: `Done. All 4 rules pass.`
+Expect: `Done. All 7 rules pass.`
 
 ## If you get stuck
 
 | What you see                                   | What to do                                                                                      |
 | ---------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | `FAIL issues 3 and 5 each have a live run ...` | Run both again without `--dry-run`. A dry run makes no `claude` call, so it has no transcripts. |
+| `FAIL the merged file keeps both runs' changes` | Do not pick a side. Ask Claude Code to keep the inclusive dates and the no-start-date guard. |
 | `FAIL no file was changed by both runs`        | Pick two ready issues whose files in `factory/backlog.json` do not overlap.                     |
 
 The prompts from a real run are in `../solution/prompts.md`.
@@ -82,5 +95,6 @@ The prompts from a real run are in `../solution/prompts.md`.
 
 - **In parallel**: two runs at the same time, each in its own terminal.
 - **Collision**: two runs that write the same folder, branch or file. One run breaks the other.
+- **Rebase**: replay your work on top of newer work. If both touched the same lines, Git stops and asks you to choose.
 - **Copy of the app**: the folder `runs/<issue>/repo`, a git repo of its own. Here it plays the part of a
   git worktree: a second working folder, so two runs never share files.
