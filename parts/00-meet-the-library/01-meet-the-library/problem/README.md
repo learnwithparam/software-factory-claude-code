@@ -58,7 +58,7 @@ Then do the [session moves](SESSION-MOVES.md).
 ## Done when
 
 - `bun run doctor` passes its required checks.
-- `runs/finished-2/result.json` exists, matches the factory contract.
+- `runs/finished-2/result.json` exists and matches the factory contract.
 - `notes/goal.md` has one line of your own that names an issue from 1 to 7.
 - That line says why, in at least eight words.
 - Your saved session shows the session moves.

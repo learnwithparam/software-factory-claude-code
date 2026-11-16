@@ -154,5 +154,5 @@ The lock-tests hook stops the builder changing a test. The Stop hook keeps it wo
 on the code as it is now. On GitHub, only a real workflow run can turn the `gate` check green, and a person
 must approve.
 
-Next, in the "Run it unattended" part, you run the factory with nobody at the keyboard: `claude -p` for one issue, then a GitHub
-label that starts a run.
+Next, in the "Run it unattended" part, you run the factory with nobody at the keyboard. You run `claude -p` for one issue.
+Then you use a GitHub label that starts a run.

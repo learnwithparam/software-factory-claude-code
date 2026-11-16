@@ -156,6 +156,7 @@ passed, and a result file with the cost of every stage. Each stage runs on the m
 starts a stage it cannot afford, and no token sits in git.
 
 You also have your own number: what one issue costs, per stage. In the real run here it was $0.26 to $0.41
-for a fixed issue, and under a cent for a refused one. The retro names what you change next. In the real run,
-that was the plan stage, whose write rule never matched. Reading the runs found it, not the scorecard. That is
+for a fixed issue, and under a cent for a refused one. The retro names what you change next.
+
+In the real run, the retro named the plan stage, whose write rule never matched. Reading the runs found it, not the scorecard. That is
 the habit to keep: the scorecard says the factory works, and the runs say how.

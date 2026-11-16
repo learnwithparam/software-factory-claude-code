@@ -135,5 +135,5 @@ what Claude Code cannot read for itself. The money rule loads only when Claude C
 The triage skill loads only when the factory asks "may I start this issue?", and it refuses issue 6 every
 time.
 
-Next, in the "Split the roles" part, you split the work between three agents: a planner that only reads, a builder in its own
-worktree, and a reviewer that must show the input that breaks the code.
+Next, in the "Split the roles" part, you split the work between three agents. A planner only reads. A builder works in its own
+worktree. A reviewer must show the input that breaks the code.

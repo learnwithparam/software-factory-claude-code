@@ -14,7 +14,7 @@ FACTORY_CAP_USD=0.05 bun run factory 1 --dry-run --json
 
 Expect: `"state": "draft_pr"`. All started.
 
-Also `factory/ci.env` is tracked, and someone pasted a token into it. This one is fake, but anyone who can read the repo can read a real one.
+Also, `factory/ci.env` is tracked, and someone pasted a token into it. This one is fake, but anyone who can read the repo can read a real one.
 
 ```mermaid
 flowchart LR

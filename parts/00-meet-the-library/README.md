@@ -9,7 +9,7 @@ Small issues wait. The engineer is the only gate, so everything waits for them.
 
 Teams that built a factory first got speed and kept control. Rakuten reports a "79% reduction in time to
 market" after adopting Claude Code (Anthropic's customer page, a vendor claim, read for this course:
-https://claude.com/customers/rakuten). Anthropic's own engineers say the limit is trust, not speed: "more
+https://claude.com/customers/rakuten). Anthropic's own engineers say the limit is trust, not speed. They wrote: "more
 than half said they can 'fully delegate' only between 0-20% of their work to Claude"
 (https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic).
 

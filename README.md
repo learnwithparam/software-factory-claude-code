@@ -8,7 +8,7 @@ surprise bill.
 
 ## Start here
 
-You do every step in the real Claude Code, signed in with your own Claude account. You type prompts; Claude
+You do every step in the real Claude Code, signed in with your own Claude account. You type prompts. Claude
 Code writes the files. No step asks for an API key.
 
 A terminal is the window where you type commands. On macOS, open Terminal. On Windows, open WSL2. Get the
@@ -77,11 +77,12 @@ With `claude` installed and signed in, the command runs live on your account. Th
 Code reported. Without `claude`, or in CI, it says so in one line and replays a recorded real run from
 `world/recordings/`. A replay does four things:
 
-- it shows that run's transcript;
-- it applies the changes that run made to a fresh copy;
-- it runs the gate (the app's tests) for real;
+- it shows that run's transcript.
+- it applies the changes that run made to a fresh copy.
+- it runs the gate (the app's tests) for real.
 - it runs the factory's hooks again on the exact events Claude Code sent them.
-  `bun run finished 2 --replay` replays even when `claude` is ready.
+
+The command `bun run finished 2 --replay` replays even when `claude` is ready.
 
 ```bash
 bun run finished 6
@@ -101,10 +102,10 @@ targets your own factory meets by the end.
 Northside Tool Library is a member-run library that lends drills, ladders and a chainsaw. Its lending app
 (TypeScript, Bun, Hono, SQLite) has seven open issues in `world/backlog/`. Each one hides a trap:
 
-- a damage charge that loses a cent;
-- a double booking on a due date;
-- a member search that leaks phone numbers;
-- a safety rule nobody wrote;
+- a damage charge that loses a cent.
+- a double booking on a due date.
+- a member search that leaks phone numbers.
+- a safety rule nobody wrote.
 - a request to change a protected folder.
 
 See [world/README.md](world/README.md).
@@ -155,7 +156,7 @@ The same parts run as one long session, four shorter sessions, or a six-session 
 
 ## The project
 
-You ship the Northside factory in your own repo: your `.claude/`, `factory/` and `specs/`, the result
+You ship the Northside factory in your own repo. It holds your `.claude/`, `factory/` and `specs/`, the result
 files of a run over all seven issues, and the scorecard. A script grades it with yes or no questions. It reads the answers from git and the result files:
 
 - At least 3 of issues 1 to 5 reach a draft pull request on a branch whose tests pass the gate.
@@ -168,9 +169,11 @@ files of a run over all seven issues, and the scorecard. A script grades it with
 
 ## Claude Code, not the API
 
-You work in the real Claude Code: the `claude` CLI in a terminal, Claude Code in your editor, or the Code tab
-of Claude Desktop, signed in with your own Claude account. The course never calls the model API and never
-asks for an API key. What you build is Claude Code configuration (`CLAUDE.md`, rules, settings, hooks, skills,
+You work in the real Claude Code. Use the `claude` CLI in a terminal, Claude Code in your editor, or the Code tab
+of Claude Desktop. Sign in with your own Claude account. The course never calls the model API and never
+asks for an API key.
+
+What you build is Claude Code configuration (`CLAUDE.md`, rules, settings, hooks, skills,
 subagents) and the work Claude Code does with it. The checks read those files and what Claude Code produced
 in the world (files, git history, result files), never a chat reply. Hooks are tested by feeding them the
 JSON Claude Code sends on stdin. `config/claude-code.ts` holds the model alias per role, the headless flags,

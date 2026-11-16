@@ -8,7 +8,7 @@ For example, issue 6 would change who may waive fees. That code lives in `src/au
 coordinator may change it. Issue 7 is an upgrade, and nobody knows yet what it breaks.
 
 Most Anthropic engineers can hand over fully only 0 to 20% of their work
-(https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic). Choosing it is the skill.
+(https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic). Choosing which work to hand over is the skill.
 
 ```mermaid
 flowchart LR

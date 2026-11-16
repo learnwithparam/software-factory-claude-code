@@ -10,7 +10,7 @@
   },
   "packageManager": "bun@1.4.4",
   "scripts": {
-    "check": "bun scripts/readable.ts && bun scripts/plain-english.ts && bun scripts/check.ts && bun scripts/verify.ts --all && bun scripts/text-audit.ts && bun scripts/capstone.ts && bun scripts/picks.ts && bun scripts/ladder.ts",
+    "check": "bun scripts/readable.ts && bun scripts/plain-english.ts && bun scripts/check.ts && bun scripts/verify.ts --all && bun scripts/text-audit.ts && bun scripts/capstone.ts && bun scripts/picks.ts && bun scripts/ladder.ts && bun scripts/learner-clarity.mjs",
     "readable": "bun scripts/readable.ts",
     "picks": "bun scripts/picks.ts",
     "ladder": "bun scripts/ladder.ts",

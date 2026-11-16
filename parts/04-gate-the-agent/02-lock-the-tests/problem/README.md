@@ -9,7 +9,7 @@ change the test.
 For example, `sed -i 's/1667/1666/' tests/fees/split.test.ts` makes the test expect the wrong number. The
 gate goes green.
 
-A PreToolUse hook can. Claude Code runs it before every tool call and sends it the call as JSON.
+A PreToolUse hook can stop this edit. Claude Code runs it before every tool call and sends it the call as JSON.
 
 ```mermaid
 flowchart LR

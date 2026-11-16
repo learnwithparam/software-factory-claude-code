@@ -45,7 +45,7 @@ Expect: two lines that end `draft_pr, runs/3/result.json` and `draft_pr, runs/5/
 
 ![Issues 3 and 5 running side by side](../images/expected.png)
 
-Now two runs that do change the same lines. The first merges. The second must rebase, which replays its work on
+Now try two runs that do change the same lines. The first merges. The second must rebase, which replays its work on
 the new main. Git stops and leaves markers in `conflict/clash.ts`. Type:
 
 ```text

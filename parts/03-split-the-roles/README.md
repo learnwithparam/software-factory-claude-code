@@ -144,5 +144,5 @@ You now have three agents with one job each. The planner reads and plans. The bu
 worktree, with no secrets. The reviewer reads the change with fresh eyes and blocks only with an input that
 breaks the code. It caught the planted off-by-one that the builder's own tests passed.
 
-Next, in the "Gate the agent" part, you build the walls the agents cannot get around: deny rules, a hook that locks the
-tests, a Stop hook that demands a fresh gate, and a required check on the main branch.
+Next, in the "Gate the agent" part, you build the walls the agents cannot get around. You add deny rules and a hook that locks the
+tests. You add a Stop hook that demands a fresh gate. You add a required check on the main branch.
