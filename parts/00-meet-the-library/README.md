@@ -73,7 +73,7 @@ The raw command is:
 bun run verify meet-the-library
 ```
 
-Expect: `Done. All 5 rules pass.` once `notes/goal.md` names an issue and says why.
+Expect: `Done. All 8 rules pass.` once `notes/goal.md` names an issue and says why.
 
 ## Go further
 

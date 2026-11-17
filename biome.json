@@ -7,7 +7,8 @@
       "!**/world/recordings",
       "!runs",
       "!**/03-run-two-at-once/problem/conflict",
-      "!**/03-run-two-at-once/wrong/markers-left/conflict"
+      "!**/03-run-two-at-once/wrong/markers-left/conflict",
+      "!**/test-results"
     ]
   },
   "formatter": { "indentStyle": "space", "indentWidth": 2, "lineWidth": 100 },

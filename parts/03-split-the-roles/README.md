@@ -98,7 +98,7 @@ Expect: `Done. All 7 rules pass.`
 bun run verify build-the-reviewer
 ```
 
-Expect: `Done. All 7 rules pass.`
+Expect: `Done. All 8 rules pass.`
 
 ```bash
 bun run verify catch-the-planted-bug

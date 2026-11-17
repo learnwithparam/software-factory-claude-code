@@ -94,7 +94,7 @@ Do each step's challenge in its `problem/` folder first. Then run its check from
 bun run verify deny-the-shortcuts
 ```
 
-Expect: `Done. All 5 rules pass.`
+Expect: `Done. All 6 rules pass.`
 
 ```bash
 bun run verify lock-the-tests
@@ -106,7 +106,7 @@ Expect: `Done. All 7 rules pass.`
 bun run verify demand-proof-before-stop
 ```
 
-Expect: `Done. All 7 rules pass.`
+Expect: `Done. All 8 rules pass.`
 
 ```bash
 bun run verify protect-the-main-branch

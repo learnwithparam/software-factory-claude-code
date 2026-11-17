@@ -105,13 +105,13 @@ Back at the repo root:
 bun run verify run-one-issue-headless
 ```
 
-Expect: `Done. All 10 rules pass.`
+Expect: `Done. All 12 rules pass.`
 
 ```bash
 bun run verify run-from-a-label
 ```
 
-Expect: `Done. All 8 rules pass.`
+Expect: `Done. All 10 rules pass.`
 
 Inside `parts/05-run-it-unattended/03-run-two-at-once/problem/`:
 
@@ -127,7 +127,7 @@ Back at the repo root:
 bun run verify run-two-at-once
 ```
 
-Expect: `Done. All 4 rules pass.`
+Expect: `Done. All 8 rules pass.`
 
 ```bash
 bun run verify part run-it-unattended

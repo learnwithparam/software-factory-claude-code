@@ -66,19 +66,19 @@ The raw commands are:
 bun run verify write-the-issue-form
 ```
 
-Expect: `Done. All 7 rules pass.`
+Expect: `Done. All 9 rules pass.`
 
 ```bash
 bun run verify size-the-backlog
 ```
 
-Expect: `Done. All 8 rules pass.`
+Expect: `Done. All 10 rules pass.`
 
 ```bash
 bun run verify write-the-spec
 ```
 
-Expect: `Done. All 7 rules pass.`
+Expect: `Done. All 8 rules pass.`
 
 ```bash
 bun run verify part write-the-work-order

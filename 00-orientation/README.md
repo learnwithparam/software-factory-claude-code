@@ -156,6 +156,6 @@ The raw command is:
 bun run verify meet-the-library
 ```
 
-Expect: `Done. All 5 rules pass.` and a `Progress:` line.
+Expect: `Done. All 8 rules pass.` and a `Progress:` line.
 
 When a command prints something you do not expect, look it up in [troubleshooting.md](troubleshooting.md).

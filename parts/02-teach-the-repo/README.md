@@ -82,7 +82,7 @@ Do each step's challenge in its `problem/` folder first. Then run its check from
 bun run verify trim-the-agents-file
 ```
 
-Expect: `Done. All 8 rules pass.`
+Expect: `Done. All 9 rules pass.`
 
 ```bash
 bun run verify add-a-path-rule
